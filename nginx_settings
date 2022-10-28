@@ -14,6 +14,7 @@ server {
     root /home/kevin/apps/pomandhoney/public;
 
     location / {
+        index index.html;
         # Don't cache anything.
         add_header Last-Modified $date_gmt;
         add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
