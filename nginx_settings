@@ -12,9 +12,9 @@ server {
     include snippets/ssl-params.conf;
 
     root /home/kevin/apps/pomandhoney/public;
+    index index.html;
 
     location / {
-        index index.html;
         # Don't cache anything.
         add_header Last-Modified $date_gmt;
         add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
