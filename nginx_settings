@@ -11,7 +11,7 @@ server {
 
     include snippets/ssl-params.conf;
 
-    root /home/apps/pomandhoney;
+    root /home/kevin/apps/pomandhoney/public;
 
     location / {
         # Don't cache anything.
