@@ -1,0 +1,16 @@
+{
+  "name": "Pom and Honey",
+  "version": "1.0.0",
+  "description": "Web-based POS system for Pom and Honey.",
+  "main": "index.js",
+  "dependencies": {
+    "async": "^2.6.1",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.6.0",
+    "express": "^4.10.2",
+    "node-fetch": "^2.6.1"
+  },
+  "engines": {
+    "node": ">=16.13.2"
+  }
+}
