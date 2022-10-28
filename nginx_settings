@@ -5,9 +5,11 @@ upstream node{
 }
 
 server {
-    listen 80;
+    listen 443;
 
     server_name pomandhoney.kfox.studio;
+    ssl_certificate /etc/letsencrypt/live/pomandhoney.kfox.studio/fullchain.pem
+    ssl_certificate_key /etc/letsencrypt/live/pomandhoney.kfox.studio/privkey.pem
 
     include snippets/ssl-params.conf;
 
