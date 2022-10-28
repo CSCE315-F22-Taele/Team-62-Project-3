@@ -3,10 +3,9 @@
 // Import important Node modules
 const cookieParser = require('cookie-parser');
 const express = require('express');
-const async = require('async');
 const fetch = require('node-fetch');
 
-module.exports = function(app, home) {
+module.exports = function(app, home, db) {
 	app.use(cookieParser()); // Give express the ability to read user cookies.
 	app.use(express.json()); // Give express the ability to parse POST requests.
 	app.use(function(req, res, next) {
@@ -19,5 +18,10 @@ module.exports = function(app, home) {
     app.get("/time", function(req, res){
         // Simple GET request: return the current time.
         res.send("The time is : " + new Date());
-    })
+    });
+    
+    app.get("/sales", async function(req, res){
+		let results = await db.sendQuery("SELECT SUM(total) FROM orders");
+		res.send("Total Sales in database: $" + results.rows[0].sum);
+    });
 };
