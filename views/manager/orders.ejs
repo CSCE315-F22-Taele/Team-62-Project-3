@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Orders | Manager</title>
+</head>
+<body>
+    <%- include("header") %>
+    <h2>Orders</h2>
+    <table>
+    <% for(let order of orders) { %>
+        <tr>
+            <td>
+                <p>
+                    <%=order.id%>
+                </p>
+            </td>
+            <td>
+                <p>
+                    $<%=order.total.toLocaleString()%>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <%=order.date%>
+                </p>
+            </td>
+        </tr>
+    <% } %>
+    </table>
+</body>
+</html>
