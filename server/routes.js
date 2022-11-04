@@ -33,12 +33,26 @@ module.exports = function(app, home, db) {
     });
 
     app.get("/manager/orders", async function(req, res){
+        // Find the 100 most recent orders
 		let results = await db.sendQuery("SELECT id, date, total FROM orders ORDER BY date DESC LIMIT 100");
         res.render("manager/orders.ejs", {orders:results.rows});
     });
 
     app.get("/manager/items", async function(req, res){
-		let results = await db.sendQuery("SELECT id, name, quantity FROM item ORDER BY id ASC");
+		let results = await db.sendQuery("SELECT id, name, quantity, units FROM item ORDER BY id ASC");
         res.render("manager/items.ejs", {items:results.rows});
     });
+
+    app.post("/item", async function(req, res){
+        res.status(400);
+        let id = req.body.id;
+        let amount = parseFloat(req.body.amount);
+        if(isNaN(amount)){
+            return res.send("Invalid amount.");
+        }
+        let results = await db.sendQuery("UPDATE item SET quantity = quantity+" + amount + " WHERE id = " + id + " RETURNING quantity");
+        res.status(200);
+        res.send("" + results.rows[0].quantity);
+    });
+
 };

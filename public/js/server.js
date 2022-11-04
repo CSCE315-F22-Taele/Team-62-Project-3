@@ -1,4 +1,4 @@
-// Improved versions of getFromServer and sendToServer
+// GET and POST to/from a server/endpoint
 
 var server = {
 	GET: function(path, success, error) {

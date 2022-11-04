@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <%- include("head") %>
     <title>Items | Manager</title>
 </head>
 <body>
@@ -16,11 +17,27 @@
             </td>
             <td>
                 <p>
-                    <%=item.quantity.toLocaleString()%> units
+                    <span id="quantity_<%=item.id%>"><%=item.quantity.toLocaleString()%></span> <%=item.units%>
                 </p>
+            </td>
+            <td>
+                <label>Restock: <input id="restock_input_<%=item.id%>" type="number" min=0></label>
+                <button onclick="restockItem(<%=item.id%>);">Submit</button>
             </td>
         </tr>
     <% } %>
     </table>
+    <script src="/js/server.js"></script>
+    <script>
+        function restockItem(itemId){
+            let amount = document.querySelector("#restock_input_" + itemId).value;
+            server.POST("/item", {id: itemId, amount: amount}, function(response){
+                document.querySelector("#quantity_" + itemId).innerText = (Math.round(response*100)/100).toLocaleString();
+            },
+            function(error){
+                alert(error)
+            });
+        }
+    </script>
 </body>
 </html>
