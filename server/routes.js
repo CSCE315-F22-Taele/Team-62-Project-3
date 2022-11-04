@@ -36,4 +36,9 @@ module.exports = function(app, home, db) {
 		let results = await db.sendQuery("SELECT id, date, total FROM orders ORDER BY date DESC LIMIT 100");
         res.render("manager/orders.ejs", {orders:results.rows});
     });
+
+    app.get("/manager/items", async function(req, res){
+		let results = await db.sendQuery("SELECT id, name, quantity FROM item ORDER BY id ASC");
+        res.render("manager/items.ejs", {items:results.rows});
+    });
 };
