@@ -16,6 +16,10 @@ module.exports = function(app, home, db) {
 		next();
 	});
 
+    app.get("/", function(req, res){
+        res.render("index.ejs");
+    });
+
     /* BEGIN GET REQUESTS */
     app.get("/time", function(req, res){
         // Simple GET request: return the current time.
