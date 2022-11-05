@@ -1,5 +1,6 @@
 'use strict'
 
+const { default: async } = require('async');
 // Import important Node modules
 const cookieParser = require('cookie-parser');
 const express = require('express');
@@ -38,10 +39,14 @@ module.exports = function(app, home, db) {
         res.render("manager/orders.ejs", {orders:results.rows});
     });
 
-    app.get("/manager/items", async function(req, res){
+    app.get("/manager/items", async (req, res) => {
 		let results = await db.sendQuery("SELECT id, name, quantity, units FROM item ORDER BY id ASC");
         res.render("manager/items.ejs", {items:results.rows});
     });
+
+    app.get("/manager/server", async (req, res) => {
+        res.render("manager/server.ejs")
+    })
 
     app.post("/item", async function(req, res){
         res.status(400);
