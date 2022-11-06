@@ -8,7 +8,7 @@
 			.btn-vertical button {
 				display: block;  /* vertical buttons */
 			}
-			.grid-items {
+			.main-grid-items {
 				display: grid;	
 				grid-template-columns: repeat(4, 100px);
 			}
@@ -20,21 +20,23 @@
 
 	</head>
 	<body>
+
+		
 		<%- include("header") %> 
 		<h2>Server View</h2>
 
 		<div class="grid-container">
 			<div class="btn-vertical">
 				<label>Products</label>
-				<button>Gyro</button>
-				<button>Bowl</button>
-				<button>Hummus and Pita</button>
-				<button>Two Falalefs</button>
-				<button>Extra Dressing</button>
-				<button>Fountain Drinks</button>
-				<button>Extra Portein</button>
+				<button id="gyro">Gyro</button>
+				<button id="bowl">Bowl</button>
+				<button id="hummus">Hummus and Pita</button>
+				<button id="twoFalalefs">Two Falalefs</button>
+				<button id="dressing">Extra Dressing</button>
+				<button id="drink">Fountain Drinks</button>
+				<button id="extraProtein">Extra Portein</button>
 			</div>
-			<div class="grid-items">
+			<div class="main-grid-items" id="all-items">
 				<button>Rice Pilaf</button>				
 				<button>White Rice</button>
 				<button>Butter Chicken</button>
@@ -49,21 +51,69 @@
 				<button>Slaw</button>
 				<button>Tomatoes</button>
 				<button>Cucumbers</button>
-				<button>Hummus</button>
 				<button>Jalepeno Feta Dressing</button>
 				<button>Vinagrette Dressing</button>
 				<button>Tahini Dressing</button>
 				<button>Yogurt Dill Dressing</button>
-				<button>Spicy Hummus</button>
+				<button id="hummusItem">Hummus</button>
+				<button id="spicyHummusItem">Spicy Hummus</button>
 				<button>Tzatziki Sauce</button>
 				<button>Harissa Yogurt</button>
-				<button>Remove Product</button>
 			</div>
 			<div>
 				<button>Finalized Order</button>
+				<button>Remove Product</button>
 			</div>
 		</div>
 
 		<%- include("scripts") %> 
+		<script>
+			const drinkBtn = document.getElementById('drink');
+			const gyro = document.getElementById('gyro')
+			const bowl = document.getElementById('bowl')
+			const twoFalefs = document.getElementById('twoFalalefs')
+			const mainItemPanel = document.getElementById('all-items')
+			const hummus = document.getElementById('hummus')
+			const hummusItem = document.getElementById('hummusItem')
+			const dressing = document.getElementById('dressing')
+			const spicyHummusItem = document.getElementById('spicyHummusItem')
+
+			drinkBtn.addEventListener('click', () => {
+				mainItemPanel.style.visibility = 'hidden';
+				hummusItem.style.visibility='hidden';
+				spicyHummusItem.style.visibility='hidden';
+			})
+
+			gyro.addEventListener('click', () => {
+				mainItemPanel.style.visibility = 'visible';
+				hummusItem.style.visibility='visible';
+				spicyHummusItem.style.visibility='visible';
+			})
+			
+			bowl.addEventListener('click', () => {
+				mainItemPanel.style.visibility = 'visible';
+				hummusItem.style.visibility='visible';
+				spicyHummusItem.style.visibility='visible';
+			})
+
+			twoFalefs.addEventListener('click', () => {
+				mainItemPanel.style.visibility = 'hidden';
+				hummusItem.style.visibility='hidden';
+				spicyHummusItem.style.visibility='hidden';
+			})
+			
+			hummus.addEventListener('click', () => {
+				mainItemPanel.style.visibility = 'hidden';
+				hummusItem.style.visibility='visible';
+				spicyHummusItem.style.visibility='visible';
+			})
+
+			dressing.addEventListener('click', () => {
+				mainItemPanel.style.visibility = 'hidden';
+				hummusItem.style.visibility='visible';
+				spicyHummusItem.style.visibility='visible';
+			})
+
+		</script>
 	</body>
 </html>
