@@ -38,9 +38,11 @@ module.exports = function(app, home, db) {
         res.render("manager/orders.ejs", {orders:results.rows});
     });
 
+
     app.get("/manager/items", async function(req, res){
-		let results = await db.sendQuery("SELECT id, name, quantity, units FROM item ORDER BY id ASC");
-        res.render("manager/items.ejs", {items:results.rows});
+        let results = await db.sendQuery("SELECT id, name, quantity, units FROM item ORDER BY id ASC");
+        let results2 = await db.sendQuery("SELECT id, name, price FROM productdef");
+        res.render("manager/items.ejs", {items:results.rows,productdef:results2.rows});
     });
 
     app.post("/item", async function(req, res){

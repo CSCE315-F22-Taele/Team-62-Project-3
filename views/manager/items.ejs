@@ -6,7 +6,23 @@
 </head>
 <body>
     <%- include("header") %>
-    <h2>Orders</h2>
+    <h2>Items</h2>
+    <table>
+        <% for(let product of productdef) { %>
+            <tr>
+                <td>
+                    <p>
+                        <%=product.name%>
+                    </p>
+                </td>
+                <td>
+                    <p>
+                        $<%=product.price.toLocaleString()%>
+                    </p>
+                </td>
+            </tr>
+        <% } %>
+        </table>
     <table>
     <% for(let item of items) { %>
         <tr>
@@ -39,5 +55,8 @@
             });
         }
     </script>
+
+    
+
 </body>
 </html>
