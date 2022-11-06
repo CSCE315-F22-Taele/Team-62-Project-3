@@ -47,6 +47,7 @@ module.exports = function(app, home, db) {
     });
 
     app.get("/manager/server", async (req, res) => {
+        // let results = await db.sendQuery()
         res.render("manager/server.ejs")
     })
 

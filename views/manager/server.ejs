@@ -1,13 +1,69 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<% include("head") %> 
-		<title>Server</title>
+		<%- include("head") %> 
+		<title>Server | Manager</title>
+
+		<style>
+			.btn-vertical button {
+				display: block;  /* vertical buttons */
+			}
+			.grid-items {
+				display: grid;	
+				grid-template-columns: repeat(4, 100px);
+			}
+			.grid-container {
+				display: grid;	
+				grid-template-columns: repeat(2, 200px);
+			}
+		</style>
+
 	</head>
 	<body>
-		<% include("header") %> 
-		<h2>Server</h2>
+		<%- include("header") %> 
+		<h2>Server View</h2>
 
-		<% include("scripts") %> 
+		<div class="grid-container">
+			<div class="btn-vertical">
+				<label>Products</label>
+				<button>Gyro</button>
+				<button>Bowl</button>
+				<button>Hummus and Pita</button>
+				<button>Two Falalefs</button>
+				<button>Extra Dressing</button>
+				<button>Fountain Drinks</button>
+				<button>Extra Portein</button>
+			</div>
+			<div class="grid-items">
+				<button>Rice Pilaf</button>				
+				<button>White Rice</button>
+				<button>Butter Chicken</button>
+				<button>Lemon Chicken</button>
+				<button>Gyro Meat</button> 
+				<button>Falalef</button>
+				<button>Onions</button>
+				<button>Cauliflower</button>
+				<button>Pepper</button>
+				<button>Olives</button>
+				<button>Couscous</button>
+				<button>Slaw</button>
+				<button>Tomatoes</button>
+				<button>Cucumbers</button>
+				<button>Hummus</button>
+				<button>Jalepeno Feta Dressing</button>
+				<button>Vinagrette Dressing</button>
+				<button>Tahini Dressing</button>
+				<button>Yogurt Dill Dressing</button>
+				<button>Spicy Hummus</button>
+				<button>Tzatziki Sauce</button>
+				<button>Harissa Yogurt</button>
+				<button>Remove Product</button>
+			</div>
+			<div>
+				<button>Finalized Order</button>
+			</div>
+		</div>
+
+		<%- include("scripts") %> 
 	</body>
 </html>
