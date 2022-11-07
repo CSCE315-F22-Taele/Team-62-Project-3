@@ -1,11 +1,10 @@
 // GET and POST to/from a server/endpoint
 
 var server = {
-	GET: function(path, content, success, error) {
+	GET: function(path, success, error) {
 		var xhr = new XMLHttpRequest();
 		xhr.open("GET", path);
-		xhr.setRequestHeader('Content-Type', 'application/json');
-		xhr.send(JSON.stringify(content));
+		xhr.send();
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == XMLHttpRequest.DONE) {
 				server.handleServerResponse(xhr, success, error);

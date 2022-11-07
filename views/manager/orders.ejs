@@ -5,12 +5,26 @@
     <title>Orders | Manager</title>
 </head>
 <body>
+    <script>
+        function hideOrder(orders){
+            var lowDate = new Date('9/2/2022');
+            var highDate = new Date('9/3/2022');
+            for(let order of orders){
+                var id = order.id;
+                var curdate = order.date.toLocaleDateString();
+                if(curdate > highDate || curdate<lowDate){
+                    document.getElementById(id).style.display = 'none';
+                }
+            }
+        }
+    </script>
     <%- include("header") %>
     <h2>Orders</h2>
-                <button onclick="refresh();">test</button>
+    <% var com = "hideOrder(" + orders+")";%>
+    <button onclick=com>test</button>
     <table>
     <% for(let order of orders) { %>
-        <tr>
+        <tr id = <%=order.id%>>
             <td>
                 <p>
                     <%=order.id%>
@@ -23,24 +37,12 @@
             </td>
             <td>
                 <p>
-                    <%=order.date%>
+                    <%=order.date.toLocaleDateString()%>
                 </p>
             </td>
         </tr>
     <% } %>
     </table>
     <%- include("scripts") %>
-
-    <script src="/js/server.js"></script>
-    <script>
-        function refresh(){
-            server.GET("/manager/dateorders", {low: "2022-9-1", high: "2022-9-3"}, function(response){
-                
-            },
-            function(error){
-                alert(error)
-            });
-        }
-    </script>
 </body>
 </html>
