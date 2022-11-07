@@ -13,6 +13,17 @@ class dbConnection{
     async sendQuery(cmd){
         return await this.#client.query(cmd);
     }
+    async addOrderToDatabase(order){
+        /**
+        order: {
+            discount: Number,
+            productList:[{
+                id:Number,
+                selectedItems:[Number]
+            }]
+        }
+        */
+    }
 }
 
 module.exports = dbConnection;

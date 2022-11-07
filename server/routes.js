@@ -35,7 +35,13 @@ module.exports = function(app, home, db) {
 
     app.get("/manager/orders", async function(req, res){
         // Find the 100 most recent orders
-		let results = await db.sendQuery("SELECT id, date, total FROM orders ORDER BY date DESC LIMIT 100");
+        let quantifier = "";
+        if(req.query.s && req.query.e){
+            quantifier = " WHERE date BETWEEN '" + req.query.s + "' AND '" + req.query.e + "'";
+        }
+        let cmd = "SELECT id, date, total FROM orders" + quantifier + " ORDER BY date DESC LIMIT 100";
+        console.log(cmd);
+		let results = await db.sendQuery(cmd);
         res.render("manager/orders.ejs", {orders:results.rows});
 
     });
