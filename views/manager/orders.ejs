@@ -7,6 +7,7 @@
 <body>
     <%- include("header") %>
     <h2>Orders</h2>
+                <button onclick="refresh();">test</button>
     <table>
     <% for(let order of orders) { %>
         <tr>
@@ -29,5 +30,17 @@
     <% } %>
     </table>
     <%- include("scripts") %>
+
+    <script src="/js/server.js"></script>
+    <script>
+        function refresh(){
+            server.GET("/manager/dateorders", {low: "2022-9-1", high: "2022-9-3"}, function(response){
+                
+            },
+            function(error){
+                alert(error)
+            });
+        }
+    </script>
 </body>
 </html>
