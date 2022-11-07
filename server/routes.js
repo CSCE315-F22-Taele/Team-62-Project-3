@@ -35,8 +35,15 @@ module.exports = function(app, home, db) {
 
     app.get("/manager/orders", async function(req, res){
         // Find the 100 most recent orders
-		let results = await db.sendQuery("SELECT id, date, total FROM orders ORDER BY date");
+        let quantifier = "";
+        if(req.query.s && req.query.e){
+            quantifier = " WHERE date BETWEEN '" + req.query.s + "' AND '" + req.query.e + "'";
+        }
+        let cmd = "SELECT id, date, total FROM orders" + quantifier + " ORDER BY date DESC LIMIT 100";
+        console.log(cmd);
+		let results = await db.sendQuery(cmd);
         res.render("manager/orders.ejs", {orders:results.rows});
+
     });
 
 
@@ -46,9 +53,10 @@ module.exports = function(app, home, db) {
         res.render("manager/items.ejs", {items:results.rows,productdef:results2.rows});
     });
 
-    app.get("/manager/server", async (req, res) => {
-        // let results = await db.sendQuery()
-        res.render("manager/server.ejs")
+    app.get("/server", async (req, res) => {
+        let items = await db.sendQuery("SELECT id, name FROM item");
+		let productDefs = await db.sendQuery("SELECT id, name, optionalItemList, optionalPortionList FROM productdef");
+        res.render("server.ejs", {items:items.rows, productDefs:productDefs.rows});
     })
 
     app.post("/item", async function(req, res){
