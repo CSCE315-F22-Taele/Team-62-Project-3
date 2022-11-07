@@ -5,6 +5,11 @@
 		<title>Server | Manager</title>
 
 		<style>
+			.center-container {
+				margin: auto;
+				width: 50%;
+				
+			}
 			.btn-vertical button {
 				display: block;  /* vertical buttons */
 			}
@@ -14,7 +19,7 @@
 			}
 			.grid-container {
 				display: grid;	
-				grid-template-columns: repeat(2, 200px);
+				grid-template-columns: 200px auto 200px;
 			}
 		</style>
 
@@ -24,11 +29,15 @@
 		
 		<%- include("header") %> 
 		<h2>Server View</h2>
-
-		<div class="grid-container">
+		
+		<div class="grid-container center-container">
 			<div class="btn-vertical">
+
 				<label>Products</label>
-				<button id="gyro">Gyro</button>
+				<button onclick=<%= sales = sales + 10 %> id="gyro">Gyro</button>
+				
+				<label>Gryo Counter: <%= sales.toLocaleString() %></label>
+				
 				<button id="bowl">Bowl</button>
 				<button id="hummus">Hummus and Pita</button>
 				<button id="twoFalalefs">Two Falalefs</button>
@@ -60,7 +69,7 @@
 				<button id="tzatzikiDress">Tzatziki Sauce</button>
 				<button id="harissaDress">Harissa Yogurt</button>
 			</div>
-			<div>
+			<div class="btn-vertical">
 				<button>Finalized Order</button>
 				<button>Remove Product</button>
 			</div>
@@ -91,11 +100,13 @@
 			const tzatzikiDress = document.getElementById("tzatzikiDress")
 			const harissaDress = document.getElementById("harissaDress")
 
-			const setProteinDisplay = (visibility) => {
-				butterChick.style.visibility=visibility;
-				lemonChick.style.visibility=visibility;
-				meat.style.visibility=visibility;
-				falalef.style.visibility=visibility;
+			let gryoCounter = 0;
+
+			const setProteinDisplay = (visi) => {
+				butterChick.style.visibility=visi;
+				lemonChick.style.visibility=visi;
+				meat.style.visibility=visi;
+				falalef.style.visibility=visi;
 			}
 
 			const setDressDisplay = (visi) => {
@@ -107,38 +118,37 @@
 				harissaDress.style.visibility = visi;
 			}
 
+			const setHummusDisplay = (visi) => {
+				hummusItem.style.visibility=visi;
+				spicyHummusItem.style.visibility=visi;
+			}
+
 			drinkBtn.addEventListener('click', () => {
 				mainItemPanel.style.visibility = 'hidden';
-				hummusItem.style.visibility='hidden';
-				spicyHummusItem.style.visibility='hidden';
-				
+				setHummusDisplay('hidden');
 				setProteinDisplay("hidden");
 				setDressDisplay("hidden");
 			})
 
 			gyro.addEventListener('click', () => {
 				mainItemPanel.style.visibility = 'visible';
-				hummusItem.style.visibility='visible';
-				spicyHummusItem.style.visibility='visible';
-
+				setHummusDisplay('visible');
 				setProteinDisplay("visible");
 				setDressDisplay("visible");
+				gryoCounter++; 
+				console.log(gryoCounter);
 			})
 			
 			bowl.addEventListener('click', () => {
 				mainItemPanel.style.visibility = 'visible';
-				hummusItem.style.visibility='visible';
-				spicyHummusItem.style.visibility='visible';
-
+				setHummusDisplay("visible")
 				setProteinDisplay("visible");
 				setDressDisplay("visible");
 			})
 
 			twoFalefs.addEventListener('click', () => {
 				mainItemPanel.style.visibility = 'hidden';
-				hummusItem.style.visibility='hidden';
-				spicyHummusItem.style.visibility='hidden';
-
+				setHummusDisplay("hidden")
 				setProteinDisplay("hidden");
 				setDressDisplay("hidden");
 			})
@@ -146,25 +156,20 @@
 			hummus.addEventListener('click', () => {
 				setDressDisplay("hidden");
 				mainItemPanel.style.visibility = 'hidden';
-				hummusItem.style.visibility='visible';
-				spicyHummusItem.style.visibility='visible';
+				setHummusDisplay("visible")
 				setProteinDisplay("hidden");
 			})
 
 			dressing.addEventListener('click', () => {
 				mainItemPanel.style.visibility = 'hidden';
-				hummusItem.style.visibility='visible';
-				spicyHummusItem.style.visibility='visible';
-				
+				setHummusDisplay("visible")
 				setProteinDisplay("hidden");
 				setDressDisplay("visible");
 			})
 
 			extraProtein.addEventListener('click', () => {
 				mainItemPanel.style.visibility = 'hidden';
-				hummusItem.style.visibility='hidden';
-				spicyHummusItem.style.visibility='hidden';
-
+				setHummusDisplay("hidden");
 				setProteinDisplay("visible");
 				setDressDisplay("hidden");
 			})
