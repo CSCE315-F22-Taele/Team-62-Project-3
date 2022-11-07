@@ -54,10 +54,10 @@ module.exports = function(app, home, db) {
         res.render("manager/items.ejs", {items:results.rows,productdef:results2.rows});
     });
 
-    app.get("/manager/server", async (req, res) => {
+    app.get("/server", async (req, res) => {
         let items = await db.sendQuery("SELECT id, name FROM item");
 		let productDefs = await db.sendQuery("SELECT id, name, optionalItemList, optionalPortionList FROM productdef");
-        res.render("manager/server.ejs", {items:items.rows, productDefs:productDefs.rows});
+        res.render("server.ejs", {items:items.rows, productDefs:productDefs.rows});
     })
 
     app.post("/item", async function(req, res){

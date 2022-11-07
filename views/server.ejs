@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<%- include("head") %>
+        <link rel="stylesheet" type="text/css" href="/css/main.css"></link>
+        <script href="/js/server.js"></script>
 		<title>Server | Manager</title>
 
 		<style>
@@ -26,8 +27,8 @@
 	</head>
 	<body>
 
+        <%- include("logo.ejs") %>
 
-		<%- include("header") %>
 		<h2>Server View</h2>
 
 		<div class="grid-container center-container">
@@ -51,7 +52,6 @@
 			</div>
 		</div>
 
-		<%- include("scripts") %>
 		<script>
 
             var productDefs = <%-JSON.stringify(productDefs)%>;
