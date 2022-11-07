@@ -54,11 +54,9 @@ module.exports = function(app, home, db) {
     });
 
     app.get("/manager/server", async (req, res) => {
-		let results = await db.sendQuery("SELECT SUM(total) FROM orders");
-		let salesNum = results.rows[0].sum;
-        let counter = 0;
-        
-        res.render("manager/server.ejs", {sales:counter})
+        let items = await db.sendQuery("SELECT id, name FROM item");
+		let productDefs = await db.sendQuery("SELECT id, name, optionalItemList, optionalPortionList FROM productdef");
+        res.render("manager/server.ejs", {items:items.rows, productDefs:productDefs.rows});
     })
 
     app.post("/item", async function(req, res){

@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<%- include("head") %> 
+		<%- include("head") %>
 		<title>Server | Manager</title>
 
 		<style>
 			.center-container {
 				margin: auto;
 				width: 50%;
-				
+
 			}
 			.btn-vertical button {
 				display: block;  /* vertical buttons */
 			}
 			.main-grid-items {
-				display: grid;	
+				display: grid;
 				grid-template-columns: repeat(4, 100px);
 			}
 			.grid-container {
-				display: grid;	
+				display: grid;
 				grid-template-columns: 200px auto 200px;
 			}
 		</style>
@@ -26,48 +26,24 @@
 	</head>
 	<body>
 
-		
-		<%- include("header") %> 
+
+		<%- include("header") %>
 		<h2>Server View</h2>
-		
+
 		<div class="grid-container center-container">
 			<div class="btn-vertical">
 
 				<label>Products</label>
-				<button onclick=<%= sales = sales + 10 %> id="gyro">Gyro</button>
-				
-				<label>Gryo Counter: <%= sales.toLocaleString() %></label>
-				
-				<button id="bowl">Bowl</button>
-				<button id="hummus">Hummus and Pita</button>
-				<button id="twoFalalefs">Two Falalefs</button>
-				<button id="dressing">Extra Dressing</button>
-				<button id="drink">Fountain Drinks</button>
-				<button id="extraProtein">Extra Portein</button>
+                <% for(let productDef of productDefs) { %>
+                <button onclick="loadProduct(<%=productDef.id%>)" id="product_button_<%=productDef.id%>"><%=productDef.name%></button>
+                <% } %>
+
 			</div>
 			<div class="main-grid-items" id="all-items">
-				<button>Rice Pilaf</button>				
-				<button>White Rice</button>
-				<button id="butterChick">Butter Chicken</button>
-				<button id="lemonChick">Lemon Chicken</button>
-				<button id="meat">Gyro Meat</button> 
-				<button id="falalef">Falalef</button>
-				<button>Onions</button>
-				<button>Cauliflower</button>
-				<button>Pepper</button>
-				<button>Olives</button>
-				<button>Couscous</button>
-				<button>Slaw</button>
-				<button>Tomatoes</button>
-				<button>Cucumbers</button>
-				<button id="jalepenoDress">Jalepeno Feta Dressing</button>
-				<button id="vinagretteDress">Vinagrette Dressing</button>
-				<button id="tahiniDress">Tahini Dressing</button>
-				<button id="yogurtDress">Yogurt Dill Dressing</button>
-				<button id="hummusItem">Hummus</button>
-				<button id="spicyHummusItem">Spicy Hummus</button>
-				<button id="tzatzikiDress">Tzatziki Sauce</button>
-				<button id="harissaDress">Harissa Yogurt</button>
+                <% for(let item of items){ %>
+                    <button selectable=true itemId=<%=item.id%> style="display:none;" id="item_button_<%=item.id%>"><%=item.name%></button>
+                <% } %>
+
 			</div>
 			<div class="btn-vertical">
 				<button>Finalized Order</button>
@@ -75,8 +51,43 @@
 			</div>
 		</div>
 
-		<%- include("scripts") %> 
+		<%- include("scripts") %>
 		<script>
+
+            var productDefs = <%-JSON.stringify(productDefs)%>;
+
+            let buttons = document.querySelectorAll("[selectable=true]");
+            for(let button of buttons){
+                button.addEventListener("click", function(){
+                    console.log(button);
+                    button.classList.toggle("selected");
+                });
+            }
+
+            function loadProduct(id){
+                // Find the productDef
+                let productDef;
+                for(let def of productDefs){
+                    if(def.id == id){
+                        productDef = def;
+                        break;
+                    }
+                }
+                // Show the appropriate buttons
+                let buttons = document.querySelectorAll("#all-items button");
+                console.log(productDef.optionalitemlist);
+                for(let button of buttons){
+                    itemId = button.getAttribute("itemId");
+                    itemId = parseInt(itemId);
+                    if(productDef.optionalitemlist.includes(itemId)){
+                        button.style.display = "block";
+                    }
+                    else{
+                        button.style.display = "none";
+                    }
+                }
+            }
+
 			const drinkBtn = document.getElementById('drink');
 			const gyro = document.getElementById('gyro')
 			const bowl = document.getElementById('bowl')
@@ -135,10 +146,10 @@
 				setHummusDisplay('visible');
 				setProteinDisplay("visible");
 				setDressDisplay("visible");
-				gryoCounter++; 
+				gryoCounter++;
 				console.log(gryoCounter);
 			})
-			
+
 			bowl.addEventListener('click', () => {
 				mainItemPanel.style.visibility = 'visible';
 				setHummusDisplay("visible")
@@ -152,7 +163,7 @@
 				setProteinDisplay("hidden");
 				setDressDisplay("hidden");
 			})
-			
+
 			hummus.addEventListener('click', () => {
 				setDressDisplay("hidden");
 				mainItemPanel.style.visibility = 'hidden';
