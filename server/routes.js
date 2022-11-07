@@ -33,10 +33,17 @@ module.exports = function(app, home, db) {
         res.render("manager/summary.ejs", {sales:salesNum});
     });
 
+    app.get("/manager/inventory", async function(req, res){
+        // Find order history for given date range
+		//let results = await db.sendQuery("SELECT id, date, total FROM orders ORDER BY date DESC LIMIT 100");
+        res.render("manager/inventory.ejs", {orders:results.rows});
+    });
+
     app.get("/manager/orders", async function(req, res){
         // Find the 100 most recent orders
 		let results = await db.sendQuery("SELECT id, date, total FROM orders ORDER BY date DESC LIMIT 100");
         res.render("manager/orders.ejs", {orders:results.rows});
+
     });
 
 
