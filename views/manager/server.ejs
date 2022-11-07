@@ -39,10 +39,10 @@
 			<div class="main-grid-items" id="all-items">
 				<button>Rice Pilaf</button>				
 				<button>White Rice</button>
-				<button>Butter Chicken</button>
-				<button>Lemon Chicken</button>
-				<button>Gyro Meat</button> 
-				<button>Falalef</button>
+				<button id="butterChick">Butter Chicken</button>
+				<button id="lemonChick">Lemon Chicken</button>
+				<button id="meat">Gyro Meat</button> 
+				<button id="falalef">Falalef</button>
 				<button>Onions</button>
 				<button>Cauliflower</button>
 				<button>Pepper</button>
@@ -51,14 +51,14 @@
 				<button>Slaw</button>
 				<button>Tomatoes</button>
 				<button>Cucumbers</button>
-				<button>Jalepeno Feta Dressing</button>
-				<button>Vinagrette Dressing</button>
-				<button>Tahini Dressing</button>
-				<button>Yogurt Dill Dressing</button>
+				<button id="jalepenoDress">Jalepeno Feta Dressing</button>
+				<button id="vinagretteDress">Vinagrette Dressing</button>
+				<button id="tahiniDress">Tahini Dressing</button>
+				<button id="yogurtDress">Yogurt Dill Dressing</button>
 				<button id="hummusItem">Hummus</button>
 				<button id="spicyHummusItem">Spicy Hummus</button>
-				<button>Tzatziki Sauce</button>
-				<button>Harissa Yogurt</button>
+				<button id="tzatzikiDress">Tzatziki Sauce</button>
+				<button id="harissaDress">Harissa Yogurt</button>
 			</div>
 			<div>
 				<button>Finalized Order</button>
@@ -77,42 +77,99 @@
 			const hummusItem = document.getElementById('hummusItem')
 			const dressing = document.getElementById('dressing')
 			const spicyHummusItem = document.getElementById('spicyHummusItem')
+			const extraProtein = document.getElementById("extraProtein")
+
+			const butterChick = document.getElementById("butterChick")
+			const lemonChick = document.getElementById("lemonChick")
+			const meat = document.getElementById("meat")
+			const falalef = document.getElementById("falalef")
+
+			const jalepenoDress = document.getElementById("jalepenoDress")
+			const vinagretteDress = document.getElementById("vinagretteDress")
+			const tahiniDress = document.getElementById("tahiniDress")
+			const yogurtDress = document.getElementById("yogurtDress")
+			const tzatzikiDress = document.getElementById("tzatzikiDress")
+			const harissaDress = document.getElementById("harissaDress")
+
+			const setProteinDisplay = (visibility) => {
+				butterChick.style.visibility=visibility;
+				lemonChick.style.visibility=visibility;
+				meat.style.visibility=visibility;
+				falalef.style.visibility=visibility;
+			}
+
+			const setDressDisplay = (visi) => {
+				jalepenoDress.style.visibility = visi;
+				vinagretteDress.style.visibility = visi;
+				tahiniDress.style.visibility = visi;
+				yogurtDress.style.visibility = visi;
+				tzatzikiDress.style.visibility = visi;
+				harissaDress.style.visibility = visi;
+			}
 
 			drinkBtn.addEventListener('click', () => {
 				mainItemPanel.style.visibility = 'hidden';
 				hummusItem.style.visibility='hidden';
 				spicyHummusItem.style.visibility='hidden';
+				
+				setProteinDisplay("hidden");
+				setDressDisplay("hidden");
 			})
 
 			gyro.addEventListener('click', () => {
 				mainItemPanel.style.visibility = 'visible';
 				hummusItem.style.visibility='visible';
 				spicyHummusItem.style.visibility='visible';
+
+				setProteinDisplay("visible");
+				setDressDisplay("visible");
 			})
 			
 			bowl.addEventListener('click', () => {
 				mainItemPanel.style.visibility = 'visible';
 				hummusItem.style.visibility='visible';
 				spicyHummusItem.style.visibility='visible';
+
+				setProteinDisplay("visible");
+				setDressDisplay("visible");
 			})
 
 			twoFalefs.addEventListener('click', () => {
 				mainItemPanel.style.visibility = 'hidden';
 				hummusItem.style.visibility='hidden';
 				spicyHummusItem.style.visibility='hidden';
+
+				setProteinDisplay("hidden");
+				setDressDisplay("hidden");
 			})
 			
 			hummus.addEventListener('click', () => {
+				setDressDisplay("hidden");
 				mainItemPanel.style.visibility = 'hidden';
 				hummusItem.style.visibility='visible';
 				spicyHummusItem.style.visibility='visible';
+				setProteinDisplay("hidden");
 			})
 
 			dressing.addEventListener('click', () => {
 				mainItemPanel.style.visibility = 'hidden';
 				hummusItem.style.visibility='visible';
 				spicyHummusItem.style.visibility='visible';
+				
+				setProteinDisplay("hidden");
+				setDressDisplay("visible");
 			})
+
+			extraProtein.addEventListener('click', () => {
+				mainItemPanel.style.visibility = 'hidden';
+				hummusItem.style.visibility='hidden';
+				spicyHummusItem.style.visibility='hidden';
+
+				setProteinDisplay("visible");
+				setDressDisplay("hidden");
+			})
+
+
 
 		</script>
 	</body>
