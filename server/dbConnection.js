@@ -23,6 +23,14 @@ class dbConnection{
             }]
         }
         */
+       cmd = "";
+       cmd += toString(order.productList).replace("[", "{").replace("]", "}") + "', ";
+       cmd += order.discount + ", ";
+       cmd += order.subtotal + ", ";
+       cmd += order.total + ", ";
+       cmd += "'" + order.date + "'";
+       full = "INSERT INTO orders VALUES (" + cmd + ")";
+       this.sendQuery(full);
     }
 }
 
