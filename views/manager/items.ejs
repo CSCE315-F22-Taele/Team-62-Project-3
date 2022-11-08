@@ -6,60 +6,68 @@
 </head>
 <body>
     <%- include("header") %>
-    <h2>Products</h2>
-    <table>
-        <% for(let product of productdef) { %>
-            <tr>
-                <td>
-                    <p>
-                        <%=product.name%>
-                    </p>
-                </td>
-                <td>
-                    <p>
-                        $<%=product.price.toLocaleString()%>
-                    </p>
-                </td>
-            </tr>
-        <% } %>
-        </table>
-    <h2>Items</h2>
+    <div class="center-content">
 
-    <table>
-    <% for(let item of items) { %>
-        <tr>
-            <td>
-                <p>
-                    <%=item.name%>
-                </p>
-            </td>
-            <td>
-                <p>
-                    <span id="quantity_<%=item.id%>"><%=item.quantity.toLocaleString()%></span> <%=item.units%>
-                </p>
-            </td>
-            <td>
-                <label>Restock: <input id="restock_input_<%=item.id%>" type="number" min=0></label>
-                <button onclick="restockItem(<%=item.id%>);">Submit</button>
-            </td>
-        </tr>
-    <% } %>
-    </table>
+        <div class="items-layout">
 
-    <script src="/js/server.js"></script>
-    <script>
-        function restockItem(itemId){
-            let amount = document.querySelector("#restock_input_" + itemId).value;
-            server.POST("/item", {id: itemId, amount: amount}, function(response){
-                document.querySelector("#quantity_" + itemId).innerText = (Math.round(response*100)/100).toLocaleString();
-            },
-            function(error){
-                alert(error)
-            });
-        }
-    </script>
+            <div>
+                <h2>Products</h2>
+                <table>
+                    <% for(let product of productdef) { %>
+                    <tr>
+                        <td>
+                            <p>
+                                <%=product.name%>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                $<%=product.price.toLocaleString()%>
+                            </p>
+                        </td>
+                    </tr>
+                    <% } %>
+                </table>
+            </div>
 
-    
 
+            <div class="restock-layout">
+                <h2>Items</h2>
+                <table>
+                    <% for(let item of items) { %>
+                    <tr>
+                        <td>
+                            <p>
+                                <%=item.name%>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span id="quantity_<%=item.id%>"><%=item.quantity.toLocaleString()%></span> <%=item.units%>
+                            </p>
+                        </td>
+                        <td>
+                            <label>Restock: <input id="restock_input_<%=item.id%>" type="number" min=0></label>
+                            <button onclick="restockItem(<%=item.id%>);">Submit</button>
+                        </td>
+                    </tr>
+                    <% } %>
+                </table>
+            </div>
+
+            <script src="/js/server.js"></script>
+            <script>
+		        function restockItem(itemId){
+			        let amount = document.querySelector("#restock_input_" + itemId).value;
+			        server.POST("/item", {id: itemId, amount: amount}, function(response){
+					        document.querySelector("#quantity_" + itemId).innerText = (Math.round(response*100)/100).toLocaleString();
+				        },
+				        function(error){
+					        alert(error)
+				        });
+		        }
+            </script>
+        </div>
+    </div>
 </body>
 </html>
