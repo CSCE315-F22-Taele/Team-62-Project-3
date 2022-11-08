@@ -6,6 +6,26 @@ input[type="number"]{
     width:50px;
 }
 
+.center-header {
+    margin: auto;
+    width: 50%;
+}
+
+.center-content {
+    margin: auto;
+    width: 50%;
+}
+
+.items-layout {
+    display: grid;
+    grid-template-columns: repeat(3, 400px);
+    /*grid-template-rows: repeat(5, 100px);*/
+}
+
+.restock-layout {
+    display: grid;
+}
+
 button{
     border:none;
     background:#2c3473;

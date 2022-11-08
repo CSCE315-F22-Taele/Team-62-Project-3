@@ -35,13 +35,11 @@
         <table id="contentWrapper">
             <tr>
                 <td align="right">
-        			<div class="btn-vertical">
-
+                    <div class="btn-vertical">
                         <% for(let productDef of productDefs) { %>
                         <button onclick="loadNewProduct(<%=productDef.id%>)" id="productDef_button_<%=productDef.id%>"><%=productDef.name%></button>
                         <% } %>
-
-        			</div>
+                    </div>
                 </td>
                 <td align="center" style="width:500px;">
         			<div class="main-grid-items" id="all-items">
@@ -145,6 +143,10 @@
                 document.querySelector("#remove_product_button").style.display = "block";
             }
 
+            /**
+             *
+             * @param productDefId
+             */
             function loadNewProduct(productDefId){
                 productDef = getProductDef(productDefId);
                 // Add a new button with a reference to the product.

@@ -16,34 +16,36 @@
     </script>
     
 <body>
-    <%- include("header") %>
-    <h2>Orders</h2>
-    <form>
-        Low date: <input type="text" id="lowDate"/>
-        High date: <input type="text" id="highDate"/>
-        <input type="submit" value="Change dates" onclick="return dateWindow()"/>
-    </form>
-        
-    <table>
-    <% for(let order of orders) { %>
-        <tr id = <%=order.id%>>
-            <td>
-                <p>
-                    <%=order.id%>
-                </p>
-            </td>
-            <td>
-                <p>
-                    $<%=order.total.toLocaleString()%>
-                </p>
-            </td>
-            <td>
-                <p>
-                    <%=order.date.toLocaleDateString()%>
-                </p>
-            </td>
-        </tr>
-    <% } %>
-    </table>
+    <div class="center-content">
+        <%- include("header") %>
+        <h2>Orders</h2>
+        <form>
+            Low date: <input type="text" id="lowDate"/>
+            High date: <input type="text" id="highDate"/>
+            <input type="submit" value="Change dates" onclick="return dateWindow()"/>
+        </form>
+
+        <table>
+            <% for(let order of orders) { %>
+            <tr id = <%=order.id%>>
+                <td>
+                    <p>
+                        <%=order.id%>
+                    </p>
+                </td>
+                <td>
+                    <p>
+                        $<%=order.total.toLocaleString()%>
+                    </p>
+                </td>
+                <td>
+                    <p>
+                        <%=order.date.toLocaleDateString()%>
+                    </p>
+                </td>
+            </tr>
+            <% } %>
+        </table>
+    </div>
 </body>
 </html>
