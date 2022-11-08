@@ -39,6 +39,12 @@ module.exports = function(app, home, db) {
         if(req.query.s && req.query.e){
             quantifier = " WHERE date BETWEEN '" + req.query.s + "' AND '" + req.query.e + "'";
         }
+        else if(req.query.s){
+            quantifier = " WHERE date >= '" + req.query.s + "'";
+        }
+        else if(req.query.e){
+            quantifier = " WHERE date <= '" + req.query.e + "'";
+        }
         let cmd = "SELECT id, date, total FROM orders" + quantifier + " ORDER BY date DESC LIMIT 100";
         console.log(cmd);
 		let results = await db.sendQuery(cmd);

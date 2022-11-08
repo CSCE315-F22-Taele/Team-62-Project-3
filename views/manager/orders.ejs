@@ -4,24 +4,26 @@
     <%- include("head") %>
     <title>Orders | Manager</title>
 </head>
-<body>
-    <script>
-        function hideOrder(orders){
-            var lowDate = new Date('9/2/2022');
-            var highDate = new Date('9/3/2022');
-            for(let order of orders){
-                var id = order.id;
-                var curdate = order.date.toLocaleDateString();
-                if(curdate > highDate || curdate<lowDate){
-                    document.getElementById(id).style.display = 'none';
-                }
-            }
-        }
+
+<script>
+    function dateWindow() 
+    {
+    var low= document.getElementById("lowDate").value;
+    var high = document.getElementById("highDate").value;
+    window.location = 'orders?s='+low+'&e='+high;
+    return false;
+    }
     </script>
+    
+<body>
     <%- include("header") %>
     <h2>Orders</h2>
-    <% var com = "hideOrder(" + orders+")";%>
-    <button onclick=com>test</button>
+    <form>
+        Low date: <input type="text" id="lowDate"/>
+        High date: <input type="text" id="highDate"/>
+        <input type="submit" value="Change dates" onclick="return dateWindow()"/>
+    </form>
+        
     <table>
     <% for(let order of orders) { %>
         <tr id = <%=order.id%>>
