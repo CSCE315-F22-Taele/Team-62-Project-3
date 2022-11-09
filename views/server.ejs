@@ -205,37 +205,32 @@
 	            let dbDate = year+"-"+month+"-"+day
                 let orderDate = month+"/"+day+"/"+year
 
-	            productList = [] // idk
-	            discount = []  // idk
-	            subtotal = []  // use product[i].price
-                dateList = []
+	            let productList = []
+
 
                 // putting values into a list
                 let values = Object.values(products)
-                let value = Object.values(values)
-                for (v in values) {
-                    productList.push(values[v].selectedItems)
-	                subtotal.push(values[v].price)
-                    discount.push(0)
-                    dateList.push(orderDate)
+                for (value in values) {
+					let newProduct = {"id": values[value].productDef, "selectedItems": values[value].selectedItems}
+                    productList.push(newProduct)
                 }
 
+				// the object that will pass into addOrderToDatabase
 	            finalOrder = {
+		            "discount": 0,
 					"productList": productList,
-                    "discount": discount,
-                    "subtotal": subtotal,
-                    "total": totalPrice(),
-                    "date": dateList
 				}
+
+				console.log(finalOrder)
 
                 // work with backend (Ezra) to figure out what he wants the object to look like.
 
                 // use server.POST (import /js/server.js)
-                // server.POST("/order", {id: 56, discount: discount, subtotal: 0, total: totalPrice(), date: dbDate}, (response) => {
-                //
-                // }, (error) => {
-				// 	alert(error)
-                // })
+                server.POST("/order", finalOrder, (response) => {
+                    window.reload();
+                }, (error) => {
+					alert(error)
+                })
 
             }
 
