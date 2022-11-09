@@ -14,6 +14,7 @@ class dbConnection{
         return await this.#client.query(cmd);
     }
     async addOrderToDatabase(order){
+        console.log("hello world")
         /**
         order: {
             discount: Number,

@@ -55,12 +55,14 @@
                         <p>Subtotal: $<span id="subtotal">0.00</span><br>
                             Total: $<span id="total">0.00</span><br>
                         </p>
-        				<button>Finalize Order</button>
+        				<button onclick="finalizeOrder()">Finalize Order</button>
         			</div>
                 </td>
             </tr>
         </table>
 
+
+        <script src="/js/server.js"></script>
 		<script>
 
             var productDefs = <%-JSON.stringify(productDefs)%>;
@@ -97,6 +99,14 @@
                 }
                 document.querySelector("#subtotal").innerText = price.toFixed(2);
                 document.querySelector("#total").innerText = (price * 1.0825).toFixed(2);
+            }
+
+			const totalPrice = () => {
+				let price = 0;
+				for(let i in products){
+					price += products[i].price;
+				}
+                return (price * 1.0825).toFixed(2);
             }
 
             function getProductDef(id){
@@ -185,11 +195,48 @@
                 updatePrice();
             }
 
-            function finalizeOrder(){
+            function finalizeOrder() {
                 // Hints:
                 // start with the products object
+                const date = new Date();
+				let day = date.getDate();
+	            let month = date.getMonth() + 1;
+	            let year = date.getFullYear();
+	            let dbDate = year+"-"+month+"-"+day
+                let orderDate = month+"/"+day+"/"+year
+
+	            productList = [] // idk
+	            discount = []  // idk
+	            subtotal = []  // use product[i].price
+                dateList = []
+
+                // putting values into a list
+                let values = Object.values(products)
+                let value = Object.values(values)
+                for (v in values) {
+                    productList.push(values[v].selectedItems)
+	                subtotal.push(values[v].price)
+                    discount.push(0)
+                    dateList.push(orderDate)
+                }
+
+	            finalOrder = {
+					"productList": productList,
+                    "discount": discount,
+                    "subtotal": subtotal,
+                    "total": totalPrice(),
+                    "date": dateList
+				}
+
                 // work with backend (Ezra) to figure out what he wants the object to look like.
+
                 // use server.POST (import /js/server.js)
+                // server.POST("/order", {id: 56, discount: discount, subtotal: 0, total: totalPrice(), date: dbDate}, (response) => {
+                //
+                // }, (error) => {
+				// 	alert(error)
+                // })
+
             }
 
 		</script>
