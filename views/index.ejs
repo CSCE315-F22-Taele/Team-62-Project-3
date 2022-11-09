@@ -2,14 +2,15 @@
 <html>
     <head>
         <title>Test</title>
+        <link rel="stylesheet" type="text/css" href="/css/main.css"></link>
         <%- include("manager/head.ejs"); %>
     </head>
     <body>
-        <%- include("logo.ejs") %>
-        <div>
-          <h1>Pom and Honey POS</h1>
-          <a href="/manager/summary"><button>Manager View</button></a>
-          <a href="/server"><button>Server View</button></a>
+        <div class="center-content">
+            <%- include("logo.ejs") %>
+            <h1>Pom and Honey POS</h1>
+            <a href="/manager/summary"><button>Manager View</button></a>
+            <a href="/server"><button>Server View</button></a>
         </div>
 
     </body>

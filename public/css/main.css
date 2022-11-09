@@ -16,6 +16,7 @@ input[type="number"]{
     width: 50%;
 }
 
+
 .items-layout {
     display: grid;
     grid-template-columns: repeat(3, 400px);
