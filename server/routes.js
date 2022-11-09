@@ -78,4 +78,10 @@ module.exports = function(app, home, db) {
         res.send("" + results.rows[0].quantity);
     });
 
+    app.post("/order", async function(req, res){
+        res.status(400);
+        console.log(req.body);
+        res.send(200);
+    });
+
 };
