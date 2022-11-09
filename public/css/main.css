@@ -13,13 +13,16 @@ input[type="number"]{
 
 .center-content {
     margin: auto;
-    width: 50%;
+    width: 100vmin;
 }
 
+.products-layout {
+
+}
 
 .items-layout {
     display: grid;
-    grid-template-columns: repeat(3, 400px);
+    grid-template-columns: repeat(2, auto);
     /*grid-template-rows: repeat(5, 100px);*/
 }
 

@@ -80,7 +80,7 @@ module.exports = function(app, home, db) {
 
     app.post("/order", async function(req, res){
         res.status(400);
-        console.log(req.body);
+        await db.addOrderToDatabase(req.body);
         res.send(200);
     });
 

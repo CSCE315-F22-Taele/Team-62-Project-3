@@ -14,9 +14,9 @@ class dbConnection{
         return await this.#client.query(cmd);
     }
     async addOrderToDatabase(order){
-        console.log("hello world")
         /**
-        order: {
+        INPUT FORMAT:
+        order = {
             discount: Number,
             productList:[{
                 id:Number,
@@ -24,46 +24,73 @@ class dbConnection{
             }]
         }
         */
-       orderId = this.findNewId("orders");
-       for (product of order.productList) {
-            let productDef = await db.sendQuery("SELECT id, name, price FROM productdef WHERE id=" + product.id);
-            let cmd = "";
-            id = await this.findNewId("products");
-            cmd += id + ", ";
-            cmd += "'" + productDef.name + "', ";
-            cmd += (productDef.price + ", ");
-            let itemlist = productDef.baseitemlist.concat(product.selectedItem);
-            cmd += "'" + Array.toString(itemlist).replace("[", "{").replace("]", "}") + "', ";
-            selectedItemPortions = [];
+        let orderId = await this.findNewId("orders");
+        console.log("New Order ID: " + orderId);
+        let subtotal = 0;
+        for (let product of order.productList) {
+            let cmd = "SELECT * FROM productdef WHERE id=" + product.id;
+            let productDef = await this.sendQuery(cmd);
+            productDef = productDef.rows[0];
+            subtotal += productDef.price;
+            // Generate the necessary product data
+            let itemList = productDef.baseitemlist.concat(product.selectedItems);
+            let selectedItemPortions = [];
             for (let item of product.selectedItems) {
-                let i = productDef.optionalitemlist.indexof(item);
+                let i = productDef.optionalitemlist.indexOf(item);
+                if(i == -1){
+                    // Invalid optional item
+                    console.log(productDef.name + " has invalid optional item: " + item);
+                    return 400;
+                }
                 let size = productDef.optionalportionlist[i];
                 selectedItemPortions.push(size);
             }
-            let portionlist = productDef.baseportionlist.concat(selectedItemPortions);
-            cmd += "'" + Array.toString(portionlist).replace("[", "{").replace("]", "}") + "', ";
+            let portionList = productDef.baseportionlist.concat(selectedItemPortions);
+            console.log("New Product Info: ");
+            console.log(" - instance of: ");
+            console.log(productDef);
+            console.log(" - items: ");
+            console.log(itemList);
+            console.log(" - portions: ");
+            console.log(portionList);
+
+            // Change the item quantities in the database as needed
+            for(let i=0;i<itemList.length;i++){
+                await this.sendQuery("UPDATE item SET quantity = quantity-" + portionList[i] + " WHERE id = " + itemList[i]);
+            }
+            // Add the product data to the database
+            cmd = "";
+            cmd += "'" + productDef.name + "', ";
+            cmd += (productDef.price + ", ");
+            cmd += "'{" + itemList.toString() + "}', ";
+            cmd += "'{" + portionList.toString() + "}', ";
             cmd += "'" + this.getSQLDate() + "',";
             cmd += orderId;
             let full = "INSERT INTO products VALUES (" + cmd + ")";
-            this.sendQuery(full);
+            console.log(full);
+            await this.sendQuery(full);
        }
 
+       // Apply discounts and then tax.
+       let total = subtotal * (1 - order.discount) * 1.0825;
 
-    //    cmd = "";
-    //    cmd += toString(order.productList).replace("[", "{").replace("]", "}") + "', ";
-    //    cmd += order.discount + ", ";
-    //    cmd += order.subtotal + ", ";
-    //    cmd += order.total + ", ";
-    //    cmd += "'" + order.date + "'";
-    //    full = "INSERT INTO orders VALUES (" + cmd + ")";
-    //    this.sendQuery(full);
+       let cmd = "";
+       cmd += orderId + ", ";
+       cmd += order.discount + ", ";
+       cmd += subtotal + ", ";
+       cmd += total + ", ";
+       cmd += "'" + this.getSQLDate() + "'";
+
+       let full = "INSERT INTO orders VALUES (" + cmd + ")";
+       this.sendQuery(full);
+       return 200;
     }
     async findNewId(table){
         // Returns the ID of the new product when done.
         let id = 0;
             let r = await this.sendQuery("SELECT MAX(id) FROM " + table);
             id = r.rows[0].max;
-        return id;
+        return Promise.resolve(id);
     }
 
     getSQLDate() {

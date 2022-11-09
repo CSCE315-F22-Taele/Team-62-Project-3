@@ -211,7 +211,7 @@
                 // putting values into a list
                 let values = Object.values(products)
                 for (value in values) {
-					let newProduct = {"id": values[value].productDef, "selectedItems": values[value].selectedItems}
+					let newProduct = {"id": values[value].productDef, "selectedItems": Array.from(values[value].selectedItems)}
                     productList.push(newProduct)
                 }
 
@@ -227,9 +227,9 @@
 
                 // use server.POST (import /js/server.js)
                 server.POST("/order", finalOrder, (response) => {
-                    window.reload();
+                    window.location.reload();
                 }, (error) => {
-					alert(error)
+					alert(error);
                 })
 
             }
