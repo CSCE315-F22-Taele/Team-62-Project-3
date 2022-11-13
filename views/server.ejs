@@ -31,6 +31,7 @@
 	<body>
 		<%- include("logo.ejs") %>
 		<h2>Server View</h2>
+        <div id="google_translate_id"></div>
         <table id="contentWrapper">
             <tr>
                 <td align="right">
@@ -62,6 +63,7 @@
 
 
         <script src="/js/server.js"></script>
+        <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 		<script>
 
             var productDefs = <%-JSON.stringify(productDefs)%>;
@@ -233,6 +235,11 @@
 
             }
 
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement(
+                    {pageLanguage: 'en'}, 'google_translate_id'
+                )
+            }
 		</script>
 	</body>
 </html>

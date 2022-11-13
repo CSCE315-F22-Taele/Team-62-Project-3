@@ -11,7 +11,16 @@
             <h1>Pom and Honey POS</h1>
             <a href="/manager/summary"><button>Manager View</button></a>
             <a href="/server"><button>Server View</button></a>
+            <div id="google_translate_id"></div>
         </div>
-
+        
+        <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        <script>
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement(
+                    {pageLanguage: 'en'}, 'google_translate_id'
+                )
+            }
+        </script>
     </body>
 </html>
