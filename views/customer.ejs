@@ -3,67 +3,78 @@
 	<head>
 		<title>customer view</title>
 		<style>
-            #contentWrapper{
-                width:100%;
-            }
+		#contentWrapper{
+			width:100%;
+		}
+		
+		.center-container {
+			margin: auto;
+			width: 100vmin;
+			justify-content: center;
+			text-align: center;
+			
+			border: 5px solid;
+			padding: 50px 0;
+		}
+
+
+		button {
+			border:none;
+			background:#2c3473;
+			color:white;
+			border:2px solid #2c3473;
+			margin:10px;
+			padding:10px 5px;
+			border-radius:5px;
+			cursor:pointer;
+		}
+
+		button.selected {
+			background:white;
+			color:#2c3473;
+		}
+
+		button:focus {
+			text-decoration:underline;
+		}
+
+		button.neutral{
+			background:#444 ;
+			border:none;
+		}
+		
+		.main-grid-items {
+			display: grid;
+			grid-template-columns: repeat(2, 100px);
+            grid-template-rows: repeat(6, 100px);
+            margin:0px 50px;
+            height:500px;
+            grid-gap:0px;
+
+		}
 		</style>
+
 	</head>
 	<body>
-		<%- include("logo.ejs") %>
-		<h2>Customer View</h2>
-		<table id="contentWrapper">
-			<tr>
-				<td align="right">
-					<div class="btn-vertical">
-						<% for(let productDef of productDefs) { %>
-						<button onclick="loadNewProduct(<%=productDef.id%>)" id="productDef_button_<%=productDef.id%>"><%=productDef.name%></button>
-						<% } %>
-					</div>
-				</td>
-				
-				<td align="center" style="width:500px;">
-					<div class="main-grid-items" id="all-items">
-						<% for(let item of items){ %>
-							<button selectable=true itemId=<%=item.id%> style="display:none;" id="item_button_<%=item.id%>"><%=item.name%></button>
-						<% } %>
-						<button id="remove_product_button" class="neutral" style="display:none" onclick="removeSelectedProduct()">Remove Product</button>
-					</div>
-				</td>
-				
-				<td align="left" style="vertical-align:bottom;">
-					<div class="btn-vertical">
-						<div id="receipt"></div>
-						<p>Subtotal: $<span id="subtotal">0.00</span><br>
-							Total: $<span id="total">0.00</span><br>
-						</p>
-					<button onclick="finalizeOrder()">Finalize Order</button>
-					</div>
-				</td>
-			
-			</tr>
-		</table>
+		<div class="center-container">
+			<h2>What Looks Good Today?</h2>
+			<div>
+				<table>
+					<tr>
+						<td>
+							<div class="btn-vertical main-grid-items">
+								<% for(let productDef of productDefs) { %>
+								<button onclick="loadNewProduct(<%=productDef.id%>)" id="productDef_button_<%=productDef.id%>"><%=productDef.name%></button>
+								<% } %>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div>
+				<button>⮜ previous</button>
+				<button>Next ⮞</button>
+			</div>
+		</div>
 	</body> 
-	<script>
-		function loadNewProduct(productDefId){
-			productDef = getProductDef(productDefId);
-			// Add a new button with a reference to the product.
-			let receiptButton = document.createElement("button");
-			receiptButton.innerText = productDef.name + ": $" + productDef.price;
-			let thisProductId = currentProductId; // Copy the variable in a local context.
-			receiptButton.id = "product_button_" + thisProductId;
-			receiptButton.addEventListener("click", function(){
-				loadExistingProduct(thisProductId);
-			});
-			document.querySelector("#receipt").appendChild(receiptButton);
-			newProduct = {
-				productDef: productDefId,
-				price: productDef.price,
-				selectedItems: new Set()
-			};
-			products[thisProductId] = newProduct;
-			loadExistingProduct(thisProductId, newProduct.selectedItems);
-			updatePrice();
-			currentProductId += 1;
-		}
-	</script>
 </html>
