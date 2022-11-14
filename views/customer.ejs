@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>customer view</title>
+		<style>
+            #contentWrapper{
+                width:100%;
+            }
+		</style>
+	</head>
+	<body>
+		<%- include("logo.ejs") %>
+		<h2>Customer View</h2>
+		<table id="contentWrapper">
+			<tr>
+				<td align="right">
+					<div class="btn-vertical">
+						<% for(let productDef of productDefs) { %>
+						<button onclick="loadNewProduct(<%=productDef.id%>)" id="productDef_button_<%=productDef.id%>"><%=productDef.name%></button>
+						<% } %>
+					</div>
+				</td>
+				
+				<td align="center" style="width:500px;">
+					<div class="main-grid-items" id="all-items">
+						<% for(let item of items){ %>
+							<button selectable=true itemId=<%=item.id%> style="display:none;" id="item_button_<%=item.id%>"><%=item.name%></button>
+						<% } %>
+						<button id="remove_product_button" class="neutral" style="display:none" onclick="removeSelectedProduct()">Remove Product</button>
+					</div>
+				</td>
+				
+				<td align="left" style="vertical-align:bottom;">
+					<div class="btn-vertical">
+						<div id="receipt"></div>
+						<p>Subtotal: $<span id="subtotal">0.00</span><br>
+							Total: $<span id="total">0.00</span><br>
+						</p>
+					<button onclick="finalizeOrder()">Finalize Order</button>
+					</div>
+				</td>
+			
+			</tr>
+		</table>
+	</body> 
+	<script>
+		function loadNewProduct(productDefId){
+			productDef = getProductDef(productDefId);
+			// Add a new button with a reference to the product.
+			let receiptButton = document.createElement("button");
+			receiptButton.innerText = productDef.name + ": $" + productDef.price;
+			let thisProductId = currentProductId; // Copy the variable in a local context.
+			receiptButton.id = "product_button_" + thisProductId;
+			receiptButton.addEventListener("click", function(){
+				loadExistingProduct(thisProductId);
+			});
+			document.querySelector("#receipt").appendChild(receiptButton);
+			newProduct = {
+				productDef: productDefId,
+				price: productDef.price,
+				selectedItems: new Set()
+			};
+			products[thisProductId] = newProduct;
+			loadExistingProduct(thisProductId, newProduct.selectedItems);
+			updatePrice();
+			currentProductId += 1;
+		}
+	</script>
+</html>

@@ -41,23 +41,26 @@
                         <% } %>
                     </div>
                 </td>
+                
                 <td align="center" style="width:500px;">
-        			<div class="main-grid-items" id="all-items">
+                    <div class="main-grid-items" id="all-items">
                         <% for(let item of items){ %>
                             <button selectable=true itemId=<%=item.id%> style="display:none;" id="item_button_<%=item.id%>"><%=item.name%></button>
                         <% } %>
                         <button id="remove_product_button" class="neutral" style="display:none" onclick="removeSelectedProduct()">Remove Product</button>
-        			</div>
+                    </div>
                 </td>
+                
                 <td align="left" style="vertical-align:bottom;">
-        			<div class="btn-vertical">
+                    <div class="btn-vertical">
                         <div id="receipt"></div>
                         <p>Subtotal: $<span id="subtotal">0.00</span><br>
                             Total: $<span id="total">0.00</span><br>
                         </p>
-        				<button onclick="finalizeOrder()">Finalize Order</button>
-        			</div>
+                    <button onclick="finalizeOrder()">Finalize Order</button>
+                    </div>
                 </td>
+            
             </tr>
         </table>
 
@@ -201,12 +204,12 @@
                 // start with the products object
                 const date = new Date();
 				let day = date.getDate();
-	            let month = date.getMonth() + 1;
-	            let year = date.getFullYear();
-	            let dbDate = year+"-"+month+"-"+day
+                let month = date.getMonth() + 1;
+                let year = date.getFullYear();
+                let dbDate = year+"-"+month+"-"+day
                 let orderDate = month+"/"+day+"/"+year
 
-	            let productList = []
+                let productList = []
 
 
                 // putting values into a list
@@ -217,8 +220,8 @@
                 }
 
 				// the object that will pass into addOrderToDatabase
-	            finalOrder = {
-		            "discount": 0,
+                finalOrder = {
+                    "discount": 0,
 					"productList": productList,
 				}
 

@@ -66,6 +66,12 @@ module.exports = function(app, home, db) {
         res.render("server.ejs", {items:items.rows, productDefs:productDefs.rows});
     })
 
+    app.get("/customer", async (req, res) => {
+        let items = await db.sendQuery("SELECT id, name from item");
+		let productDefs = await db.sendQuery("SELECT id, name, optionalItemList, optionalPortionList, price FROM productdef");
+        res.render("customer.ejs", {items:items.rows, productDefs:productDefs.rows})
+    })
+
     app.post("/item", async function(req, res){
         res.status(400);
         let id = req.body.id;
