@@ -57,17 +57,34 @@
 	</head>
 	<body>
 		<div class="center-container">
+      <div id="google_translate_id"></div>
 			<h2>What Looks Good Today?</h2>
 			<div>
-				<table>
+				<table id="contentWrapper">
 					<tr>
+
 						<td>
 							<div class="btn-vertical main-grid-items">
 								<% for(let productDef of productDefs) { %>
-								<button onclick="loadNewProduct(<%=productDef.id%>)" id="productDef_button_<%=productDef.id%>"><%=productDef.name%></button>
+								<button 
+									onclick="loadNewProduct(<%=productDef.id%>)" 
+									id="productDef_button_<%=productDef.id%>"
+								>
+									<%=productDef.name%>
+								</button>
 								<% } %>
 							</div>
 						</td>
+						
+            <td align="center" style="width:500px;">
+              <div class="main-grid-items" id="all-items">
+								<% for(let item of items){ %>
+									<button selectable=true itemId=<%=item.id%> style="display:none;" id="item_button_<%=item.id%>"><%=item.name%></button>
+								<% } %>
+								<button id="remove_product_button" class="neutral" style="display:none" onclick="removeSelectedProduct()">Remove Product</button>
+              </div>
+            </td>
+
 					</tr>
 				</table>
 			</div>
@@ -76,5 +93,42 @@
 				<button>Next ⮞</button>
 			</div>
 		</div>
+
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+		<script>
+			var productDefs = <%-JSON.stringify(productDefs)%>;
+
+			let buttons = document.querySelectorAll("[selectable=true]");
+			for(let button of buttons) {
+				button.addEventListener("click", function() {
+					button.classList.toggle("selected");
+					itemId = button.getAttribute("itemId");
+        		// If button represents an item, update product data to reflect this.
+					if(itemId) {
+						itemId = parseInt(itemId);
+						let product = products[selectedProductId];
+						if(product) {
+							if(button.classList.contains("selected")) {
+								product.selectedItems.add(itemId);
+							}
+							else {
+								product.selectedItems.remove(itemId);
+							}
+						}
+					}
+				});
+			}
+
+			var products = {}; // Used to store product data.
+			var currentProductId = 0; // Used to track new products.
+			var selectedProductId = -1; // Used to track the selected product.
+
+			function googleTranslateElementInit() {
+				new google.translate.TranslateElement(
+					{pageLanguage: 'en'}, 'google_translate_id'
+				)
+			}
+		</script>
+
 	</body> 
 </html>
