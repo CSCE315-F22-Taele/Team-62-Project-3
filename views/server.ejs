@@ -140,6 +140,7 @@
                     itemId = button.getAttribute("itemId");
                     if(itemId){
                         itemId = parseInt(itemId);
+						console.log("itemId: " + itemId)
                         if(productDef.optionalitemlist.includes(itemId)){
                             button.style.display = "block";
                             if(selectedItems.has(itemId)){
