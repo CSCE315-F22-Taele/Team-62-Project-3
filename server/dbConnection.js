@@ -89,7 +89,7 @@ class dbConnection{
         // Returns the ID of the new product when done.
         let id = 0;
             let r = await this.sendQuery("SELECT MAX(id) FROM " + table);
-            id = r.rows[0].max;
+            id = r.rows[0].max+1;
         return Promise.resolve(id);
     }
 
