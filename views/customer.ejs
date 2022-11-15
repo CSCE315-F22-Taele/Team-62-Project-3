@@ -3,9 +3,9 @@
 	<head>
 		<title>customer view</title>
 		<style>
-		#contentWrapper{
-			width:100%;
-		}
+			#contentWrapper{
+				width:100%;
+			}
 		
 		.center-container {
 			margin: auto;
@@ -46,20 +46,31 @@
 		.main-grid-items {
 			display: grid;
 			grid-template-columns: repeat(2, 100px);
-            grid-template-rows: repeat(6, 100px);
-            margin:0px 50px;
-            height:500px;
-            grid-gap:0px;
-
+      grid-template-rows: repeat(6, 100px);
+      margin:0px 50px;
+      height:500px;
+      grid-gap:0px;
 		}
+
+		.order-section {
+			display: none;
+		}
+
 		</style>
 
 	</head>
 	<body>
 		<div class="center-container">
       <div id="google_translate_id"></div>
-			<h2>What Looks Good Today?</h2>
-			<div>
+
+			<div style="display: block" id="start-screen">
+				<h2>Welcome to Pom and Honey!</h2>
+				<button onclick="showOrderMenu();customerStartScreen()">Start Order</button>
+				<button>Login</button>
+			</div>
+			
+			<div id="order-screen" style="display: none">
+				<h2>What Looks Good Today?</h2>
 				<table id="contentWrapper">
 					<tr>
 
@@ -67,7 +78,7 @@
 							<div class="btn-vertical main-grid-items">
 								<% for(let productDef of productDefs) { %>
 								<button 
-									onclick="loadNewProduct(<%=productDef.id%>)" 
+									onclick="hideProduct();" 
 									id="productDef_button_<%=productDef.id%>"
 								>
 									<%=productDef.name%>
@@ -76,26 +87,22 @@
 							</div>
 						</td>
 						
-            <td align="center" style="width:500px;">
-              <div class="main-grid-items" id="all-items">
-								<% for(let item of items){ %>
-									<button selectable=true itemId=<%=item.id%> style="display:none;" id="item_button_<%=item.id%>"><%=item.name%></button>
-								<% } %>
-								<button id="remove_product_button" class="neutral" style="display:none" onclick="removeSelectedProduct()">Remove Product</button>
-              </div>
-            </td>
-
 					</tr>
 				</table>
+				<div>
+					<button>⮜ previous</button>
+					<button>Next ⮞</button>
+				</div>
 			</div>
-			<div>
-				<button>⮜ previous</button>
-				<button>Next ⮞</button>
-			</div>
+
+			
 		</div>
 
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 		<script>
+
+
+
 			var productDefs = <%-JSON.stringify(productDefs)%>;
 
 			let buttons = document.querySelectorAll("[selectable=true]");
@@ -123,10 +130,32 @@
 			var currentProductId = 0; // Used to track new products.
 			var selectedProductId = -1; // Used to track the selected product.
 
+			const hideProduct = () => {
+				for (let prodcut in products) {
+					console.log(product)
+				}
+			}
+
 			function googleTranslateElementInit() {
 				new google.translate.TranslateElement(
 					{pageLanguage: 'en'}, 'google_translate_id'
 				)
+			}
+
+			function showOrderMenu() {
+				var x = document.getElementById("order-screen");
+				if (x.style.display === "none") {
+					return x.style.display = "block";
+				}
+				return x.style.display = "none";
+			}
+
+			const customerStartScreen = () => {
+				var x = document.getElementById("start-screen");
+				if (x.style.display === "none") {
+					return x.style.display = "block";
+				}
+				return x.style.display = "none";
 			}
 		</script>
 
