@@ -52,8 +52,8 @@
       grid-gap:0px;
 		}
 
-		.order-section {
-			display: none;
+		.customer-start {
+			display: block;
 		}
 
 		</style>
@@ -65,8 +65,13 @@
 
 			<div style="display: block" id="start-screen">
 				<h2>Welcome to Pom and Honey!</h2>
-				<button onclick="showOrderMenu();customerStartScreen()">Start Order</button>
-				<button>Login</button>
+
+				<div class="customer-start">
+					<button onclick="showOrderMenu('start-screen');showOrderMenu('order-screen')">
+						Start Order
+					</button>
+					<button>Login</button>
+				</div>
 			</div>
 			
 			<div id="order-screen" style="display: none">
@@ -75,15 +80,23 @@
 					<tr>
 
 						<td>
-							<div class="btn-vertical main-grid-items">
+							<div class="main-grid-items">
 								<% for(let productDef of productDefs) { %>
-								<button 
-									onclick="hideProduct();" 
-									id="productDef_button_<%=productDef.id%>"
-								>
-									<%=productDef.name%>
-								</button>
+									<button 
+										onclick="loadNewProduct(<%=productDef.id%>)" 
+										id="productDef_button_<%=productDef.id%>"
+									>
+										<%=productDef.name%>
+									</button>
 								<% } %>
+							</div>
+						</td>
+
+						<td>
+							<div>
+								<% for (let item of items) { %> 
+									<% console.log(item.categoryid) %> 
+								<% } %> 
 							</div>
 						</td>
 						
@@ -101,9 +114,8 @@
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 		<script>
 
-
-
 			var productDefs = <%-JSON.stringify(productDefs)%>;
+			var items = <%-JSON.stringify(items)%>;
 
 			let buttons = document.querySelectorAll("[selectable=true]");
 			for(let button of buttons) {
@@ -126,15 +138,103 @@
 				});
 			}
 
+			/**
+			 * returns a list of items ()
+			 * this can be a set of: butter chicken, falafels, Gyro Meat etc...
+			 * or: olives, tomatoes, peppers, etc..
+			 * or something else
+			 * uses the 'item' table in the DB
+			 */
+			const loadCategory = (category) => {
+        let categoryItems = [];
+				if (category === 1) {
+					for(let item of items){
+						if(item.categoryid === 1) {
+							console.log("protein items: " + item.name)
+							categoryItems = []
+							categoryItems.concat(item.name)
+						}
+					}
+				} else if (category === 2) {
+					for(let item of items){
+						if(item.categoryid === 2) {
+							console.log("protein items: " + item.name)
+							categoryItems = []
+							categoryItems.concat(item.name)
+						}
+					}
+				} else if (category === 3) {
+					for(let item of items){
+						if(item.categoryid === 3) {
+							console.log("protein items: " + item.name)
+							categoryItems = []
+							categoryItems.concat(item.name)
+						}
+					}
+				}
+        return categoryItems;
+			}
+
+
+      function loadNewProduct(productDefId){
+        productDef = getProductDef(productDefId);
+
+				if (productDef.name == "Bowl") {
+					console.log("Selected Bowl")
+					loadCategory(1)
+				} else if (productDef.name == "Gyro") {
+					console.log("Selected Gyro")
+					loadCategory(1);
+				} else if (productDef.name == "Hummus and Pita") {
+					console.log("Selected Hummus and Pita")
+				} else if (productDef.name == "Two Falafels") {
+					console.log("Selected Two Falafels")
+				} else if (productDef == "Extra Protein") {
+					console.log("Selected Extra Protein")
+				} else if (productDef == "Extra Dressing") {
+					console.log("Selected Extra Dressing") 
+				} else if (productDef == "Fountain Drink") {
+					console.log("Selected Fountain Drink")
+				}
+      }
+
+      function loadItemsForProductDef(productDefId, selectedItems) {
+        productDef = getProductDef(productDefId);
+        let buttons = document.querySelectorAll("#all-items button");
+        for (let button of buttons) {
+          itemId = button.getAttribute("itemId");
+          if (itemId) {
+            itemId = parseInt(itemId);
+						console.log("itemId: " + itemId)
+            if (productDef.optionalitemlist.includes(itemId)) {
+              button.style.display = "block";
+              if (selectedItems.has(itemId)) {
+                button.classList.add("selected");
+              } else {
+                button.classList.remove("selected");
+              }
+            } else{
+              button.style.display = "none";
+            }
+          }
+        }
+        document.querySelector("#remove_product_button").style.display = "block";
+      }
+
+
+      function updatePrice() {
+        let price = 0;
+        for(let i in products) {
+          price += products[i].price;
+        }
+        document.querySelector("#subtotal").innerText = price.toFixed(2);
+        document.querySelector("#curDiscount").innerText = discount;
+        document.querySelector("#total").innerText = (price * 1.0825 * (100-discount)/100).toFixed(2);
+      }
+
 			var products = {}; // Used to store product data.
 			var currentProductId = 0; // Used to track new products.
 			var selectedProductId = -1; // Used to track the selected product.
-
-			const hideProduct = () => {
-				for (let prodcut in products) {
-					console.log(product)
-				}
-			}
 
 			function googleTranslateElementInit() {
 				new google.translate.TranslateElement(
@@ -142,21 +242,25 @@
 				)
 			}
 
-			function showOrderMenu() {
-				var x = document.getElementById("order-screen");
+			function showOrderMenu(id) {
+				var x = document.getElementById(id);
 				if (x.style.display === "none") {
 					return x.style.display = "block";
 				}
 				return x.style.display = "none";
 			}
 
-			const customerStartScreen = () => {
-				var x = document.getElementById("start-screen");
-				if (x.style.display === "none") {
-					return x.style.display = "block";
-				}
-				return x.style.display = "none";
-			}
+      const getProductDef = (id) => {
+        let productDef;
+					for(let def of productDefs){
+						if(def.id == id){
+							productDef = def;
+							break;
+						}
+					}
+        return productDef;
+      }
+		
 		</script>
 
 	</body> 

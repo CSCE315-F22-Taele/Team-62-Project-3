@@ -46,7 +46,7 @@ module.exports = function(app, home, db) {
             quantifier = " WHERE date <= '" + req.query.e + "'";
         }
         let cmd = "SELECT id, date, total FROM orders" + quantifier + " ORDER BY date DESC LIMIT 100";
-        console.log(cmd);
+        // console.log(cmd);
 		let results = await db.sendQuery(cmd);
         res.render("manager/orders.ejs", {orders:results.rows});
 
@@ -67,8 +67,9 @@ module.exports = function(app, home, db) {
     })
 
     app.get("/customer", async (req, res) => {
-        let items = await db.sendQuery("SELECT id, name from item");
+        let items = await db.sendQuery("SELECT id, name, categoryid from item");
 		let productDefs = await db.sendQuery("SELECT id, name, optionalItemList, optionalPortionList, price FROM productdef");
+
         res.render("customer.ejs", {items:items.rows, productDefs:productDefs.rows})
     })
 
