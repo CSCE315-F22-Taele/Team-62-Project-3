@@ -78,28 +78,18 @@
 				<h2>What Looks Good Today?</h2>
 				<table id="contentWrapper">
 					<tr>
-
-						<td>
-							<div class="main-grid-items">
-								<% for(let productDef of productDefs) { %>
-									<button 
-										onclick="loadNewProduct(<%=productDef.id%>)" 
-										id="productDef_button_<%=productDef.id%>"
-									>
-										<%=productDef.name%>
-									</button>
-								<% } %>
-							</div>
-						</td>
-
-						<td>
-							<div>
-								<% for (let item of items) { %> 
-									<% console.log(item.categoryid) %> 
-								<% } %> 
-							</div>
-						</td>
-						
+							<td>
+								<div class="main-grid-items">
+									<% for(let productDef of productDefs) { %>
+										<button 
+											onclick="loadNewProduct(<%=productDef.id%>);showOrderMenu('order-screen');showOrderMenu('rice-screen')"
+											id="productDef_button_<%=productDef.id%>"
+										>
+											<%=productDef.name%>
+										</button>
+									<% } %>
+								</div>
+							</td>
 					</tr>
 				</table>
 				<div>
@@ -108,6 +98,101 @@
 				</div>
 			</div>
 
+			<div id="rice-screen" style="display: none">
+				<table id="contentWrapper">
+					<tr>
+						<td>
+							<div class="main-grid-items">
+								<% for (let item of items) { %> 
+									<% if (item.categoryid === 0) { %> 
+											<button
+												onclick="showOrderMenu('protein-screen');showOrderMenu('rice-screen')"
+											>
+												<%= item.name %>
+											</button>
+									<% } %> 
+								<% } %> 
+							</div>
+						</td>
+					</tr>
+				</table>
+				<div>
+					<button>⮜ previous</button>
+					<button>Next ⮞</button>
+				</div>
+			</div>
+
+			<div id="protein-screen" style="display: none">
+				<table id="contentWrapper">
+					<tr>
+						<td>
+							<div class="main-grid-items">
+								<% for (let item of items) { %> 
+									<% if (item.categoryid === 1) { %> 
+											<button
+												onclick="showOrderMenu('toppings-screen');showOrderMenu('protein-screen')"
+											>
+												<%= item.name %>
+											</button>
+									<% } %> 
+								<% } %> 
+							</div>
+						</td>
+					</tr>
+				</table>
+				<div>
+					<button>⮜ previous</button>
+					<button>Next ⮞</button>
+				</div>
+			</div>
+
+			<div id="toppings-screen" style="display: none">
+				<table id="contentWrapper">
+					<tr>
+						<td>
+							<div class="main-grid-items">
+								<% for (let item of items) { %> 
+									<% if (item.categoryid === 2) { %> 
+										<button
+											onclick="showOrderMenu('extras-screen');showOrderMenu('toppings-screen')"
+										>
+											<%= item.name %>
+										</button>
+									<% } %> 
+								<% } %> 
+							</div>
+						</td>
+					</tr>
+				</table>
+				<div>
+					<button>⮜ previous</button>
+					<button>Next ⮞</button>
+				</div>
+			</div>
+
+			<div id="extras-screen" style="display: none">
+				<table id="contentWrapper">
+					<tr>
+						<td>
+							<div class="main-grid-items">
+								<% for (let item of items) { %> 
+									<% if (item.categoryid === 3) { %> 
+										<button
+											onclick="showOrderMenu('extras-screen')"
+										>
+											<%= item.name %>
+										</button>
+									<% } %> 
+								<% } %> 
+							</div>
+						</td>
+					</tr>
+				</table>
+				<div>
+					<button>⮜ previous</button>
+					<button>Next ⮞</button>
+				</div>
+			</div>
 			
 		</div>
 
@@ -177,14 +262,13 @@
 
 
       function loadNewProduct(productDefId){
+				let nextMenu = []
         productDef = getProductDef(productDefId);
 
 				if (productDef.name == "Bowl") {
-					console.log("Selected Bowl")
-					loadCategory(1)
+					nextMenu = loadCategory(1)
 				} else if (productDef.name == "Gyro") {
-					console.log("Selected Gyro")
-					loadCategory(1);
+					nextMenu = loadCategory(1);
 				} else if (productDef.name == "Hummus and Pita") {
 					console.log("Selected Hummus and Pita")
 				} else if (productDef.name == "Two Falafels") {
