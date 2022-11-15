@@ -93,9 +93,7 @@
 					</tr>
 				</table>
 				<div>
-					<button
-						onclick="showOrderMenu('order-screen');showOrderMenu('rice-screen')"
-					>
+					<button onclick="showOrderMenu('order-screen');showOrderMenu('rice-screen')">
 						Next ⮞
 					</button>
 				</div>
@@ -108,9 +106,7 @@
 							<div class="main-grid-items">
 								<% for (let item of items) { %> 
 									<% if (item.categoryid === 0) { %> 
-											<button
-												onclick="showOrderMenu('protein-screen');showOrderMenu('rice-screen')"
-											>
+											<button selectable=true id="item_button_<%=item.id%>">
 												<%= item.name %>
 											</button>
 									<% } %> 
@@ -120,14 +116,10 @@
 					</tr>
 				</table>
 				<div>
-					<button
-						onclick="showOrderMenu('order-screen');showOrderMenu('rice-screen')"
-					>
+					<button onclick="showOrderMenu('order-screen');showOrderMenu('rice-screen')">
 						⮜ previous
 					</button>
-					<button
-						onclick="showOrderMenu('rice-screen');showOrderMenu('protein-screen')"
-					>
+					<button onclick="showOrderMenu('rice-screen');showOrderMenu('protein-screen')">
 						Next ⮞
 					</button>
 				</div>
@@ -140,9 +132,7 @@
 							<div class="main-grid-items">
 								<% for (let item of items) { %> 
 									<% if (item.categoryid === 1) { %> 
-											<button
-												onclick="showOrderMenu('toppings-screen');showOrderMenu('protein-screen')"
-											>
+											<button selectable=true id="item_button_<%=item.id%>">
 												<%= item.name %>
 											</button>
 									<% } %> 
@@ -152,14 +142,10 @@
 					</tr>
 				</table>
 				<div>
-					<button
-						onclick="showOrderMenu('protein-screen');showOrderMenu('rice-screen')"
-					>
+					<button onclick="showOrderMenu('protein-screen');showOrderMenu('rice-screen')">
 						⮜ previous
 					</button>
-					<button
-						onclick="showOrderMenu('protein-screen');showOrderMenu('toppings-screen')"
-					>
+					<button onclick="showOrderMenu('protein-screen');showOrderMenu('toppings-screen')">
 						Next ⮞
 					</button>
 				</div>
@@ -172,9 +158,7 @@
 							<div class="main-grid-items">
 								<% for (let item of items) { %> 
 									<% if (item.categoryid === 2) { %> 
-										<button
-											onclick="showOrderMenu('extras-screen');showOrderMenu('toppings-screen')"
-										>
+										<button selectable=true id="item_button_<%=item.id%>">
 											<%= item.name %>
 										</button>
 									<% } %> 
@@ -184,14 +168,10 @@
 					</tr>
 				</table>
 				<div>
-					<button
-						onclick="showOrderMenu('toppings-screen');showOrderMenu('protein-screen')"
-					>
+					<button onclick="showOrderMenu('toppings-screen');showOrderMenu('protein-screen')">
 						⮜ previous
 					</button>
-					<button
-						onclick="showOrderMenu('toppings-screen');showOrderMenu('extras-screen')"
-					>
+					<button onclick="showOrderMenu('toppings-screen');showOrderMenu('extras-screen')">
 						Next ⮞
 					</button>
 				</div>
@@ -204,9 +184,7 @@
 							<div class="main-grid-items">
 								<% for (let item of items) { %> 
 									<% if (item.categoryid === 3) { %> 
-										<button
-											onclick="showOrderMenu('extras-screen')"
-										>
+										<button selectable=true id="item_button_<%=item.id%>">
 											<%= item.name %>
 										</button>
 									<% } %> 
@@ -216,17 +194,26 @@
 					</tr>
 				</table>
 				<div>
-					<button
-						onclick="showOrderMenu('toppings-screen');showOrderMenu('extras-screen')"
-					>
+					<button onclick="showOrderMenu('toppings-screen');showOrderMenu('extras-screen')">
 						⮜ previous
 					</button>
-					<button
-						onclick=""
-					>
+					<button onclick="showOrderMenu('extras-screen');showOrderMenu('checkout')">
 						Next ⮞
 					</button>
 				</div>
+			</div>
+
+			<div id="checkout" style="display: none">
+				<h3>Anything Else?</h3>
+				<button>Add Item</button>
+
+
+				<p>Subtotal: </p>
+				<p>Total: </p>
+				<button>Checkout</button>
+				<button onclick="showOrderMenu('toppings-screen');showOrderMenu('checkout')">
+					⮜ previous
+				</button>
 			</div>
 			
 		</div>
