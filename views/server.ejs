@@ -50,11 +50,21 @@
                         <button id="remove_product_button" class="neutral" style="display:none" onclick="removeSelectedProduct()">Remove Product</button>
                     </div>
                 </td>
+
+                <td align="left" style="vertical-align:bottom;">
+                    <div class="btn-vertical">
+                    <p>
+                        Add discount: <input type="number" id="discount"/>
+                    </p>
+                    <button onclick="addDiscount()">Discount</button>
+                </div>
+            </td>
                 
                 <td align="left" style="vertical-align:bottom;">
                     <div class="btn-vertical">
                         <div id="receipt"></div>
                         <p>Subtotal: $<span id="subtotal">0.00</span><br>
+                            Discount: <span id="curDiscount">0</span>%<br>
                             Total: $<span id="total">0.00</span><br>
                         </p>
                     <button onclick="finalizeOrder()">Finalize Order</button>
@@ -68,6 +78,7 @@
         <script src="/js/server.js"></script>
         <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 		<script>
+            var discount = 0;
 
             var productDefs = <%-JSON.stringify(productDefs)%>;
 
@@ -102,7 +113,8 @@
                     price += products[i].price;
                 }
                 document.querySelector("#subtotal").innerText = price.toFixed(2);
-                document.querySelector("#total").innerText = (price * 1.0825).toFixed(2);
+                document.querySelector("#curDiscount").innerText = discount;
+                document.querySelector("#total").innerText = (price * 1.0825 * (100-discount)/100).toFixed(2);
             }
 
 			const totalPrice = () => {
@@ -194,6 +206,24 @@
                 resetAllButtons();
                 updatePrice();
             }
+            function addDiscount() {
+                console.log("Discount:" +discount);
+        discount= document.getElementById("discount").value;
+        if(discount > 100){
+            discount = 100;        
+        }
+        else if(discount < 0){
+            discount = 0;
+        }
+        console.log("Discount:" +discount);
+        let price = 0;
+                for(let i in products){
+                    price += products[i].price;
+                }
+                document.querySelector("#subtotal").innerText = price.toFixed(2);
+                document.querySelector("#curDiscount").innerText = discount;
+                document.querySelector("#total").innerText = (price * 1.0825 * (100-discount)/100).toFixed(2);
+    }
 
             function finalizeOrder() {
                 // Hints:
@@ -217,7 +247,7 @@
 
 				// the object that will pass into addOrderToDatabase
                 finalOrder = {
-                    "discount": 0,
+                    "discount": discount,
 					"productList": productList,
 				}
 

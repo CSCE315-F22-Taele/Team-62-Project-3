@@ -72,7 +72,7 @@ class dbConnection{
        }
 
        // Apply discounts and then tax.
-       let total = subtotal * (1 - order.discount) * 1.0825;
+       let total = subtotal * (100 - order.discount)/100 * 1.0825;
 
        let cmd = "";
        cmd += orderId + ", ";
