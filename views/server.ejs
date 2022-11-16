@@ -174,12 +174,15 @@
                 productDef = getProductDef(productDefId);
                 // Add a new button with a reference to the product.
                 let receiptButton = document.createElement("button");
-                receiptButton.innerText = productDef.name + ": $" + productDef.price;
                 let thisProductId = currentProductId; // Copy the variable in a local context.
+                
+                receiptButton.innerText = productDef.name + ": $" + productDef.price;
                 receiptButton.id = "product_button_" + thisProductId;
+                
                 receiptButton.addEventListener("click", function(){
                     loadExistingProduct(thisProductId);
                 });
+                
                 document.querySelector("#receipt").appendChild(receiptButton);
                 newProduct = {
                     productDef: productDefId,
