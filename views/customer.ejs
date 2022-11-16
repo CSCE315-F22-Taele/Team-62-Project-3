@@ -205,15 +205,12 @@
 
 			<div id="checkout" style="display: none">
 				<h3>Anything Else?</h3>
-				<button>Add Item</button>
+				<button onclick="showOrderMenu('order-screen');showOrderMenu('checkout')">Add Item</button>
         <div id="receipt"></div>
 
 				<p>Subtotal: </p>
 				<p>Total: </p>
 				<button>Checkout</button>
-				<button onclick="showOrderMenu('toppings-screen');showOrderMenu('checkout')">
-					⮜ previous
-				</button>
 			</div>
 			
 		</div>
@@ -283,33 +280,57 @@
 			}
 
 
+			/**
+			 * this thing adds the receipt area div, text, buttons, edits, and deletes
+			 */
       function loadNewProduct(productDefId){
         productDef = getProductDef(productDefId);
 				
+				// edit button
 				let editBtn = document.createElement("button");
         let thisProductId = currentProductId; // Copy the variable in a local context.
         editBtn.id = "product_button_" + thisProductId;
 				editBtn.innerText = "Edit";
-        
 				editBtn.addEventListener("click", function(){
           loadExistingProduct(thisProductId);
         });
 
+				// receipt div
 				let receiptArea = document.createElement("div");
 				receiptArea.id = "receipt" + thisProductId
 				receiptArea.style.border = '3px solid';
 				receiptArea.style.borderColor = 'purple';
 				
+				// text for div
 				let orderInfo = document.createElement("p")
 				orderInfo.innerText = productDef.name + ": $" + productDef.price;
+
+				// remove button
+				let removeBtn = document.createElement("button");
+				removeBtn.innerText = "Remove"
 
 				document.querySelector("#receipt").appendChild(receiptArea);
 				document.querySelector("#receipt"+thisProductId).appendChild(orderInfo);
 				document.querySelector("#receipt"+thisProductId).appendChild(editBtn);
+				document.querySelector("#receipt"+thisProductId).appendChild(removeBtn);
 
+				// 
+        // newProduct = {
+          // productDef: productDefId,
+          // price: productDef.price,
+          // selectedItems: new Set()
+        // };
+        // products[thisProductId] = newProduct;
+        // loadExistingProduct(thisProductId, newProduct.selectedItems);
+        // updatePrice();
         currentProductId += 1;
 			}
 
+      function loadExistingProduct(id){
+        selectedProductId = id;
+        product = products[id];
+        loadItemsForProductDef(product.productDef, product.selectedItems);
+      }
 
       function loadItemsForProductDef(productDefId, selectedItems) {
         productDef = getProductDef(productDefId);
