@@ -13,6 +13,8 @@
             <a href="/server"><button>Server View</button></a>
             <a href="/customer"><button>customer View</button></a>
             <div id="google_translate_id"></div>
+            <div id="googleMap"></div>
+
         </div>
         
         <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
@@ -23,5 +25,31 @@
                 )
             }
         </script>
+
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD19cqU2rIzBHOPL_t8GhJJ9cmi-HNpULg&callback=initialize"></script>
+        <script>function initialize() {
+            var mapOptions = {
+              zoom: 15,
+              scrollwheel: false,
+              center: new google.maps.LatLng(31.993072, 35.862211)
+            };
+          
+            var map = new google.maps.Map(document.getElementById('googleMap'),
+              mapOptions);
+          
+          
+            var marker = new google.maps.Marker({
+              position: map.getCenter(),
+              animation: google.maps.Animation.BOUNCE,
+              //icon: 'img/map-marker.png',
+              map: map
+            });
+          }
+          </script>
+
+        #googleMap {
+            height: 400px;
+            width: 100%;
+        }
     </body>
 </html>
