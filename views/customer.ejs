@@ -210,14 +210,14 @@
 
 				<p>Subtotal: </p>
 				<p>Total: </p>
-				<button>Checkout</button>
+				<button onclick="finalizeOrder()">Checkout</button>
 			</div>
 			
 		</div>
-
+	<script src="/js/server.js"></script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 		<script>
-
+			var discount = 0;
 			var productDefs = <%-JSON.stringify(productDefs)%>;
 			var items = <%-JSON.stringify(items)%>;
 
@@ -291,6 +291,12 @@
         let thisProductId = currentProductId; // Copy the variable in a local context.
         editBtn.id = "product_button_" + thisProductId;
 				editBtn.innerText = "Edit";
+				newProduct = {
+                    productDef: productDefId,
+                    price: productDef.price,
+                    selectedItems: new Set()
+                };
+                products[thisProductId] = newProduct;
 				editBtn.addEventListener("click", function(){
           loadExistingProduct(thisProductId);
         });
@@ -362,7 +368,6 @@
           price += products[i].price;
         }
         document.querySelector("#subtotal").innerText = price.toFixed(2);
-        document.querySelector("#curDiscount").innerText = discount;
         document.querySelector("#total").innerText = (price * 1.0825 * (100-discount)/100).toFixed(2);
       }
 
@@ -377,6 +382,46 @@
 			var products = {}; // Used to store product data.
 			var currentProductId = 0; // Used to track new products.
 			var selectedProductId = -1; // Used to track the selected product.
+
+			function finalizeOrder() {
+                // Hints:
+                // start with the products object
+                const date = new Date();
+				let day = date.getDate();
+                let month = date.getMonth() + 1;
+                let year = date.getFullYear();
+                let dbDate = year+"-"+month+"-"+day
+                let orderDate = month+"/"+day+"/"+year
+
+                let productList = []
+
+
+                // putting values into a list
+                console.log("here" + products);
+                let values = Object.values(products)
+                for (value in values) {
+					let newProduct = {"id": values[value].productDef, "selectedItems": Array.from(values[value].selectedItems)}
+                    productList.push(newProduct)
+                }
+
+				// the object that will pass into addOrderToDatabase
+                finalOrder = {
+                    "discount": 0,
+					"productList": productList,
+				}
+
+				console.log(finalOrder)
+
+                // work with backend (Ezra) to figure out what he wants the object to look like.
+
+                // use server.POST (import /js/server.js)
+                server.POST("/customerOrder", finalOrder, (response) => {
+                    window.location.reload();
+                }, (error) => {
+					alert(error);
+                })
+
+            }
 
 			function googleTranslateElementInit() {
 				new google.translate.TranslateElement(

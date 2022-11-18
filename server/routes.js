@@ -91,5 +91,11 @@ module.exports = function(app, home, db) {
         await db.addOrderToDatabase(req.body);
         res.send(200);
     });
+    app.post("/customerOrder", async function(req, res){
+        res.status(400);
+        req.body.discount = 0;
+        await db.addOrderToDatabase(req.body);
+        res.send(200);
+    });
 
 };

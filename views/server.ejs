@@ -243,6 +243,7 @@
 
 
                 // putting values into a list
+                console.log("here" + products);
                 let values = Object.values(products)
                 for (value in values) {
 					let newProduct = {"id": values[value].productDef, "selectedItems": Array.from(values[value].selectedItems)}
