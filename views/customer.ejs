@@ -321,8 +321,12 @@
 
 				// remove button
 				let removeBtn = document.createElement("button");
-				removeBtn.innerText = "Remove"
-
+				removeBtn.innerText = "Remove";
+				removeBtn.id = "remove_product_button";
+				removeBtn.addEventListener("click", function() {
+					removeSelectedProduct();
+				})
+				
 				document.querySelector("#receipt").appendChild(receiptArea);
 				document.querySelector("#receipt"+thisProductId).appendChild(orderInfo);
 				document.querySelector("#receipt"+thisProductId).appendChild(editBtn);
@@ -366,7 +370,6 @@
 					}
 				}
 			}
-			// document.querySelector("#remove_product_button").style.display = "block";
 		}
 
 
@@ -386,6 +389,29 @@
 			}
         	return (price * 1.0825).toFixed(2);
 		}
+
+        function removeSelectedProduct(){
+            console.log("Removing product " + selectedProductId);
+            button = document.querySelector("#product_button_" + selectedProductId);
+            console.log(button);
+			
+			const parentID = event.target.parentElement.id
+			const element = document.getElementById(parentID);
+			element.remove()
+
+            delete products[selectedProductId];
+            resetAllButtons();
+            updatePrice();
+        }
+
+        function resetAllButtons(){
+            let buttons = document.querySelectorAll("#all-items button");
+            for(let button of buttons){
+                button.style.display = "none";
+                button.classList.remove("selected");
+            }
+            selectedProductId = -1;
+        }
 
 		var products = {}; // Used to store product data.
 		var currentProductId = 0; // Used to track new products.
