@@ -212,8 +212,10 @@
 				<button onclick="changeScreen('order-screen');changeScreen('checkout')">Add Item</button>
 			<div id="receipt"></div>
 
-				<p>Subtotal: </p>
-				<p>Total: </p>
+                <p>
+                    Subtotal: $<span id="subtotal">0.00</span><br>
+                    Total: $<span id="total">0.00</span><br>
+                </p>
 				<button onclick="finalizeOrder()">Checkout</button>
 			</div>
 			
@@ -310,6 +312,8 @@
 				receiptArea.id = "receipt" + thisProductId
 				receiptArea.style.border = '3px solid';
 				receiptArea.style.borderColor = 'purple';
+				receiptArea.style.margin = '10px';
+				receiptArea.style.borderRadius = '5px';
 				
 				// text for div
 				let orderInfo = document.createElement("p")
@@ -332,7 +336,7 @@
 				};
 				products[thisProductId] = newProduct;
 				loadExistingProduct(thisProductId);
-        		// updatePrice();
+				updatePrice();
 				currentProductId += 1;
 			}
 
