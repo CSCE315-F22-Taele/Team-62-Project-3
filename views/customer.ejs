@@ -326,6 +326,7 @@
 				removeBtn.innerText = "Remove";
 				removeBtn.id = "remove_product_button";
 				removeBtn.addEventListener("click", function() {
+					loadExistingProduct(thisProductId)
 					removeSelectedProduct();
 				})
 				
@@ -396,12 +397,12 @@
             console.log("Removing product " + selectedProductId);
             button = document.querySelector("#product_button_" + selectedProductId);
             console.log(button);
-			
+            
+			delete products[selectedProductId];
 			const parentID = event.target.parentElement.id
 			const receiptDiv = document.getElementById(parentID);
 			receiptDiv.remove()
 
-            delete products[selectedProductId];
             resetAllButtons();
             updatePrice();
         }
