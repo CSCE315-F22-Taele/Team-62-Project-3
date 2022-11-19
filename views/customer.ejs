@@ -67,7 +67,7 @@
 				<h2>Welcome to Pom and Honey!</h2>
 
 				<div class="customer-start">
-					<button onclick="showOrderMenu('start-screen');showOrderMenu('order-screen')">
+					<button onclick="changeScreen('start-screen');changeScreen('order-screen')">
 						Start Order
 					</button>
 					<button>Login</button>
@@ -82,18 +82,20 @@
 								<div class="main-grid-items">
 									<% for(let productDef of productDefs) { %>
 										<button 
-											onclick="loadNewProduct(<%=productDef.id%>);showOrderMenu('order-screen');showOrderMenu('rice-screen')"
+											onclick="loadNewProduct(<%=productDef.id%>);changeScreen('order-screen');changeScreen('rice-screen')"
 											id="productDef_button_<%=productDef.id%>"
+											background-image: url('https://media.geeksforgeeks.org/wp-content/uploads/20190314004249/sample-image2.png');
 										>
-											<%=productDef.name%>
-										</button>
+										
+											<%=productDef.name%> -->
+										tton>
 									<% } %>
 								</div>
 							</td>
 					</tr>
 				</table>
 				<div>
-					<button onclick="showOrderMenu('order-screen');showOrderMenu('rice-screen')">
+					<button onclick="changeScreen('order-screen');changeScreen('rice-screen')">
 						Next ⮞
 					</button>
 				</div>
@@ -116,10 +118,10 @@
 					</tr>
 				</table>
 				<div>
-					<button onclick="showOrderMenu('order-screen');showOrderMenu('rice-screen')">
+					<button onclick="changeScreen('order-screen');changeScreen('rice-screen')">
 						⮜ previous
 					</button>
-					<button onclick="showOrderMenu('rice-screen');showOrderMenu('protein-screen')">
+					<button onclick="changeScreen('rice-screen');changeScreen('protein-screen')">
 						Next ⮞
 					</button>
 				</div>
@@ -142,10 +144,10 @@
 					</tr>
 				</table>
 				<div>
-					<button onclick="showOrderMenu('protein-screen');showOrderMenu('rice-screen')">
+					<button onclick="changeScreen('protein-screen');changeScreen('rice-screen')">
 						⮜ previous
 					</button>
-					<button onclick="showOrderMenu('protein-screen');showOrderMenu('toppings-screen')">
+					<button onclick="changeScreen('protein-screen');changeScreen('toppings-screen')">
 						Next ⮞
 					</button>
 				</div>
@@ -168,10 +170,10 @@
 					</tr>
 				</table>
 				<div>
-					<button onclick="showOrderMenu('toppings-screen');showOrderMenu('protein-screen')">
+					<button onclick="changeScreen('toppings-screen');changeScreen('protein-screen')">
 						⮜ previous
 					</button>
-					<button onclick="showOrderMenu('toppings-screen');showOrderMenu('extras-screen')">
+					<button onclick="changeScreen('toppings-screen');changeScreen('extras-screen')">
 						Next ⮞
 					</button>
 				</div>
@@ -194,10 +196,10 @@
 					</tr>
 				</table>
 				<div>
-					<button onclick="showOrderMenu('toppings-screen');showOrderMenu('extras-screen')">
+					<button onclick="changeScreen('toppings-screen');changeScreen('extras-screen')">
 						⮜ previous
 					</button>
-					<button onclick="showOrderMenu('extras-screen');showOrderMenu('checkout')">
+					<button onclick="changeScreen('extras-screen');changeScreen('checkout')">
 						Next ⮞
 					</button>
 				</div>
@@ -205,7 +207,7 @@
 
 			<div id="checkout" style="display: none">
 				<h3>Anything Else?</h3>
-				<button onclick="showOrderMenu('order-screen');showOrderMenu('checkout')">Add Item</button>
+				<button onclick="changeScreen('order-screen');changeScreen('checkout')">Add Item</button>
         <div id="receipt"></div>
 
 				<p>Subtotal: </p>
@@ -429,7 +431,7 @@
 				)
 			}
 
-			function showOrderMenu(id) {
+			function changeScreen(id) {
 				var x = document.getElementById(id);
 				if (x.style.display === "none") {
 					return x.style.display = "block";
