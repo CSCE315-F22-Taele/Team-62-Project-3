@@ -305,6 +305,8 @@
 				products[thisProductId] = newProduct;
 				editBtn.addEventListener("click", function(){
 					loadExistingProduct(thisProductId);
+					changeScreen('rice-screen');  // show rice-screen
+					changeScreen('checkout');  // hide checkout
 				});
 
 				// receipt div
@@ -396,8 +398,8 @@
             console.log(button);
 			
 			const parentID = event.target.parentElement.id
-			const element = document.getElementById(parentID);
-			element.remove()
+			const receiptDiv = document.getElementById(parentID);
+			receiptDiv.remove()
 
             delete products[selectedProductId];
             resetAllButtons();
