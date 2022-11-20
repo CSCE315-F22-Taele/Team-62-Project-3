@@ -13,8 +13,8 @@
 			justify-content: center;
 			text-align: center;
 			
-			border: 5px solid;
-			padding: 50px 0;
+			<!-- border: 5px solid;
+			padding: 50px 0; -->
 		}
 
 
@@ -46,10 +46,14 @@
 		.main-grid-items {
 			display: grid;
 			grid-template-columns: repeat(2, 100px);
-      grid-template-rows: repeat(6, 100px);
-      margin:0px 50px;
-      height:500px;
-      grid-gap:0px;
+			grid-template-rows: repeat(6, 100px);
+			margin-left: 40%;
+			height:500px;
+			grid-gap:0px;
+		}
+
+		.center {
+			left: 80px;
 		}
 
 		.customer-start {
@@ -60,14 +64,14 @@
 
 	</head>
 	<body>
-		<div class="center-container">
-      <div id="google_translate_id"></div>
+		<div class="center-container">	
+		<div id="google_translate_id"></div>
 
 			<div style="display: block" id="start-screen">
 				<h2>Welcome to Pom and Honey!</h2>
 
 				<div class="customer-start">
-					<button onclick="showOrderMenu('start-screen');showOrderMenu('order-screen')">
+					<button onclick="changeScreen('start-screen');changeScreen('order-screen')">
 						Start Order
 					</button>
 					<button>Login</button>
@@ -78,32 +82,41 @@
 				<h2>What Looks Good Today?</h2>
 				<table id="contentWrapper">
 					<tr>
-							<td>
-								<div class="main-grid-items">
-									<% for(let productDef of productDefs) { %>
-										<button 
-											onclick="loadNewProduct(<%=productDef.id%>);showOrderMenu('order-screen');showOrderMenu('rice-screen')"
-											id="productDef_button_<%=productDef.id%>"
-										>
-											<%=productDef.name%>
-										</button>
-									<% } %>
-								</div>
-							</td>
+						<td>
+							<div class="main-grid-items">
+								<% for(let productDef of productDefs) { %>
+									<button 
+										onclick="loadNewProduct(<%=productDef.id%>);changeScreen('order-screen');changeScreen('rice-screen')"
+										id="productDef_button_<%=productDef.id%>"
+									>
+										<%=productDef.name%>
+									</button>
+								<% } %>
+							</div>
+						</td>
 					</tr>
 				</table>
 				<div>
-					<button onclick="showOrderMenu('order-screen');showOrderMenu('rice-screen')">
+					<button onclick="changeScreen('order-screen');changeScreen('rice-screen')">
 						Next ⮞
 					</button>
 				</div>
 			</div>
 
 			<div id="rice-screen" style="display: none">
+				
+				<% var color%> 
+				<% for (let cat of categories) { %> 
+					<% if (cat.id === 0) { %> 
+						<h2><%= cat.description %></h2>
+						<% color = cat.color %> 
+					<% } %> 
+				<% } %> 
+				
 				<table id="contentWrapper">
 					<tr>
 						<td>
-							<div class="main-grid-items">
+							<div id="all-items" class="main-grid-items">
 								<% for (let item of items) { %> 
 									<% if (item.categoryid === 0) { %> 
 											<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
@@ -116,20 +129,28 @@
 					</tr>
 				</table>
 				<div>
-					<button onclick="showOrderMenu('order-screen');showOrderMenu('rice-screen')">
+					<button onclick="changeScreen('order-screen');changeScreen('rice-screen')">
 						⮜ previous
 					</button>
-					<button onclick="showOrderMenu('rice-screen');showOrderMenu('protein-screen')">
+					<button onclick="changeScreen('rice-screen');changeScreen('protein-screen')">
 						Next ⮞
 					</button>
 				</div>
 			</div>
 
 			<div id="protein-screen" style="display: none">
+
+				<% for (let cat of categories) { %> 
+					<% if (cat.id === 1) { %> 
+						<h2><%= cat.description %></h2>
+						color = <%=cat.color %> 
+					<% } %> 
+				<% } %> 
+				
 				<table id="contentWrapper">
 					<tr>
 						<td>
-							<div class="main-grid-items">
+							<div id="all-items" class="main-grid-items">
 								<% for (let item of items) { %> 
 									<% if (item.categoryid === 1) { %> 
 											<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
@@ -142,20 +163,28 @@
 					</tr>
 				</table>
 				<div>
-					<button onclick="showOrderMenu('protein-screen');showOrderMenu('rice-screen')">
+					<button onclick="changeScreen('protein-screen');changeScreen('rice-screen')">
 						⮜ previous
 					</button>
-					<button onclick="showOrderMenu('protein-screen');showOrderMenu('toppings-screen')">
+					<button onclick="changeScreen('protein-screen');changeScreen('toppings-screen')">
 						Next ⮞
 					</button>
 				</div>
 			</div>
 
 			<div id="toppings-screen" style="display: none">
+				
+				<% for (let cat of categories) { %> 
+					<% if (cat.id === 2) { %> 
+						<h2><%= cat.description %></h2>
+						color = <%=cat.color %> 
+					<% } %> 
+				<% } %> 
+				
 				<table id="contentWrapper">
 					<tr>
 						<td>
-							<div class="main-grid-items">
+							<div id="all-items" class="main-grid-items">
 								<% for (let item of items) { %> 
 									<% if (item.categoryid === 2) { %> 
 										<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
@@ -168,20 +197,29 @@
 					</tr>
 				</table>
 				<div>
-					<button onclick="showOrderMenu('toppings-screen');showOrderMenu('protein-screen')">
+					<button onclick="changeScreen('toppings-screen');changeScreen('protein-screen')">
 						⮜ previous
 					</button>
-					<button onclick="showOrderMenu('toppings-screen');showOrderMenu('extras-screen')">
+					<button onclick="changeScreen('toppings-screen');changeScreen('extras-screen')">
 						Next ⮞
 					</button>
 				</div>
 			</div>
 
 			<div id="extras-screen" style="display: none">
+				
+				<% for (let cat of categories) { %> 
+					<% if (cat.id === 3) { %> 
+						<h2><%= cat.description %></h2>
+						color = <%=cat.color %> 
+					<% } %> 
+				<% } %> 
+
+				
 				<table id="contentWrapper">
 					<tr>
 						<td>
-							<div class="main-grid-items">
+							<div id="all-items" class="main-grid-items">
 								<% for (let item of items) { %> 
 									<% if (item.categoryid === 3) { %> 
 										<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
@@ -194,10 +232,10 @@
 					</tr>
 				</table>
 				<div>
-					<button onclick="showOrderMenu('toppings-screen');showOrderMenu('extras-screen')">
+					<button onclick="changeScreen('toppings-screen');changeScreen('extras-screen')">
 						⮜ previous
 					</button>
-					<button onclick="showOrderMenu('extras-screen');showOrderMenu('checkout')">
+					<button onclick="changeScreen('extras-screen');changeScreen('checkout')">
 						Next ⮞
 					</button>
 				</div>
@@ -205,12 +243,14 @@
 
 			<div id="checkout" style="display: none">
 				<h3>Anything Else?</h3>
-				<button onclick="showOrderMenu('order-screen');showOrderMenu('checkout')">Add Item</button>
-        <div id="receipt"></div>
+				<button onclick="changeScreen('order-screen');changeScreen('checkout')">Add Item</button>
+			<div id="receipt"></div>
 
-				<p>Subtotal: </p>
-				<p>Total: </p>
-				<button onclick="finalizeOrder();showOrderMenu('start-screen');showOrderMenu('checkout')">Checkout</button>
+                <p>
+                    Subtotal: $<span id="subtotal">0.00</span><br>
+                    Total: $<span id="total">0.00</span><br>
+                </p>
+				<button onclick="finalizeOrder()">Checkout</button>
 			</div>
 			
 		</div>
@@ -250,7 +290,7 @@
 			 * uses the 'item' table in the DB
 			 */
 			const loadCategory = (category) => {
-        let categoryItems = [];
+				let categoryItems = [];
 				if (category === 1) {
 					for(let item of items){
 						if(item.categoryid === 1) {
@@ -276,36 +316,40 @@
 						}
 					}
 				}
-        return categoryItems;
+				return categoryItems;
 			}
 
 
 			/**
 			 * this thing adds the receipt area div, text, buttons, edits, and deletes
 			 */
-      function loadNewProduct(productDefId){
-        productDef = getProductDef(productDefId);
+			function loadNewProduct(productDefId){
+				productDef = getProductDef(productDefId);
 				
 				// edit button
 				let editBtn = document.createElement("button");
-        let thisProductId = currentProductId; // Copy the variable in a local context.
-        editBtn.id = "product_button_" + thisProductId;
+        		let thisProductId = currentProductId; // Copy the variable in a local context.
+				editBtn.id = "product_button_" + thisProductId;
 				editBtn.innerText = "Edit";
 				newProduct = {
-                    productDef: productDefId,
-                    price: productDef.price,
-                    selectedItems: new Set()
-                };
-                products[thisProductId] = newProduct;
+					productDef: productDefId,
+					price: productDef.price,
+					selectedItems: new Set()
+				};
+				products[thisProductId] = newProduct;
 				editBtn.addEventListener("click", function(){
-          loadExistingProduct(thisProductId);
-        });
+					loadExistingProduct(thisProductId);
+					changeScreen('rice-screen');  // show rice-screen
+					changeScreen('checkout');  // hide checkout
+				});
 
 				// receipt div
 				let receiptArea = document.createElement("div");
 				receiptArea.id = "receipt" + thisProductId
 				receiptArea.style.border = '3px solid';
 				receiptArea.style.borderColor = 'purple';
+				receiptArea.style.margin = '10px';
+				receiptArea.style.borderRadius = '5px';
 				
 				// text for div
 				let orderInfo = document.createElement("p")
@@ -313,140 +357,167 @@
 
 				// remove button
 				let removeBtn = document.createElement("button");
-				removeBtn.innerText = "Remove"
-
+				removeBtn.innerText = "Remove";
+				removeBtn.id = "remove_product_button";
+				removeBtn.addEventListener("click", function() {
+					loadExistingProduct(thisProductId)
+					removeSelectedProduct();
+				})
+				
 				document.querySelector("#receipt").appendChild(receiptArea);
 				document.querySelector("#receipt"+thisProductId).appendChild(orderInfo);
 				document.querySelector("#receipt"+thisProductId).appendChild(editBtn);
 				document.querySelector("#receipt"+thisProductId).appendChild(removeBtn);
 
 				// 
-        // newProduct = {
-          // productDef: productDefId,
-          // price: productDef.price,
-          // selectedItems: new Set()
-        // };
-        // products[thisProductId] = newProduct;
-        // loadExistingProduct(thisProductId, newProduct.selectedItems);
-        // updatePrice();
-        currentProductId += 1;
+				newProduct = {
+					productDef: productDefId,
+					price: productDef.price,
+					selectedItems: new Set()
+				};
+				products[thisProductId] = newProduct;
+				loadExistingProduct(thisProductId);
+				updatePrice();
+				currentProductId += 1;
 			}
 
-      function loadExistingProduct(id){
-        selectedProductId = id;
-        product = products[id];
-        loadItemsForProductDef(product.productDef, product.selectedItems);
-      }
-
-      function loadItemsForProductDef(productDefId, selectedItems) {
-        productDef = getProductDef(productDefId);
-        let buttons = document.querySelectorAll("#all-items button");
-        for (let button of buttons) {
-          itemId = button.getAttribute("itemId");
-          if (itemId) {
-            itemId = parseInt(itemId);
-						console.log("itemId: " + itemId)
-            if (productDef.optionalitemlist.includes(itemId)) {
-              button.style.display = "block";
-              if (selectedItems.has(itemId)) {
-                button.classList.add("selected");
-              } else {
-                button.classList.remove("selected");
-              }
-            } else{
-              button.style.display = "none";
-            }
-          }
-        }
-        document.querySelector("#remove_product_button").style.display = "block";
-      }
-
-
-      function updatePrice() {
-        let price = 0;
-        for(let i in products) {
-          price += products[i].price;
-        }
-        document.querySelector("#subtotal").innerText = price.toFixed(2);
-        document.querySelector("#total").innerText = (price * 1.0825 * (100-discount)/100).toFixed(2);
-      }
-
-			const totalPrice = () => {
-				let price = 0;
-				for(let i in products){
-					price += products[i].price;
-				}
-        return (price * 1.0825).toFixed(2);
-      }
-
-			var products = {}; // Used to store product data.
-			var currentProductId = 0; // Used to track new products.
-			var selectedProductId = -1; // Used to track the selected product.
-
-			function finalizeOrder() {
-                // Hints:
-                // start with the products object
-                const date = new Date();
-				let day = date.getDate();
-                let month = date.getMonth() + 1;
-                let year = date.getFullYear();
-                let dbDate = year+"-"+month+"-"+day
-                let orderDate = month+"/"+day+"/"+year
-
-                let productList = []
-
-
-                // putting values into a list
-                console.log("here" + products);
-                let values = Object.values(products)
-                for (value in values) {
-					let newProduct = {"id": values[value].productDef, "selectedItems": Array.from(values[value].selectedItems)}
-                    productList.push(newProduct)
-                }
-
-				// the object that will pass into addOrderToDatabase
-                finalOrder = {
-                    "discount": 0,
-					"productList": productList,
-				}
-
-				console.log(finalOrder)
-
-                // work with backend (Ezra) to figure out what he wants the object to look like.
-
-                // use server.POST (import /js/server.js)
-                server.POST("/customerOrder", finalOrder, (response) => {
-                    window.location.reload();
-                }, (error) => {
-					alert(error);
-                })
-
-            }
-
-			function googleTranslateElementInit() {
-				new google.translate.TranslateElement(
-					{pageLanguage: 'en'}, 'google_translate_id'
-				)
+			function loadExistingProduct(id){
+				selectedProductId = id;
+				product = products[id];
+				loadItemsForProductDef(product.productDef, product.selectedItems);
 			}
 
-			function showOrderMenu(id) {
-				var x = document.getElementById(id);
-				if (x.style.display === "none") {
-					return x.style.display = "block";
-				}
-				return x.style.display = "none";
-			}
-
-      const getProductDef = (id) => {
-        let productDef;
-					for(let def of productDefs){
-						if(def.id == id){
-							productDef = def;
-							break;
+		function loadItemsForProductDef(productDefId, selectedItems) {
+			productDef = getProductDef(productDefId);
+			let buttons = document.querySelectorAll("#all-items button");
+			for (let button of buttons) {
+				itemId = button.getAttribute("itemId");
+				if (itemId) {
+					itemId = parseInt(itemId);
+					console.log("itemId: " + itemId)
+					if (productDef.optionalitemlist.includes(itemId)) {
+						button.style.display = "block";
+						if (selectedItems.has(itemId)) {
+							button.classList.add("selected");
+						} else {
+							button.classList.remove("selected");
 						}
+					} else {
+						button.style.display = "none";
 					}
-        return productDef;
-      }
+				}
+			}
+		}
+
+
+		function updatePrice() {
+			let price = 0;
+			for(let i in products) {
+				price += products[i].price;
+			}
+			document.querySelector("#subtotal").innerText = price.toFixed(2);
+        	document.querySelector("#total").innerText = (price * 1.0825 * (100-discount)/100).toFixed(2);
+		}
+
+		const totalPrice = () => {
+			let price = 0;
+			for(let i in products){
+				price += products[i].price;
+			}
+        	return (price * 1.0825).toFixed(2);
+		}
+
+        function removeSelectedProduct(){
+            console.log("Removing product " + selectedProductId);
+            button = document.querySelector("#product_button_" + selectedProductId);
+            console.log(button);
+            
+			delete products[selectedProductId];
+			const parentID = event.target.parentElement.id
+			const receiptDiv = document.getElementById(parentID);
+			receiptDiv.remove()
+
+            resetAllButtons();
+            updatePrice();
+        }
+
+        function resetAllButtons(){
+            let buttons = document.querySelectorAll("#all-items button");
+            for(let button of buttons){
+                button.style.display = "none";
+                button.classList.remove("selected");
+            }
+            selectedProductId = -1;
+        }
+
+		var products = {}; // Used to store product data.
+		var currentProductId = 0; // Used to track new products.
+		var selectedProductId = -1; // Used to track the selected product.
+
+		function finalizeOrder() {
+            // Hints:
+            // start with the products object
+            const date = new Date();
+			let day = date.getDate();
+            let month = date.getMonth() + 1;
+            let year = date.getFullYear();
+            let dbDate = year+"-"+month+"-"+day
+            let orderDate = month+"/"+day+"/"+year
+
+            let productList = []
+
+
+            // putting values into a list
+            console.log("here" + products);
+            let values = Object.values(products)
+            for (value in values) {
+				let newProduct = {"id": values[value].productDef, "selectedItems": Array.from(values[value].selectedItems)}
+                productList.push(newProduct)
+            }
+
+			// the object that will pass into addOrderToDatabase
+            finalOrder = {
+                "discount": 0,
+				"productList": productList,
+			}
+
+			console.log(finalOrder)
+
+            // work with backend (Ezra) to figure out what he wants the object to look like.
+
+            // use server.POST (import /js/server.js)
+            server.POST("/customerOrder", finalOrder, (response) => {
+                window.location.reload();
+            }, (error) => {
+				alert(error);
+            })
+
+        }
+
+		function googleTranslateElementInit() {
+			new google.translate.TranslateElement(
+				{pageLanguage: 'en'}, 'google_translate_id'
+			)
+		}
+
+		function changeScreen(id) {
+			var x = document.getElementById(id);
+			if (x.style.display === "none") {
+				return x.style.display = "block";
+			}
+			return x.style.display = "none";
+		}
+
+		const getProductDef = (id) => {
+			let productDef;
+			for(let def of productDefs){
+				if(def.id == id){
+					productDef = def;
+					break;
+				}
+			}
+			return productDef;
+		}
 		
 		</script>
 

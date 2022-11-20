@@ -63,7 +63,8 @@
                 <td align="left" style="vertical-align:bottom;">
                     <div class="btn-vertical">
                         <div id="receipt"></div>
-                        <p>Subtotal: $<span id="subtotal">0.00</span><br>
+                        <p>
+                            Subtotal: $<span id="subtotal">0.00</span><br>
                             Discount: <span id="curDiscount">0</span>%<br>
                             Total: $<span id="total">0.00</span><br>
                         </p>
@@ -152,17 +153,15 @@
                     itemId = button.getAttribute("itemId");
                     if(itemId){
                         itemId = parseInt(itemId);
-						console.log("itemId: " + itemId)
                         if(productDef.optionalitemlist.includes(itemId)){
+                            console.log("  itemId: " + itemId)
                             button.style.display = "block";
                             if(selectedItems.has(itemId)){
                                 button.classList.add("selected");
-                            }
-                            else{
+                            } else {
                                 button.classList.remove("selected");
                             }
-                        }
-                        else{
+                        } else {
                             button.style.display = "none";
                         }
                     }
@@ -190,14 +189,19 @@
                     selectedItems: new Set()
                 };
                 products[thisProductId] = newProduct;
-                loadExistingProduct(thisProductId, newProduct.selectedItems);
+                
+                console.log("newProduct productDef :: " + newProduct.productDef)
+                console.log("newProduct price :: " + newProduct.price)
+                console.log("newProduct selectItems :: " + newProduct.selectedItems)
+                
+                loadExistingProduct(thisProductId);
                 updatePrice();
                 currentProductId += 1;
             }
 
             function loadExistingProduct(id){
                 selectedProductId = id;
-                product = products[id];
+                product = products[id];  // local "newProduct"
                 loadItemsForProductDef(product.productDef, product.selectedItems);
             }
 
