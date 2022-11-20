@@ -104,6 +104,15 @@
 			</div>
 
 			<div id="rice-screen" style="display: none">
+				
+				<% var color%> 
+				<% for (let cat of categories) { %> 
+					<% if (cat.id === 0) { %> 
+						<h2><%= cat.description %></h2>
+						<% color = cat.color %> 
+					<% } %> 
+				<% } %> 
+				
 				<table id="contentWrapper">
 					<tr>
 						<td>
@@ -130,6 +139,14 @@
 			</div>
 
 			<div id="protein-screen" style="display: none">
+
+				<% for (let cat of categories) { %> 
+					<% if (cat.id === 1) { %> 
+						<h2><%= cat.description %></h2>
+						color = <%=cat.color %> 
+					<% } %> 
+				<% } %> 
+				
 				<table id="contentWrapper">
 					<tr>
 						<td>
@@ -156,6 +173,14 @@
 			</div>
 
 			<div id="toppings-screen" style="display: none">
+				
+				<% for (let cat of categories) { %> 
+					<% if (cat.id === 2) { %> 
+						<h2><%= cat.description %></h2>
+						color = <%=cat.color %> 
+					<% } %> 
+				<% } %> 
+				
 				<table id="contentWrapper">
 					<tr>
 						<td>
@@ -182,6 +207,15 @@
 			</div>
 
 			<div id="extras-screen" style="display: none">
+				
+				<% for (let cat of categories) { %> 
+					<% if (cat.id === 3) { %> 
+						<h2><%= cat.description %></h2>
+						color = <%=cat.color %> 
+					<% } %> 
+				<% } %> 
+
+				
 				<table id="contentWrapper">
 					<tr>
 						<td>

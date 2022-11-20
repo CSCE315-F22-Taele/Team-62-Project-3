@@ -69,8 +69,9 @@ module.exports = function(app, home, db) {
     app.get("/customer", async (req, res) => {
         let items = await db.sendQuery("SELECT id, name, categoryid from item");
 		let productDefs = await db.sendQuery("SELECT id, name, optionalItemList, optionalPortionList, price FROM productdef");
+        let categories = await db.sendQuery("SELECT id, name, description, color FROM category");
 
-        res.render("customer.ejs", {items:items.rows, productDefs:productDefs.rows})
+        res.render("customer.ejs", {items:items.rows, productDefs:productDefs.rows, categories:categories.rows})
         
     })
 
