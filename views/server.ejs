@@ -31,7 +31,7 @@
 	<body>
 		<%- include("logo.ejs") %>
 		<h2>Server View</h2>
-
+        <div id="google_translate_id"></div>
         <table id="contentWrapper">
             <tr>
                 <td align="right">
@@ -41,29 +41,46 @@
                         <% } %>
                     </div>
                 </td>
+                
                 <td align="center" style="width:500px;">
-        			<div class="main-grid-items" id="all-items">
+                    <div class="main-grid-items" id="all-items">
                         <% for(let item of items){ %>
                             <button selectable=true itemId=<%=item.id%> style="display:none;" id="item_button_<%=item.id%>"><%=item.name%></button>
                         <% } %>
                         <button id="remove_product_button" class="neutral" style="display:none" onclick="removeSelectedProduct()">Remove Product</button>
-        			</div>
+                    </div>
                 </td>
+
                 <td align="left" style="vertical-align:bottom;">
-        			<div class="btn-vertical">
+                    <div class="btn-vertical">
+                    <p>
+                        Add discount: <input type="number" id="discount"/>
+                    </p>
+                    <button onclick="addDiscount()">Discount</button>
+                </div>
+            </td>
+                
+                <td align="left" style="vertical-align:bottom;">
+                    <div class="btn-vertical">
                         <div id="receipt"></div>
-                        <p>Subtotal: $<span id="subtotal">0.00</span><br>
+                        <p>
+                            Subtotal: $<span id="subtotal">0.00</span><br>
+                            Discount: <span id="curDiscount">0</span>%<br>
                             Total: $<span id="total">0.00</span><br>
                         </p>
-        				<button onclick="finalizeOrder()">Finalize Order</button>
-        			</div>
+                    <button onclick="finalizeOrder()">Finalize Order</button>
+                    </div>
                 </td>
+            
             </tr>
         </table>
 
 
         <script src="/js/server.js"></script>
+        <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW9HNP9YkGooUrAov5-VImo6XmtbEQ4W8&callback=myMap"></script>
 		<script>
+            var discount = 0;
 
             var productDefs = <%-JSON.stringify(productDefs)%>;
 
@@ -98,7 +115,8 @@
                     price += products[i].price;
                 }
                 document.querySelector("#subtotal").innerText = price.toFixed(2);
-                document.querySelector("#total").innerText = (price * 1.0825).toFixed(2);
+                document.querySelector("#curDiscount").innerText = discount;
+                document.querySelector("#total").innerText = (price * 1.0825 * (100-discount)/100).toFixed(2);
             }
 
 			const totalPrice = () => {
@@ -129,7 +147,7 @@
                 selectedProductId = -1;
             }
 
-            function loadItemsForProductDef(productDefId, selectedItems){
+            function loadItemsForProductDef(productDefId, selectedItems) {
                 productDef = getProductDef(productDefId);
                 let buttons = document.querySelectorAll("#all-items button");
                 for(let button of buttons){
@@ -137,15 +155,14 @@
                     if(itemId){
                         itemId = parseInt(itemId);
                         if(productDef.optionalitemlist.includes(itemId)){
+                            console.log("  itemId: " + itemId)
                             button.style.display = "block";
                             if(selectedItems.has(itemId)){
                                 button.classList.add("selected");
-                            }
-                            else{
+                            } else {
                                 button.classList.remove("selected");
                             }
-                        }
-                        else{
+                        } else {
                             button.style.display = "none";
                         }
                     }
@@ -153,20 +170,19 @@
                 document.querySelector("#remove_product_button").style.display = "block";
             }
 
-            /**
-             *
-             * @param productDefId
-             */
             function loadNewProduct(productDefId){
                 productDef = getProductDef(productDefId);
                 // Add a new button with a reference to the product.
                 let receiptButton = document.createElement("button");
-                receiptButton.innerText = productDef.name + ": $" + productDef.price;
                 let thisProductId = currentProductId; // Copy the variable in a local context.
+                
+                receiptButton.innerText = productDef.name + ": $" + productDef.price;
                 receiptButton.id = "product_button_" + thisProductId;
+                
                 receiptButton.addEventListener("click", function(){
                     loadExistingProduct(thisProductId);
                 });
+                
                 document.querySelector("#receipt").appendChild(receiptButton);
                 newProduct = {
                     productDef: productDefId,
@@ -174,14 +190,19 @@
                     selectedItems: new Set()
                 };
                 products[thisProductId] = newProduct;
-                loadExistingProduct(thisProductId, newProduct.selectedItems);
+                
+                console.log("newProduct productDef :: " + newProduct.productDef)
+                console.log("newProduct price :: " + newProduct.price)
+                console.log("newProduct selectItems :: " + newProduct.selectedItems)
+                
+                loadExistingProduct(thisProductId);
                 updatePrice();
                 currentProductId += 1;
             }
 
             function loadExistingProduct(id){
                 selectedProductId = id;
-                product = products[id];
+                product = products[id];  // local "newProduct"
                 loadItemsForProductDef(product.productDef, product.selectedItems);
             }
 
@@ -194,21 +215,40 @@
                 resetAllButtons();
                 updatePrice();
             }
+            function addDiscount() {
+                console.log("Discount:" +discount);
+                discount= document.getElementById("discount").value;
+                if(discount > 100){
+                    discount = 100;        
+                }
+                else if(discount < 0){
+                    discount = 0;
+                }
+                console.log("Discount:" +discount);
+                let price = 0;
+                    for(let i in products){
+                        price += products[i].price;
+                    }
+                    document.querySelector("#subtotal").innerText = price.toFixed(2);
+                    document.querySelector("#curDiscount").innerText = discount;
+                    document.querySelector("#total").innerText = (price * 1.0825 * (100-discount)/100).toFixed(2);
+            }
 
             function finalizeOrder() {
                 // Hints:
                 // start with the products object
                 const date = new Date();
 				let day = date.getDate();
-	            let month = date.getMonth() + 1;
-	            let year = date.getFullYear();
-	            let dbDate = year+"-"+month+"-"+day
+                let month = date.getMonth() + 1;
+                let year = date.getFullYear();
+                let dbDate = year+"-"+month+"-"+day
                 let orderDate = month+"/"+day+"/"+year
 
-	            let productList = []
+                let productList = []
 
 
                 // putting values into a list
+                console.log("here" + products);
                 let values = Object.values(products)
                 for (value in values) {
 					let newProduct = {"id": values[value].productDef, "selectedItems": Array.from(values[value].selectedItems)}
@@ -216,8 +256,8 @@
                 }
 
 				// the object that will pass into addOrderToDatabase
-	            finalOrder = {
-		            "discount": 0,
+                finalOrder = {
+                    "discount": discount,
 					"productList": productList,
 				}
 
@@ -234,6 +274,11 @@
 
             }
 
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement(
+                    {pageLanguage: 'en'}, 'google_translate_id'
+                )
+            }
 		</script>
 	</body>
 </html>

@@ -46,7 +46,7 @@ module.exports = function(app, home, db) {
             quantifier = " WHERE date <= '" + req.query.e + "'";
         }
         let cmd = "SELECT id, date, total FROM orders" + quantifier + " ORDER BY date DESC LIMIT 100";
-        console.log(cmd);
+        // console.log(cmd);
 		let results = await db.sendQuery(cmd);
         res.render("manager/orders.ejs", {orders:results.rows});
 
@@ -66,6 +66,15 @@ module.exports = function(app, home, db) {
         res.render("server.ejs", {items:items.rows, productDefs:productDefs.rows});
     })
 
+    app.get("/customer", async (req, res) => {
+        let items = await db.sendQuery("SELECT id, name, categoryid from item");
+		let productDefs = await db.sendQuery("SELECT id, name, optionalItemList, optionalPortionList, price FROM productdef");
+        let categories = await db.sendQuery("SELECT id, name, description, color FROM category");
+
+        res.render("customer.ejs", {items:items.rows, productDefs:productDefs.rows, categories:categories.rows})
+        
+    })
+
     app.post("/item", async function(req, res){
         res.status(400);
         let id = req.body.id;
@@ -80,6 +89,12 @@ module.exports = function(app, home, db) {
 
     app.post("/order", async function(req, res){
         res.status(400);
+        await db.addOrderToDatabase(req.body);
+        res.send(200);
+    });
+    app.post("/customerOrder", async function(req, res){
+        res.status(400);
+        req.body.discount = 0;
         await db.addOrderToDatabase(req.body);
         res.send(200);
     });
