@@ -5,10 +5,12 @@ const { default: async } = require('async');
 const cookieParser = require('cookie-parser');
 const express = require('express');
 const fetch = require('node-fetch');
+const session = require('express-session');
 
 module.exports = function(app, home, db) {
 	app.use(cookieParser()); // Give express the ability to read user cookies.
 	app.use(express.json()); // Give express the ability to parse POST requests.
+    app.use(session({secret: "Shh, its a secret!"}));
     app.set('view engine', 'ejs');
 
     app.use(function(req, res, next) {
@@ -28,6 +30,21 @@ module.exports = function(app, home, db) {
     });
 
     app.get("/manager/summary", async function(req, res){
+        if (sess.email != "") {
+            //console.log("is signed in");
+            let isManager = await db.sendQuery("SELECT ismanager FROM email WHERE email='" + sess.email + "'");
+            if (isManager.rowCount == 0) { // if you're not in the database
+                res.redirect("/nopermission");
+                return;
+            }
+            if (!isManager.rows[0].ismanager) { // if you're in the database but not a manager
+                res.redirect("/nopermission");
+                return;
+            }
+        } else { // if you're not signed in at all
+            res.redirect("/nopermission");
+            return;
+        }
 		let results = await db.sendQuery("SELECT SUM(total) FROM orders");
 		let salesNum = results.rows[0].sum;
         res.render("manager/summary.ejs", {sales:salesNum});
@@ -60,6 +77,22 @@ module.exports = function(app, home, db) {
     });
 
     app.get("/server", async (req, res) => {
+        //console.log("in server sign in");
+        if (sess.email != "") {
+            //console.log("is signed in");
+            let isServer = await db.sendQuery("SELECT isserver FROM email WHERE email='" + sess.email + "'");
+            if (isServer.rowCount == 0) { // if you're not in the database
+                res.redirect("/nopermission");
+                return;
+            }
+            if (!isServer.rows[0].isserver) { // if you're in the database but not a manager
+                res.redirect("/nopermission");
+                return;
+            }
+        } else { // if you're not signed in at all
+            res.redirect("/nopermission");
+            return;
+        }
         let items = await db.sendQuery("SELECT id, name FROM item");
 		let productDefs = await db.sendQuery("SELECT id, name, optionalItemList, optionalPortionList, price FROM productdef");
 
@@ -74,6 +107,10 @@ module.exports = function(app, home, db) {
         res.render("customer.ejs", {items:items.rows, productDefs:productDefs.rows, categories:categories.rows})
         
     })
+
+    app.get("/nopermission", (req, res) => {
+        res.render("nopermission.ejs");
+    });
 
     app.post("/item", async function(req, res){
         res.status(400);
@@ -99,4 +136,32 @@ module.exports = function(app, home, db) {
         res.send(200);
     });
 
+    var sess = {};
+    sess.email = "";
+    app.post("/login", async function(req, res) {
+        //console.log("in login");
+        sess = req.session;
+        //console.log(req.body);
+        var token = req.body.token;
+        const {OAuth2Client} = require('google-auth-library');
+        const client = new OAuth2Client("1001480195333-8c7osehemrrpbkpl72ptme7n69s8h3up.apps.googleusercontent.com");
+        async function verify() {
+            const ticket = await client.verifyIdToken({
+                idToken: token,
+                audience: "1001480195333-8c7osehemrrpbkpl72ptme7n69s8h3up.apps.googleusercontent.com",  // Specify the CLIENT_ID of the app that accesses the backend
+                // Or, if multiple clients access the backend:
+                //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+            });
+            const payload = ticket.getPayload();
+            const userid = payload['sub'];
+            // If request specified a G Suite domain:
+            // const domain = payload['hd']
+            //console.log(payload);
+            //console.log(payload.email);
+            sess.email = payload.email;
+            //console.log(sess.email);
+        }
+        verify().catch(console.error);
+        res.send(200);
+    });
 };
