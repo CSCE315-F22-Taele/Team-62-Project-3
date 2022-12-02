@@ -45,9 +45,21 @@ module.exports = function(app, home, db) {
             res.redirect("/nopermission");
             return;
         }
+        const date = new Date();
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+        let dbDate = year+"-"+month+"-"+day
+
 		let results = await db.sendQuery("SELECT SUM(total) FROM orders");
 		let salesNum = results.rows[0].sum;
-        res.render("manager/summary.ejs", {sales:salesNum});
+
+        let results2 = await db.sendQuery("SELECT SUM(total) FROM orders WHERE date > (date '" + dbDate + "' - integer '7')");
+        let weekSales = results2.rows[0].sum;
+
+        let order_data = await db.sendQuery("SELECT * FROM item where quantity < minquantity");
+
+        res.render("manager/summary.ejs", {sales:salesNum, week:weekSales, restock:order_data.rows});
     });
 
     app.get("/manager/orders", async function(req, res){
