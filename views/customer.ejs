@@ -87,8 +87,8 @@
 							<div class="main-grid-items">
 								<% for(let productDef of productDefs) { %>
 									<button
-										onclick="loadNewProduct(<%=productDef.id%>);changeScreen('order-screen');changeScreen('rice-screen')"
 										id="productDef_button_<%=productDef.id%>"
+										onclick="loadNewProduct(<%=productDef.id%>);changeScreenProduct(<%=productDef.id%>)"
 									>
 										<%=productDef.name%>
 									</button>
@@ -246,11 +246,10 @@
 				<h3>Anything Else?</h3>
 				<button onclick="changeScreen('order-screen');changeScreen('checkout')">Add Item</button>
 			<div id="receipt"></div>
-
-                <p>
-                    Subtotal: $<span id="subtotal">0.00</span><br>
-                    Total: $<span id="total">0.00</span><br>
-                </p>
+        <p>
+            Subtotal: $<span id="subtotal">0.00</span><br>
+            Total: $<span id="total">0.00</span><br>
+        </p>
 				<button onclick="finalizeOrder()">Checkout</button>
 			</div>
 
@@ -301,42 +300,6 @@
 				});
 			}
 
-			/**
-			 * returns a list of items ()
-			 * this can be a set of: butter chicken, falafels, Gyro Meat etc...
-			 * or: olives, tomatoes, peppers, etc..
-			 * or something else
-			 * uses the 'item' table in the DB
-			 */
-			const loadCategory = (category) => {
-				let categoryItems = [];
-				if (category === 1) {
-					for(let item of items){
-						if(item.categoryid === 1) {
-							console.log("protein items: " + item.name)
-							categoryItems = []
-							categoryItems.concat(item.name)
-						}
-					}
-				} else if (category === 2) {
-					for(let item of items){
-						if(item.categoryid === 2) {
-							console.log("protein items: " + item.name)
-							categoryItems = []
-							categoryItems.concat(item.name)
-						}
-					}
-				} else if (category === 3) {
-					for(let item of items){
-						if(item.categoryid === 3) {
-							console.log("protein items: " + item.name)
-							categoryItems = []
-							categoryItems.concat(item.name)
-						}
-					}
-				}
-				return categoryItems;
-			}
 
 
 			/**
@@ -347,7 +310,7 @@
 
 				// edit button
 				let editBtn = document.createElement("button");
-        		let thisProductId = currentProductId; // Copy the variable in a local context.
+        let thisProductId = currentProductId; // Copy the variable in a local context.
 				editBtn.id = "product_button_" + thisProductId;
 				editBtn.innerText = "Edit";
 				newProduct = {
@@ -358,8 +321,29 @@
 				products[thisProductId] = newProduct;
 				editBtn.addEventListener("click", function(){
 					loadExistingProduct(thisProductId);
-					changeScreen('rice-screen');  // show rice-screen
-					changeScreen('checkout');  // hide checkout
+
+					if (productDefId == 6) {
+						changeScreen('checkout'); 
+						changeScreen('extras-screen')
+					} else if (productDefId == 5) {
+						changeScreen('checkout'); 
+						changeScreen('protein-screen')
+					} else if (productDefId == 4) {
+
+					} else if (productDefId == 3) {
+						changeScreen('checkout'); 
+						changeScreen('extras-screen')
+
+					} else if (productDefId == 2) {
+						changeScreen('checkout'); 
+						changeScreen('rice-screen');
+					} else if (productDefId == 1) {
+						changeScreen('checkout'); 
+						changeScreen('rice-screen');
+					} else {
+						changeScreen('checkout');
+						changeScreen('rice-screen');
+					}
 				});
 
 				// receipt div
@@ -383,12 +367,21 @@
 					removeSelectedProduct();
 				})
 
-				document.querySelector("#receipt").appendChild(receiptArea);
-				document.querySelector("#receipt"+thisProductId).appendChild(orderInfo);
-				document.querySelector("#receipt"+thisProductId).appendChild(editBtn);
-				document.querySelector("#receipt"+thisProductId).appendChild(removeBtn);
 
-				//
+				console.log("element id ::::: " + productDefId)
+
+				if (productDefId === 7 || productDefId === 4) {
+					document.querySelector("#receipt").appendChild(receiptArea);
+					document.querySelector("#receipt"+thisProductId).appendChild(orderInfo);
+					document.querySelector("#receipt"+thisProductId).appendChild(removeBtn);
+				} else {
+					document.querySelector("#receipt").appendChild(receiptArea);
+					document.querySelector("#receipt"+thisProductId).appendChild(orderInfo);
+					document.querySelector("#receipt"+thisProductId).appendChild(editBtn);
+					document.querySelector("#receipt"+thisProductId).appendChild(removeBtn);
+				}
+				
+
 				newProduct = {
 					productDef: productDefId,
 					price: productDef.price,
@@ -525,6 +518,37 @@
 				return x.style.display = "block";
 			}
 			return x.style.display = "none";
+		}
+
+		/*
+		 * change screen based on the product the customer picked
+		 */
+		function changeScreenProduct(id) {
+			if (id === 7) { 
+				changeScreen('order-screen')
+				changeScreen('checkout')
+			} else if (id == 6) {
+				changeScreen('order-screen')
+				changeScreen('extras-screen')
+			} else if (id == 5) {
+				changeScreen('order-screen')
+				changeScreen('protein-screen')
+			} else if (id == 4) {
+				changeScreen('order-screen')
+				changeScreen('checkout')
+			} else if (id == 3) {
+				changeScreen('order-screen')
+				changeScreen('extras-screen')
+			} else if (id == 2) {
+				changeScreen('order-screen')
+				changeScreen('rice-screen')
+			} else if (id == 1) {
+				changeScreen('order-screen')
+				changeScreen('rice-screen')
+			} else {
+				changeScreen('order-screen')
+				changeScreen('checkout')
+			}
 		}
 
 		const getProductDef = (id) => {
