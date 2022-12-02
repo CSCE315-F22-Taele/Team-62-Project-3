@@ -6,13 +6,13 @@
 			#contentWrapper{
 				width:100%;
 			}
-		
+
 		.center-container {
 			margin: auto;
 			width: 100vmin;
 			justify-content: center;
 			text-align: center;
-			
+
 			<!-- border: 5px solid;
 			padding: 50px 0; -->
 		}
@@ -42,7 +42,7 @@
 			background:#444 ;
 			border:none;
 		}
-		
+
 		.main-grid-items {
 			display: grid;
 			grid-template-columns: repeat(2, 100px);
@@ -64,7 +64,7 @@
 
 	</head>
 	<body>
-		<div class="center-container">	
+		<div class="center-container">
 		<div id="google_translate_id"></div>
 
 			<div style="display: block" id="start-screen">
@@ -75,9 +75,10 @@
 						Start Order
 					</button>
 					<button>Login</button>
+                    <div id="googleMap" style="width:100%;height:400px;"></div>
 				</div>
 			</div>
-			
+
 			<div id="order-screen" style="display: none">
 				<h2>What Looks Good Today?</h2>
 				<table id="contentWrapper">
@@ -85,9 +86,9 @@
 						<td>
 							<div class="main-grid-items">
 								<% for(let productDef of productDefs) { %>
-									<button 
-										onclick="loadNewProduct(<%=productDef.id%>);changeScreen('order-screen');changeScreen('rice-screen')"
+									<button
 										id="productDef_button_<%=productDef.id%>"
+										onclick="loadNewProduct(<%=productDef.id%>);changeScreenProduct(<%=productDef.id%>)"
 									>
 										<%=productDef.name%>
 									</button>
@@ -104,26 +105,26 @@
 			</div>
 
 			<div id="rice-screen" style="display: none">
-				
-				<% var color%> 
-				<% for (let cat of categories) { %> 
-					<% if (cat.id === 0) { %> 
+
+				<% var color%>
+				<% for (let cat of categories) { %>
+					<% if (cat.id === 0) { %>
 						<h2><%= cat.description %></h2>
-						<% color = cat.color %> 
-					<% } %> 
-				<% } %> 
-				
+						<% color = cat.color %>
+					<% } %>
+				<% } %>
+
 				<table id="contentWrapper">
 					<tr>
 						<td>
 							<div id="all-items" class="main-grid-items">
-								<% for (let item of items) { %> 
-									<% if (item.categoryid === 0) { %> 
+								<% for (let item of items) { %>
+									<% if (item.categoryid === 0) { %>
 											<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
 												<%= item.name %>
 											</button>
-									<% } %> 
-								<% } %> 
+									<% } %>
+								<% } %>
 							</div>
 						</td>
 					</tr>
@@ -140,24 +141,24 @@
 
 			<div id="protein-screen" style="display: none">
 
-				<% for (let cat of categories) { %> 
-					<% if (cat.id === 1) { %> 
+				<% for (let cat of categories) { %>
+					<% if (cat.id === 1) { %>
 						<h2><%= cat.description %></h2>
-						color = <%=cat.color %> 
-					<% } %> 
-				<% } %> 
-				
+						color = <%=cat.color %>
+					<% } %>
+				<% } %>
+
 				<table id="contentWrapper">
 					<tr>
 						<td>
 							<div id="all-items" class="main-grid-items">
-								<% for (let item of items) { %> 
-									<% if (item.categoryid === 1) { %> 
+								<% for (let item of items) { %>
+									<% if (item.categoryid === 1) { %>
 											<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
 												<%= item.name %>
 											</button>
-									<% } %> 
-								<% } %> 
+									<% } %>
+								<% } %>
 							</div>
 						</td>
 					</tr>
@@ -173,25 +174,25 @@
 			</div>
 
 			<div id="toppings-screen" style="display: none">
-				
-				<% for (let cat of categories) { %> 
-					<% if (cat.id === 2) { %> 
+
+				<% for (let cat of categories) { %>
+					<% if (cat.id === 2) { %>
 						<h2><%= cat.description %></h2>
-						color = <%=cat.color %> 
-					<% } %> 
-				<% } %> 
-				
+						color = <%=cat.color %>
+					<% } %>
+				<% } %>
+
 				<table id="contentWrapper">
 					<tr>
 						<td>
 							<div id="all-items" class="main-grid-items">
-								<% for (let item of items) { %> 
-									<% if (item.categoryid === 2) { %> 
+								<% for (let item of items) { %>
+									<% if (item.categoryid === 2) { %>
 										<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
 											<%= item.name %>
 										</button>
-									<% } %> 
-								<% } %> 
+									<% } %>
+								<% } %>
 							</div>
 						</td>
 					</tr>
@@ -207,26 +208,26 @@
 			</div>
 
 			<div id="extras-screen" style="display: none">
-				
-				<% for (let cat of categories) { %> 
-					<% if (cat.id === 3) { %> 
-						<h2><%= cat.description %></h2>
-						color = <%=cat.color %> 
-					<% } %> 
-				<% } %> 
 
-				
+				<% for (let cat of categories) { %>
+					<% if (cat.id === 3) { %>
+						<h2><%= cat.description %></h2>
+						color = <%=cat.color %>
+					<% } %>
+				<% } %>
+
+
 				<table id="contentWrapper">
 					<tr>
 						<td>
 							<div id="all-items" class="main-grid-items">
-								<% for (let item of items) { %> 
-									<% if (item.categoryid === 3) { %> 
+								<% for (let item of items) { %>
+									<% if (item.categoryid === 3) { %>
 										<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
 											<%= item.name %>
 										</button>
-									<% } %> 
-								<% } %> 
+									<% } %>
+								<% } %>
 							</div>
 						</td>
 					</tr>
@@ -245,17 +246,34 @@
 				<h3>Anything Else?</h3>
 				<button onclick="changeScreen('order-screen');changeScreen('checkout')">Add Item</button>
 			<div id="receipt"></div>
-
-                <p>
-                    Subtotal: $<span id="subtotal">0.00</span><br>
-                    Total: $<span id="total">0.00</span><br>
-                </p>
+        <p>
+            Subtotal: $<span id="subtotal">0.00</span><br>
+            Total: $<span id="total">0.00</span><br>
+        </p>
 				<button onclick="finalizeOrder()">Checkout</button>
 			</div>
-			
+
 		</div>
 	<script src="/js/server.js"></script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script>
+        function myMap() {
+            var location = new google.maps.LatLng(30.612448686913215, -96.34127527360305);
+            var mapProp= {
+                center:location,
+                zoom:15,
+            };
+
+            var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+            new google.maps.Marker({
+                position: location,
+                map,
+                title: "Pom and Honey",
+              });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW9HNP9YkGooUrAov5-VImo6XmtbEQ4W8&callback=myMap"></script>
 		<script>
 			var discount = 0;
 			var productDefs = <%-JSON.stringify(productDefs)%>;
@@ -282,42 +300,6 @@
 				});
 			}
 
-			/**
-			 * returns a list of items ()
-			 * this can be a set of: butter chicken, falafels, Gyro Meat etc...
-			 * or: olives, tomatoes, peppers, etc..
-			 * or something else
-			 * uses the 'item' table in the DB
-			 */
-			const loadCategory = (category) => {
-				let categoryItems = [];
-				if (category === 1) {
-					for(let item of items){
-						if(item.categoryid === 1) {
-							console.log("protein items: " + item.name)
-							categoryItems = []
-							categoryItems.concat(item.name)
-						}
-					}
-				} else if (category === 2) {
-					for(let item of items){
-						if(item.categoryid === 2) {
-							console.log("protein items: " + item.name)
-							categoryItems = []
-							categoryItems.concat(item.name)
-						}
-					}
-				} else if (category === 3) {
-					for(let item of items){
-						if(item.categoryid === 3) {
-							console.log("protein items: " + item.name)
-							categoryItems = []
-							categoryItems.concat(item.name)
-						}
-					}
-				}
-				return categoryItems;
-			}
 
 
 			/**
@@ -325,10 +307,10 @@
 			 */
 			function loadNewProduct(productDefId){
 				productDef = getProductDef(productDefId);
-				
+
 				// edit button
 				let editBtn = document.createElement("button");
-        		let thisProductId = currentProductId; // Copy the variable in a local context.
+        let thisProductId = currentProductId; // Copy the variable in a local context.
 				editBtn.id = "product_button_" + thisProductId;
 				editBtn.innerText = "Edit";
 				newProduct = {
@@ -339,8 +321,29 @@
 				products[thisProductId] = newProduct;
 				editBtn.addEventListener("click", function(){
 					loadExistingProduct(thisProductId);
-					changeScreen('rice-screen');  // show rice-screen
-					changeScreen('checkout');  // hide checkout
+
+					if (productDefId == 6) {
+						changeScreen('checkout'); 
+						changeScreen('extras-screen')
+					} else if (productDefId == 5) {
+						changeScreen('checkout'); 
+						changeScreen('protein-screen')
+					} else if (productDefId == 4) {
+
+					} else if (productDefId == 3) {
+						changeScreen('checkout'); 
+						changeScreen('extras-screen')
+
+					} else if (productDefId == 2) {
+						changeScreen('checkout'); 
+						changeScreen('rice-screen');
+					} else if (productDefId == 1) {
+						changeScreen('checkout'); 
+						changeScreen('rice-screen');
+					} else {
+						changeScreen('checkout');
+						changeScreen('rice-screen');
+					}
 				});
 
 				// receipt div
@@ -350,7 +353,7 @@
 				receiptArea.style.borderColor = 'purple';
 				receiptArea.style.margin = '10px';
 				receiptArea.style.borderRadius = '5px';
-				
+
 				// text for div
 				let orderInfo = document.createElement("p")
 				orderInfo.innerText = productDef.name + ": $" + productDef.price;
@@ -363,13 +366,22 @@
 					loadExistingProduct(thisProductId)
 					removeSelectedProduct();
 				})
-				
-				document.querySelector("#receipt").appendChild(receiptArea);
-				document.querySelector("#receipt"+thisProductId).appendChild(orderInfo);
-				document.querySelector("#receipt"+thisProductId).appendChild(editBtn);
-				document.querySelector("#receipt"+thisProductId).appendChild(removeBtn);
 
-				// 
+				// 7 is the product id number for fountain drink
+				// 4 is the product id number for falafels
+				// both do not need a edit button
+				if (productDefId === 7 || productDefId === 4) {
+					document.querySelector("#receipt").appendChild(receiptArea);
+					document.querySelector("#receipt"+thisProductId).appendChild(orderInfo);
+					document.querySelector("#receipt"+thisProductId).appendChild(removeBtn);
+				} else {
+					document.querySelector("#receipt").appendChild(receiptArea);
+					document.querySelector("#receipt"+thisProductId).appendChild(orderInfo);
+					document.querySelector("#receipt"+thisProductId).appendChild(editBtn);
+					document.querySelector("#receipt"+thisProductId).appendChild(removeBtn);
+				}
+				
+
 				newProduct = {
 					productDef: productDefId,
 					price: productDef.price,
@@ -431,7 +443,7 @@
             console.log("Removing product " + selectedProductId);
             button = document.querySelector("#product_button_" + selectedProductId);
             console.log(button);
-            
+
 			delete products[selectedProductId];
 			const parentID = event.target.parentElement.id
 			const receiptDiv = document.getElementById(parentID);
@@ -508,6 +520,37 @@
 			return x.style.display = "none";
 		}
 
+		/*
+		 * change screen based on the product the customer picked
+		 */
+		function changeScreenProduct(id) {
+			if (id === 7) { 
+				changeScreen('order-screen')
+				changeScreen('checkout')
+			} else if (id == 6) {
+				changeScreen('order-screen')
+				changeScreen('extras-screen')
+			} else if (id == 5) {
+				changeScreen('order-screen')
+				changeScreen('protein-screen')
+			} else if (id == 4) {
+				changeScreen('order-screen')
+				changeScreen('checkout')
+			} else if (id == 3) {
+				changeScreen('order-screen')
+				changeScreen('extras-screen')
+			} else if (id == 2) {
+				changeScreen('order-screen')
+				changeScreen('rice-screen')
+			} else if (id == 1) {
+				changeScreen('order-screen')
+				changeScreen('rice-screen')
+			} else {
+				changeScreen('order-screen')
+				changeScreen('checkout')
+			}
+		}
+
 		const getProductDef = (id) => {
 			let productDef;
 			for(let def of productDefs){
@@ -518,8 +561,8 @@
 			}
 			return productDef;
 		}
-		
+
 		</script>
 
-	</body> 
+	</body>
 </html>
