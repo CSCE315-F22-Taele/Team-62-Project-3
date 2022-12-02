@@ -367,9 +367,9 @@
 					removeSelectedProduct();
 				})
 
-
-				console.log("element id ::::: " + productDefId)
-
+				// 7 is the product id number for fountain drink
+				// 4 is the product id number for falafels
+				// both do not need a edit button
 				if (productDefId === 7 || productDefId === 4) {
 					document.querySelector("#receipt").appendChild(receiptArea);
 					document.querySelector("#receipt"+thisProductId).appendChild(orderInfo);
