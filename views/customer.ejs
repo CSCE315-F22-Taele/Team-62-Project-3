@@ -129,15 +129,12 @@
 									<% if (item.categoryid === 0) { %>
 											<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
 												<%= item.name %>
-												<img src='assets/assetitem/photo<%=item.id%>.jpeg'>
-
-												<button
-										id="productDef_button_<%=productDef.id%>"
-										onclick="loadNewProduct(<%=productDef.id%>);changeScreenProduct(<%=productDef.id%>)"
-									>
-											<%=item.name%>
-											</button>	
-
+												<img 
+													id="item_button_<%=item.id%>"
+													src='assets/assetitem/photo<%=item.id%>.jpeg'
+													width="100" 
+													height="100" 
+												>
 											</button>
 									<% } %>
 								<% } %>
