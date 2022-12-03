@@ -1,6 +1,0 @@
-DEVMODE=true
-PORT=8080
-PGHOST=pomandhoney.kfox.studio
-PGDATABASE=main
-PGUSER=aggie
-PGPASSWORD=whoop
