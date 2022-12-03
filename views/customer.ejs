@@ -128,13 +128,14 @@
 								<% for (let item of items) { %>
 									<% if (item.categoryid === 0) { %>
 											<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
-												<%= item.name %>
+												
 												<img 
 													id="item_button_<%=item.id%>"
 													src='assets/assetitem/photo<%=item.id%>.jpeg'
 													width="100" 
 													height="100" 
 												>
+												<%= item.name %>
 											</button>
 									<% } %>
 								<% } %>
@@ -168,13 +169,14 @@
 								<% for (let item of items) { %>
 									<% if (item.categoryid === 1) { %>
 											<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
-												<%= item.name %>
+												
 												<img 
 													id="item_button_<%=item.id%>"
 													src='assets/assetitem/photo<%=item.id%>.jpeg'
 													width="100" 
 													height="100" 
 												>
+												<%= item.name %>
 											</button>
 									<% } %>
 								<% } %>
@@ -208,13 +210,14 @@
 								<% for (let item of items) { %>
 									<% if (item.categoryid === 2) { %>
 										<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
-											<%= item.name %>
+										
 											<img 
 													id="item_button_<%=item.id%>"
 													src='assets/assetitem/photo<%=item.id%>.jpeg'
 													width="100" 
 													height="100" 
 												>
+											<%= item.name %>
 										</button>
 									<% } %>
 								<% } %>
@@ -249,13 +252,13 @@
 								<% for (let item of items) { %>
 									<% if (item.categoryid === 3) { %>
 										<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
-											<%= item.name %>
 											<img 
 													id="item_button_<%=item.id%>"
 													src='assets/assetitem/photo<%=item.id%>.jpeg'
 													width="100" 
 													height="100" 
 												>
+											<%= item.name %>
 										</button>
 									<% } %>
 								<% } %>
