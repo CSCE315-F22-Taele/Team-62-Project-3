@@ -74,7 +74,49 @@
 					<button onclick="changeScreen('start-screen');changeScreen('order-screen')">
 						Start Order
 					</button>
-					<button>Login</button>
+
+					<div id="g_id_onload"
+						data-client_id="1001480195333-8c7osehemrrpbkpl72ptme7n69s8h3up.apps.googleusercontent.com"
+						data-context="signin"
+						data-callback="verify"
+						data-auto_prompt="false">
+					</div>
+		
+					<div class="g_id_signin"
+						data-type="standard"
+						data-shape="rectangular"
+						data-theme="outline"
+						data-text="signin_with"
+						data-size="large"
+						data-logo_alignment="left">
+					</div>
+
+					<script src="https://accounts.google.com/gsi/client" async defer></script>
+					<script src="/js/server.js"></script>
+					<meta name="referrer" content="no-referrer-when-downgrade"></meta>
+			
+					<script>
+						window.onload = function () {
+						  google.accounts.id.initialize({
+							client_id: '1001480195333-8c7osehemrrpbkpl72ptme7n69s8h3up.apps.googleusercontent.com',
+							callback: verify,
+						  });
+						  //google.accounts.id.prompt();
+						};
+					</script>
+			
+					<script>
+						async function verify(res) {
+							//console.log(res.credential);
+							token = {
+								"token":res.credential
+							}
+							server.POST("/login", token, "/", (error) => {
+								alert(error);
+							});
+						}
+					</script>
+
                     <div id="googleMap" style="width:100%;height:400px;"></div>
 				</div>
 			</div>

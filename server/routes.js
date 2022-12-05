@@ -20,7 +20,11 @@ module.exports = function(app, home, db) {
 	});
 
     app.get("/", function(req, res){
-        res.render("index.ejs");
+        if (sess.email != "") {
+            res.redirect("/home");
+            return;
+        }
+        res.redirect("/customer");
     });
 
     /* BEGIN GET REQUESTS */
@@ -80,7 +84,7 @@ module.exports = function(app, home, db) {
         //console.log("in server sign in");
         if (sess.email != "") {
             //console.log("is signed in");
-            let isServer = await db.sendQuery("SELECT isserver FROM email WHERE email='" + sess.email + "'");
+            let isServer = await db.sendQuery("SELECT isserver, ismanager FROM email WHERE email='" + sess.email + "'");
             if (isServer.rowCount == 0) { // if you're not in the database
                 res.redirect("/nopermission");
                 return;
@@ -112,6 +116,10 @@ module.exports = function(app, home, db) {
         res.render("nopermission.ejs");
     });
 
+    app.get("/home", (req, res) => {
+        res.render("home.ejs", {user:sess});
+    });
+
     app.post("/item", async function(req, res){
         res.status(400);
         let id = req.body.id;
@@ -135,10 +143,23 @@ module.exports = function(app, home, db) {
         await db.addOrderToDatabase(req.body);
         res.send(200);
     });
+    app.get("/logout", function(req, res) {
+        sess = {};
+        sess.email = "";
+        sess.name = "";
+        sess.server = false;
+        sess.manager = false;
+        console.log(sess);
+        res.redirect("/");
+    });
 
     var sess = {};
     sess.email = "";
+    sess.name = "";
+    sess.server = false;
+    sess.manager = false;
     app.post("/login", async function(req, res) {
+        res.status(400);
         //console.log("in login");
         sess = req.session;
         //console.log(req.body);
@@ -159,9 +180,21 @@ module.exports = function(app, home, db) {
             //console.log(payload);
             //console.log(payload.email);
             sess.email = payload.email;
+            sess.name = payload.name;
             //console.log(sess.email);
+            //console.log(sess.name);
         }
-        verify().catch(console.error);
+        await verify().catch(console.error);
+        let permissions = await db.sendQuery("SELECT isserver, ismanager FROM email WHERE email='" + sess.email + "'");
+        if (permissions.rowCount != 0) { // if you're not in the database
+            if (permissions.rows[0].isserver) { // if you're in the database but not a manager
+                sess.server = true;
+            }
+            if (permissions.rows[0].ismanager) { // if you're in the database but not a manager
+                sess.manager = true;
+            }
+        }
+        console.log(sess);
         res.send(200);
     });
 };

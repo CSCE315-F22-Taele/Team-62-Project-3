@@ -50,12 +50,16 @@
         </script>
 
         <script>
-            function verify(res) {
+            async function verify(res) {
                 //console.log(res.credential);
                 token = {
                     "token":res.credential
                 }
-                server.POST("/login", token, response => {console.log("post")});
+                server.POST("/login", token, (response) => {
+                    window.location.reload();
+                    }, (error) => {
+                    alert(error);
+                });
             }
         </script>
         
