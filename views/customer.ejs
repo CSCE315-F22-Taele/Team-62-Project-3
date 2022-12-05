@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<link rel="stylesheet" type="text/css" href="/css/main.css"></link>
 		<title>customer view</title>
 		<style>
 			#contentWrapper{
@@ -13,10 +14,7 @@
 			justify-content: center;
 			text-align: center;
 
-			<!-- border: 5px solid;
-			padding: 50px 0; -->
 		}
-
 
 		button {
 			border:none;
@@ -45,9 +43,9 @@
 
 		.main-grid-items {
 			display: grid;
-			grid-template-columns: repeat(2, 100px);
-			grid-template-rows: repeat(6, 100px);
-			margin-left: 40%;
+			grid-template-columns: repeat(3, 150px);
+			grid-template-rows: repeat(6, 150px);
+			margin-left: 24%;
 			height:500px;
 			grid-gap:0px;
 		}
@@ -74,7 +72,49 @@
 					<button onclick="changeScreen('start-screen');changeScreen('order-screen')">
 						Start Order
 					</button>
-					<button>Login</button>
+
+					<div id="g_id_onload"
+						data-client_id="1001480195333-8c7osehemrrpbkpl72ptme7n69s8h3up.apps.googleusercontent.com"
+						data-context="signin"
+						data-callback="verify"
+						data-auto_prompt="false">
+					</div>
+		
+					<div class="g_id_signin"
+						data-type="standard"
+						data-shape="rectangular"
+						data-theme="outline"
+						data-text="signin_with"
+						data-size="large"
+						data-logo_alignment="left">
+					</div>
+
+					<script src="https://accounts.google.com/gsi/client" async defer></script>
+					<script src="/js/server.js"></script>
+					<meta name="referrer" content="no-referrer-when-downgrade"></meta>
+			
+					<script>
+						window.onload = function () {
+						  google.accounts.id.initialize({
+							client_id: '1001480195333-8c7osehemrrpbkpl72ptme7n69s8h3up.apps.googleusercontent.com',
+							callback: verify,
+						  });
+						  //google.accounts.id.prompt();
+						};
+					</script>
+			
+					<script>
+						async function verify(res) {
+							//console.log(res.credential);
+							token = {
+								"token":res.credential
+							}
+							server.POST("/login", token, "/", (error) => {
+								alert(error);
+							});
+						}
+					</script>
+
                     <div id="googleMap" style="width:100%;height:400px;"></div>
 				</div>
 			</div>
@@ -87,9 +127,15 @@
 							<div class="main-grid-items">
 								<% for(let productDef of productDefs) { %>
 									<button
-										onclick="loadNewProduct(<%=productDef.id%>);changeScreen('order-screen');changeScreen('rice-screen')"
 										id="productDef_button_<%=productDef.id%>"
+										onclick="loadNewProduct(<%=productDef.id%>);changeScreenProduct(<%=productDef.id%>)"
 									>
+										<img 
+											id="productDef_button_<%=productDef.id%>"
+											src='assets/assetproductdef/photo<%=productDef.id%>.jpeg' 
+											width="100" 
+											height="100" 
+										>
 										<%=productDef.name%>
 									</button>
 								<% } %>
@@ -97,11 +143,6 @@
 						</td>
 					</tr>
 				</table>
-				<div>
-					<button onclick="changeScreen('order-screen');changeScreen('rice-screen')">
-						Next ⮞
-					</button>
-				</div>
 			</div>
 
 			<div id="rice-screen" style="display: none">
@@ -110,7 +151,6 @@
 				<% for (let cat of categories) { %>
 					<% if (cat.id === 0) { %>
 						<h2><%= cat.description %></h2>
-						<% color = cat.color %>
 					<% } %>
 				<% } %>
 
@@ -121,6 +161,13 @@
 								<% for (let item of items) { %>
 									<% if (item.categoryid === 0) { %>
 											<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
+												
+												<img 
+													id="item_button_<%=item.id%>"
+													src='assets/assetitem/photo<%=item.id%>.jpeg'
+													width="100" 
+													height="100" 
+												>
 												<%= item.name %>
 											</button>
 									<% } %>
@@ -130,10 +177,7 @@
 					</tr>
 				</table>
 				<div>
-					<button onclick="changeScreen('order-screen');changeScreen('rice-screen')">
-						⮜ previous
-					</button>
-					<button onclick="changeScreen('rice-screen');changeScreen('protein-screen')">
+					<button onclick="changeScreen('rice-screen');changeScreen('protein-screen');proteinAreaBtn(0)">
 						Next ⮞
 					</button>
 				</div>
@@ -144,7 +188,6 @@
 				<% for (let cat of categories) { %>
 					<% if (cat.id === 1) { %>
 						<h2><%= cat.description %></h2>
-						color = <%=cat.color %>
 					<% } %>
 				<% } %>
 
@@ -155,6 +198,13 @@
 								<% for (let item of items) { %>
 									<% if (item.categoryid === 1) { %>
 											<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
+												
+												<img 
+													id="item_button_<%=item.id%>"
+													src='assets/assetitem/photo<%=item.id%>.jpeg'
+													width="100" 
+													height="100" 
+												>
 												<%= item.name %>
 											</button>
 									<% } %>
@@ -163,13 +213,8 @@
 						</td>
 					</tr>
 				</table>
-				<div>
-					<button onclick="changeScreen('protein-screen');changeScreen('rice-screen')">
-						⮜ previous
-					</button>
-					<button onclick="changeScreen('protein-screen');changeScreen('toppings-screen')">
-						Next ⮞
-					</button>
+				<div id="protein-area">
+
 				</div>
 			</div>
 
@@ -178,7 +223,6 @@
 				<% for (let cat of categories) { %>
 					<% if (cat.id === 2) { %>
 						<h2><%= cat.description %></h2>
-						color = <%=cat.color %>
 					<% } %>
 				<% } %>
 
@@ -188,7 +232,14 @@
 							<div id="all-items" class="main-grid-items">
 								<% for (let item of items) { %>
 									<% if (item.categoryid === 2) { %>
-										<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
+										<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>">
+										
+											<img 
+													id="item_button_<%=item.id%>"
+													src='assets/assetitem/photo<%=item.id%>.jpeg'
+													width="100" 
+													height="100" 
+												>
 											<%= item.name %>
 										</button>
 									<% } %>
@@ -198,7 +249,7 @@
 					</tr>
 				</table>
 				<div>
-					<button onclick="changeScreen('toppings-screen');changeScreen('protein-screen')">
+					<button onclick="changeScreen('toppings-screen');changeScreen('protein-screen');proteinAreaBtn(0)">
 						⮜ previous
 					</button>
 					<button onclick="changeScreen('toppings-screen');changeScreen('extras-screen')">
@@ -212,7 +263,6 @@
 				<% for (let cat of categories) { %>
 					<% if (cat.id === 3) { %>
 						<h2><%= cat.description %></h2>
-						color = <%=cat.color %>
 					<% } %>
 				<% } %>
 
@@ -224,6 +274,12 @@
 								<% for (let item of items) { %>
 									<% if (item.categoryid === 3) { %>
 										<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
+											<img 
+													id="item_button_<%=item.id%>"
+													src='assets/assetitem/photo<%=item.id%>.jpeg'
+													width="100" 
+													height="100" 
+												>
 											<%= item.name %>
 										</button>
 									<% } %>
@@ -232,12 +288,12 @@
 						</td>
 					</tr>
 				</table>
-				<div>
+				<div id="extras-button">
 					<button onclick="changeScreen('toppings-screen');changeScreen('extras-screen')">
 						⮜ previous
 					</button>
 					<button onclick="changeScreen('extras-screen');changeScreen('checkout')">
-						Next ⮞
+						Checkout ⮞
 					</button>
 				</div>
 			</div>
@@ -246,12 +302,11 @@
 				<h3>Anything Else?</h3>
 				<button onclick="changeScreen('order-screen');changeScreen('checkout')">Add Item</button>
 			<div id="receipt"></div>
-
-                <p>
-                    Subtotal: $<span id="subtotal">0.00</span><br>
-                    Total: $<span id="total">0.00</span><br>
-                </p>
-				<button onclick="finalizeOrder()">Checkout</button>
+        <p>
+            Subtotal: $<span id="subtotal">0.00</span><br>
+            Total: $<span id="total">0.00</span><br>
+        </p>
+				<button onclick="finalizeOrder()">Finalized Order</button>
 			</div>
 
 		</div>
@@ -294,49 +349,13 @@
 								product.selectedItems.add(itemId);
 							}
 							else {
-								product.selectedItems.remove(itemId);
+								// product.selectedItems.remove(itemId);
 							}
 						}
 					}
 				});
 			}
 
-			/**
-			 * returns a list of items ()
-			 * this can be a set of: butter chicken, falafels, Gyro Meat etc...
-			 * or: olives, tomatoes, peppers, etc..
-			 * or something else
-			 * uses the 'item' table in the DB
-			 */
-			const loadCategory = (category) => {
-				let categoryItems = [];
-				if (category === 1) {
-					for(let item of items){
-						if(item.categoryid === 1) {
-							console.log("protein items: " + item.name)
-							categoryItems = []
-							categoryItems.concat(item.name)
-						}
-					}
-				} else if (category === 2) {
-					for(let item of items){
-						if(item.categoryid === 2) {
-							console.log("protein items: " + item.name)
-							categoryItems = []
-							categoryItems.concat(item.name)
-						}
-					}
-				} else if (category === 3) {
-					for(let item of items){
-						if(item.categoryid === 3) {
-							console.log("protein items: " + item.name)
-							categoryItems = []
-							categoryItems.concat(item.name)
-						}
-					}
-				}
-				return categoryItems;
-			}
 
 
 			/**
@@ -347,7 +366,7 @@
 
 				// edit button
 				let editBtn = document.createElement("button");
-        		let thisProductId = currentProductId; // Copy the variable in a local context.
+        let thisProductId = currentProductId; // Copy the variable in a local context.
 				editBtn.id = "product_button_" + thisProductId;
 				editBtn.innerText = "Edit";
 				newProduct = {
@@ -355,11 +374,40 @@
 					price: productDef.price,
 					selectedItems: new Set()
 				};
+
+
 				products[thisProductId] = newProduct;
 				editBtn.addEventListener("click", function(){
-					loadExistingProduct(thisProductId);
-					changeScreen('rice-screen');  // show rice-screen
-					changeScreen('checkout');  // hide checkout
+				loadExistingProduct(thisProductId);
+
+					// for edit button at checkout
+					if (productDefId == 6) {
+						changeScreen('checkout'); 
+						changeScreen('extras-screen')
+					} else if (productDefId == 5) {
+						// protein area
+						changeScreen('checkout'); 
+						changeScreen('protein-screen')
+						proteinAreaBtn(productDefId)
+
+					} else if (productDefId == 4) {
+
+					} else if (productDefId == 3) {
+						changeScreen('checkout'); 
+						changeScreen('extras-screen')
+
+					} else if (productDefId == 2) {
+						changeScreen('checkout'); 
+						changeScreen('rice-screen');
+						proteinAreaBtn(productDefId)
+					} else if (productDefId == 1) {
+						changeScreen('checkout'); 
+						changeScreen('rice-screen');
+						proteinAreaBtn(productDefId)
+					} else {
+						changeScreen('checkout');
+						changeScreen('rice-screen');
+					}
 				});
 
 				// receipt div
@@ -383,12 +431,21 @@
 					removeSelectedProduct();
 				})
 
-				document.querySelector("#receipt").appendChild(receiptArea);
-				document.querySelector("#receipt"+thisProductId).appendChild(orderInfo);
-				document.querySelector("#receipt"+thisProductId).appendChild(editBtn);
-				document.querySelector("#receipt"+thisProductId).appendChild(removeBtn);
+				// 7 is the product id number for fountain drink
+				// 4 is the product id number for falafels
+				// both do not need a edit button
+				if (productDefId === 7 || productDefId === 4) {
+					document.querySelector("#receipt").appendChild(receiptArea);
+					document.querySelector("#receipt"+thisProductId).appendChild(orderInfo);
+					document.querySelector("#receipt"+thisProductId).appendChild(removeBtn);
+				} else {
+					document.querySelector("#receipt").appendChild(receiptArea);
+					document.querySelector("#receipt"+thisProductId).appendChild(orderInfo);
+					document.querySelector("#receipt"+thisProductId).appendChild(editBtn);
+					document.querySelector("#receipt"+thisProductId).appendChild(removeBtn);
+				}
+				
 
-				//
 				newProduct = {
 					productDef: productDefId,
 					price: productDef.price,
@@ -413,7 +470,7 @@
 				itemId = button.getAttribute("itemId");
 				if (itemId) {
 					itemId = parseInt(itemId);
-					console.log("itemId: " + itemId)
+					// console.log("itemId: " + itemId)
 					if (productDef.optionalitemlist.includes(itemId)) {
 						button.style.display = "block";
 						if (selectedItems.has(itemId)) {
@@ -435,7 +492,7 @@
 				price += products[i].price;
 			}
 			document.querySelector("#subtotal").innerText = price.toFixed(2);
-        	document.querySelector("#total").innerText = (price * 1.0825 * (100-discount)/100).toFixed(2);
+      document.querySelector("#total").innerText = (price * 1.0825 * (100-discount)/100).toFixed(2);
 		}
 
 		const totalPrice = () => {
@@ -446,72 +503,70 @@
         	return (price * 1.0825).toFixed(2);
 		}
 
-        function removeSelectedProduct(){
-            console.log("Removing product " + selectedProductId);
-            button = document.querySelector("#product_button_" + selectedProductId);
-            console.log(button);
+    function removeSelectedProduct(){
+      // console.log("Removing product " + selectedProductId);
+      button = document.querySelector("#product_button_" + selectedProductId);
+      // console.log(button);
 
 			delete products[selectedProductId];
 			const parentID = event.target.parentElement.id
 			const receiptDiv = document.getElementById(parentID);
 			receiptDiv.remove()
 
-            resetAllButtons();
-            updatePrice();
-        }
+			resetAllButtons();
+			updatePrice();
+    }
 
-        function resetAllButtons(){
-            let buttons = document.querySelectorAll("#all-items button");
-            for(let button of buttons){
-                button.style.display = "none";
-                button.classList.remove("selected");
-            }
-            selectedProductId = -1;
-        }
+    function resetAllButtons(){
+      let buttons = document.querySelectorAll("#all-items button");
+      for(let button of buttons){
+        button.style.display = "none";
+        button.classList.remove("selected");
+      }
+      selectedProductId = -1;
+    }
 
 		var products = {}; // Used to store product data.
 		var currentProductId = 0; // Used to track new products.
 		var selectedProductId = -1; // Used to track the selected product.
 
 		function finalizeOrder() {
-            // Hints:
-            // start with the products object
-            const date = new Date();
+			const date = new Date();
 			let day = date.getDate();
-            let month = date.getMonth() + 1;
-            let year = date.getFullYear();
-            let dbDate = year+"-"+month+"-"+day
-            let orderDate = month+"/"+day+"/"+year
+      let month = date.getMonth() + 1;
+      let year = date.getFullYear();
+      let dbDate = year+"-"+month+"-"+day
+      let orderDate = month+"/"+day+"/"+year
 
-            let productList = []
+      let productList = []
 
 
-            // putting values into a list
-            console.log("here" + products);
-            let values = Object.values(products)
-            for (value in values) {
+      // putting values into a list
+      // console.log("here" + products);
+      let values = Object.values(products)
+      for (value in values) {
 				let newProduct = {"id": values[value].productDef, "selectedItems": Array.from(values[value].selectedItems)}
-                productList.push(newProduct)
-            }
+        productList.push(newProduct)
+			}
 
 			// the object that will pass into addOrderToDatabase
-            finalOrder = {
-                "discount": 0,
+			finalOrder = {
+				"discount": 0,
 				"productList": productList,
 			}
 
-			console.log(finalOrder)
+			// console.log(finalOrder)
 
-            // work with backend (Ezra) to figure out what he wants the object to look like.
+      // work with backend (Ezra) to figure out what he wants the object to look like.
 
-            // use server.POST (import /js/server.js)
-            server.POST("/customerOrder", finalOrder, (response) => {
-                window.location.reload();
-            }, (error) => {
+      // use server.POST (import /js/server.js)
+      server.POST("/customerOrder", finalOrder, (response) => {
+        window.location.reload();
+      }, (error) => {
 				alert(error);
-            })
+			})
 
-        }
+    }
 
 		function googleTranslateElementInit() {
 			new google.translate.TranslateElement(
@@ -525,6 +580,102 @@
 				return x.style.display = "block";
 			}
 			return x.style.display = "none";
+		}
+
+
+		/*
+		 * only used in proteinAreaBtn()
+		 * remove all btn in protein area so new buttons can be placed
+		 */
+		function removeProteinAreaBtn(protein_area) {
+				var buttons = protein_area.querySelectorAll('button');
+				for(var i=0; i<buttons.length; i++){
+					protein_area.removeChild(buttons[i]);
+				}
+		}
+
+		// depending on which prodcut select will determine which button protein screen area will have
+		function proteinAreaBtn(id) {
+
+			let protein_area = document.querySelector("#protein-area")
+			let protein_button1 = document.createElement("button");
+			let protein_button2 = document.createElement("button");
+			if (id == 5) {
+				protein_button1.innerText = 'Checkout'
+				protein_button1.addEventListener("click", function() {
+					changeScreen('protein-screen')
+					changeScreen('checkout')
+					removeProteinAreaBtn(protein_area)
+				})
+				protein_area.append(protein_button1)
+			} else {
+				protein_button1.innerText = 'Next ⮞'
+				protein_button2.innerText = '⮜ previous'
+
+				removeProteinAreaBtn(protein_area)
+				protein_button1.addEventListener("click", function() {
+					changeScreen('protein-screen')
+					changeScreen('toppings-screen')
+					removeProteinAreaBtn(protein_area)
+				})
+				protein_button2.addEventListener("click", function() {
+					changeScreen('protein-screen')
+					changeScreen('rice-screen')
+					removeProteinAreaBtn(protein_area)
+				})
+				protein_area.append(protein_button2)
+				protein_area.append(protein_button1)
+			}
+		}
+
+		/*
+		 * change screen based on the product the customer picked
+		 */
+		function changeScreenProduct(id) {
+			if (id === 7) { 
+				changeScreen('order-screen')
+				changeScreen('checkout')
+			} else if (id == 6) {
+				changeScreen('order-screen')
+				changeScreen('extras-screen')
+			} else if (id == 5) {
+				changeScreen('order-screen')
+				changeScreen('protein-screen')
+				proteinAreaBtn(id)
+
+			} else if (id == 4) {
+				changeScreen('order-screen')
+				changeScreen('checkout')
+			} else if (id == 3) {
+				changeScreen('order-screen')
+				changeScreen('extras-screen')
+
+				let extras_area = document.querySelector("#extras-button")
+				let protein_button1 = document.createElement("button");
+
+				var buttons = extras_area.querySelectorAll('button');
+				for(var i=0; i<buttons.length; i++){
+					extras_area.removeChild(buttons[i]);
+				}
+				protein_button1.innerText = 'Checkout ⮞'
+				protein_button1.addEventListener("click", function() {
+					changeScreen('extras-screen')
+					changeScreen('checkout')
+				})
+				extras_area.append(protein_button1)
+
+			} else if (id == 2) {
+				changeScreen('order-screen')
+				changeScreen('rice-screen')
+				proteinAreaBtn(id)
+			} else if (id == 1) {
+				changeScreen('order-screen')
+				changeScreen('rice-screen')
+				proteinAreaBtn(id)
+			} else {
+				changeScreen('order-screen')
+				changeScreen('checkout')
+			}
 		}
 
 		const getProductDef = (id) => {

@@ -48,7 +48,13 @@ button.selected {
 
 button:focus {
     text-decoration:underline;
+    font-weight: bold;
 }
+
+select:focus-visible {
+    background-color:lightblue;
+}
+
 
 button.neutral{
     background:#444 ;

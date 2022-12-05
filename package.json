@@ -9,8 +9,11 @@
     "dotenv": "^8.6.0",
     "ejs": "^3.1.8",
     "express": "^4.10.2",
+    "express-session": "^1.17.3",
+    "google-auth-library": "^8.7.0",
     "node-fetch": "^2.6.1",
     "nodemon": "^2.0.20",
+    "passport-google-oauth20": "^2.0.0",
     "pg": "^8.8.0"
   },
   "engines": {
