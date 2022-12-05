@@ -73,7 +73,7 @@
 						Start Order
 					</button>
 					<button>Login</button>
-                    <div id="googleMap" style="width:100%;height:400px;"></div>
+					<div id="googleMap" style="width:100%;height:400px;"></div>
 				</div>
 			</div>
 
@@ -136,10 +136,7 @@
 					</tr>
 				</table>
 				<div>
-					<button onclick="changeScreen('order-screen');changeScreen('rice-screen')">
-						⮜ previous
-					</button>
-					<button onclick="changeScreen('rice-screen');changeScreen('protein-screen')">
+					<button onclick="changeScreen('rice-screen');changeScreen('protein-screen');proteinAreaBtn(0)">
 						Next ⮞
 					</button>
 				</div>
@@ -213,7 +210,7 @@
 					</tr>
 				</table>
 				<div>
-					<button onclick="changeScreen('toppings-screen');changeScreen('protein-screen')">
+					<button onclick="changeScreen('toppings-screen');changeScreen('protein-screen');proteinAreaBtn(0)">
 						⮜ previous
 					</button>
 					<button onclick="changeScreen('toppings-screen');changeScreen('extras-screen')">
@@ -547,9 +544,13 @@
 			return x.style.display = "none";
 		}
 
+
+		/*
+		 * only used in proteinAreaBtn()
+		 * remove all btn in protein area so new buttons can be placed
+		 */
 		function removeProteinAreaBtn(protein_area) {
 				var buttons = protein_area.querySelectorAll('button');
-				console.log("BUTTON LENGTH :: " + buttons.length)
 				for(var i=0; i<buttons.length; i++){
 					protein_area.removeChild(buttons[i]);
 				}
@@ -560,22 +561,33 @@
 
 			let protein_area = document.querySelector("#protein-area")
 			let protein_button1 = document.createElement("button");
+			let protein_button2 = document.createElement("button");
 			if (id == 5) {
-				protein_button1.innerText = 'checkout'
+				protein_button1.innerText = 'Checkout'
 				protein_button1.addEventListener("click", function() {
 					changeScreen('protein-screen')
 					changeScreen('checkout')
 					removeProteinAreaBtn(protein_area)
 				})
+				protein_area.append(protein_button1)
 			} else {
-				protein_button1.innerText = 'next'
+				protein_button1.innerText = 'Next ⮞'
+				protein_button2.innerText = '⮜ previous'
+
+				removeProteinAreaBtn(protein_area)
 				protein_button1.addEventListener("click", function() {
 					changeScreen('protein-screen')
 					changeScreen('toppings-screen')
 					removeProteinAreaBtn(protein_area)
 				})
+				protein_button2.addEventListener("click", function() {
+					changeScreen('protein-screen')
+					changeScreen('rice-screen')
+					removeProteinAreaBtn(protein_area)
+				})
+				protein_area.append(protein_button2)
+				protein_area.append(protein_button1)
 			}
-			protein_area.append(protein_button1)
 		}
 
 		/*
