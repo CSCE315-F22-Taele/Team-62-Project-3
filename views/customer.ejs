@@ -43,9 +43,9 @@
 
 		.main-grid-items {
 			display: grid;
-			grid-template-columns: repeat(2, 150px);
+			grid-template-columns: repeat(3, 150px);
 			grid-template-rows: repeat(6, 150px);
-			margin-left: 33%;
+			margin-left: 24%;
 			height:500px;
 			grid-gap:0px;
 		}
@@ -72,7 +72,6 @@
 					<button onclick="changeScreen('start-screen');changeScreen('order-screen')">
 						Start Order
 					</button>
-					<button>Login</button>
 					<div id="googleMap" style="width:100%;height:400px;"></div>
 				</div>
 			</div>
@@ -109,7 +108,6 @@
 				<% for (let cat of categories) { %>
 					<% if (cat.id === 0) { %>
 						<h2><%= cat.description %></h2>
-						<% color = cat.color %>
 					<% } %>
 				<% } %>
 
@@ -147,7 +145,6 @@
 				<% for (let cat of categories) { %>
 					<% if (cat.id === 1) { %>
 						<h2><%= cat.description %></h2>
-						color = <%=cat.color %>
 					<% } %>
 				<% } %>
 
@@ -183,7 +180,6 @@
 				<% for (let cat of categories) { %>
 					<% if (cat.id === 2) { %>
 						<h2><%= cat.description %></h2>
-						color = <%=cat.color %>
 					<% } %>
 				<% } %>
 
@@ -193,7 +189,7 @@
 							<div id="all-items" class="main-grid-items">
 								<% for (let item of items) { %>
 									<% if (item.categoryid === 2) { %>
-										<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
+										<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>">
 										
 											<img 
 													id="item_button_<%=item.id%>"
@@ -224,7 +220,6 @@
 				<% for (let cat of categories) { %>
 					<% if (cat.id === 3) { %>
 						<h2><%= cat.description %></h2>
-						color = <%=cat.color %>
 					<% } %>
 				<% } %>
 
