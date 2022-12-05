@@ -353,7 +353,7 @@
 						// protein area
 						changeScreen('checkout'); 
 						changeScreen('protein-screen')
-						
+						proteinAreaBtn(productDefId)
 
 					} else if (productDefId == 4) {
 
@@ -545,28 +545,33 @@
 			return x.style.display = "none";
 		}
 
+		function removeProteinAreaBtn() {
+				var buttons = protein_area.querySelectorAll('button');
+				console.log("BUTTON LENGTH :: " + buttons.length)
+				for(var i=0; i<buttons.length; i++){
+					protein_area.removeChild(buttons[i]);
+				}
+		}
+
 		// depending on which prodcut select will determine which button protein screen area will have
 		function proteinAreaBtn(id) {
+
+			let protein_area = document.querySelector("#protein-area")
+			let protein_button1 = document.createElement("button");
 			if (id == 5) {
-				let protein_button1 = document.createElement("button");
 				protein_button1.innerText = 'checkout'
 				protein_button1.addEventListener("click", function() {
 					changeScreen('protein-screen')
 					changeScreen('checkout')
 				})
-				let protein_area = document.querySelector("#protein-area")
-				protein_area.append(protein_button1)
-
 			} else {
-				let protein_button1 = document.createElement("button");
 				protein_button1.innerText = 'next'
 				protein_button1.addEventListener("click", function() {
 					changeScreen('protein-screen')
 					changeScreen('toppings-screen')
 				})
-				let protein_area = document.querySelector("#protein-area")
-				protein_area.append(protein_button1)
 			}
+			protein_area.append(protein_button1)
 		}
 
 		/*
