@@ -245,12 +245,12 @@
 						</td>
 					</tr>
 				</table>
-				<div>
+				<div id="extras-button">
 					<button onclick="changeScreen('toppings-screen');changeScreen('extras-screen')">
 						⮜ previous
 					</button>
 					<button onclick="changeScreen('extras-screen');changeScreen('checkout')">
-						Next ⮞
+						Checkout ⮞
 					</button>
 				</div>
 			</div>
@@ -263,7 +263,7 @@
             Subtotal: $<span id="subtotal">0.00</span><br>
             Total: $<span id="total">0.00</span><br>
         </p>
-				<button onclick="finalizeOrder()">Checkout</button>
+				<button onclick="finalizeOrder()">Finalized Order</button>
 			</div>
 
 		</div>
@@ -606,6 +606,21 @@
 			} else if (id == 3) {
 				changeScreen('order-screen')
 				changeScreen('extras-screen')
+
+				let extras_area = document.querySelector("#extras-button")
+				let protein_button1 = document.createElement("button");
+
+				var buttons = extras_area.querySelectorAll('button');
+				for(var i=0; i<buttons.length; i++){
+					extras_area.removeChild(buttons[i]);
+				}
+				protein_button1.innerText = 'Checkout ⮞'
+				protein_button1.addEventListener("click", function() {
+					changeScreen('extras-screen')
+					changeScreen('checkout')
+				})
+				extras_area.append(protein_button1)
+
 			} else if (id == 2) {
 				changeScreen('order-screen')
 				changeScreen('rice-screen')
