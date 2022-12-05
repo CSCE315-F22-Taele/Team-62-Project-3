@@ -314,7 +314,7 @@
 								product.selectedItems.add(itemId);
 							}
 							else {
-								product.selectedItems.remove(itemId);
+								// product.selectedItems.remove(itemId);
 							}
 						}
 					}
@@ -343,7 +343,7 @@
 
 				products[thisProductId] = newProduct;
 				editBtn.addEventListener("click", function(){
-					loadExistingProduct(thisProductId);
+				loadExistingProduct(thisProductId);
 
 					// for edit button at checkout
 					if (productDefId == 6) {
@@ -364,9 +364,11 @@
 					} else if (productDefId == 2) {
 						changeScreen('checkout'); 
 						changeScreen('rice-screen');
+						proteinAreaBtn(productDefId)
 					} else if (productDefId == 1) {
 						changeScreen('checkout'); 
 						changeScreen('rice-screen');
+						proteinAreaBtn(productDefId)
 					} else {
 						changeScreen('checkout');
 						changeScreen('rice-screen');
@@ -433,7 +435,7 @@
 				itemId = button.getAttribute("itemId");
 				if (itemId) {
 					itemId = parseInt(itemId);
-					console.log("itemId: " + itemId)
+					// console.log("itemId: " + itemId)
 					if (productDef.optionalitemlist.includes(itemId)) {
 						button.style.display = "block";
 						if (selectedItems.has(itemId)) {
@@ -467,9 +469,9 @@
 		}
 
     function removeSelectedProduct(){
-      console.log("Removing product " + selectedProductId);
+      // console.log("Removing product " + selectedProductId);
       button = document.querySelector("#product_button_" + selectedProductId);
-      console.log(button);
+      // console.log(button);
 
 			delete products[selectedProductId];
 			const parentID = event.target.parentElement.id
@@ -505,7 +507,7 @@
 
 
       // putting values into a list
-      console.log("here" + products);
+      // console.log("here" + products);
       let values = Object.values(products)
       for (value in values) {
 				let newProduct = {"id": values[value].productDef, "selectedItems": Array.from(values[value].selectedItems)}
@@ -518,7 +520,7 @@
 				"productList": productList,
 			}
 
-			console.log(finalOrder)
+			// console.log(finalOrder)
 
       // work with backend (Ezra) to figure out what he wants the object to look like.
 
@@ -545,7 +547,7 @@
 			return x.style.display = "none";
 		}
 
-		function removeProteinAreaBtn() {
+		function removeProteinAreaBtn(protein_area) {
 				var buttons = protein_area.querySelectorAll('button');
 				console.log("BUTTON LENGTH :: " + buttons.length)
 				for(var i=0; i<buttons.length; i++){
@@ -563,12 +565,14 @@
 				protein_button1.addEventListener("click", function() {
 					changeScreen('protein-screen')
 					changeScreen('checkout')
+					removeProteinAreaBtn(protein_area)
 				})
 			} else {
 				protein_button1.innerText = 'next'
 				protein_button1.addEventListener("click", function() {
 					changeScreen('protein-screen')
 					changeScreen('toppings-screen')
+					removeProteinAreaBtn(protein_area)
 				})
 			}
 			protein_area.append(protein_button1)
