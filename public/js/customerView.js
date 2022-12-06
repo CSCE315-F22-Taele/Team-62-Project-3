@@ -1,8 +1,6 @@
 /* global productDefs */
 
 var discount = 0;
-
-
 var products = {}; // Used to store product data.
 var currentProductId = 0; // Used to track new products.
 var selectedProductId = -1; // Used to track the selected product.
@@ -129,12 +127,24 @@ function loadNewProduct(productDefId) {
 	currentProductId += 1;
 }
 
+/**
+ * when a product is clicked the function will find the correct
+ * product items for that specific product, i.e what a bowl would contain
+ * @param {int} id 
+ */
 function loadExistingProduct(id){
 	selectedProductId = id;
 	product = products[id];
 	loadItemsForProductDef(product.productDef, product.selectedItems);
 }
 
+/**
+ * displays all items that that specific product would have 
+ * i.e a Gryo would contain rice as one of its item
+ * but the extra protein wouldn't have rice as its item
+ * @param {string} productDefId 
+ * @param {array} selectedItems 
+ */
 function loadItemsForProductDef(productDefId, selectedItems) {
 	productDef = getProductDef(productDefId);
 	let buttons = document.querySelectorAll("#all-items button");
@@ -156,7 +166,7 @@ function loadItemsForProductDef(productDefId, selectedItems) {
 	}
 }
 
-/*
+/**
  * Update the price in the shopping cart
  * This function is called when the user changes the quantity of an item
  * in the shopping cart.
@@ -171,7 +181,9 @@ function updatePrice() {
 }
 
 
- // Remove the selected product from the shopping cart, and update the total cost
+/**
+ * Remove the selected product from the shopping cart, and update the total cost
+ */
 function removeSelectedProduct() {
 	let button = document.querySelector("#product_button_" + selectedProductId);
 
@@ -184,6 +196,10 @@ function removeSelectedProduct() {
 	updatePrice();
 }
 
+/**
+ * resets all button
+ * basically set the style.display  to none
+ */
 function resetAllButtons() {
 	let buttons = document.querySelectorAll("#all-items button");
 	for(let button of buttons){
@@ -194,6 +210,11 @@ function resetAllButtons() {
 }
 
 
+/**
+ * used to place order by the customer
+ * communicate with the 
+ * post to "/customerOrder"
+ */
 function finalizeOrder() {
 	let productList = []
 
@@ -219,13 +240,21 @@ function finalizeOrder() {
 
 }
 
-// Google Translate API
+/**
+ * The Google Translate API
+ * Used for translating to any language available on Google Translate
+ */
 function googleTranslateElementInit() {
 	new google.translate.TranslateElement(
 		{pageLanguage: 'en'}, 'google_translate_id'
 	)
 }
 
+/**
+ * change pages for the customer once the customer clicks prev, next, a product, or checkout
+ * @param {int} id 
+ * @returns the display style, if none then to block and block then to none
+ */
 function changeScreen(id) {
 	var x = document.getElementById(id);
 	if (x.style.display === "none") {
@@ -234,19 +263,22 @@ function changeScreen(id) {
 	return x.style.display = "none";
 }
 
-
-/*
-	* only used in proteinAreaBtn()
-	* remove all btn in protein area so new buttons can be placed
-	*/
+/**
+ * remove all btn in protein area so new buttons can be placed
+ * only used in proteinAreaBtn()
+ * @param {string} protein_area 
+ */
 function removeProteinAreaBtn(protein_area) {
-		var buttons = protein_area.querySelectorAll('button');
-		for(var i=0; i<buttons.length; i++){
-			protein_area.removeChild(buttons[i]);
-		}
+	var buttons = protein_area.querySelectorAll('button');
+	for(var i=0; i<buttons.length; i++){
+		protein_area.removeChild(buttons[i]);
+	}
 }
 
-// depending on which prodcut select will determine which button protein screen area will have
+/**
+ * depending on which prodcut select will determine which button protein screen area will have
+ * @param {int} id 
+ */
 function proteinAreaBtn(id) {
 
 	let protein_area = document.querySelector("#protein-area")
@@ -280,9 +312,10 @@ function proteinAreaBtn(id) {
 	}
 }
 
-/*
-	* change screen based on the product the customer picked
-	*/
+/**
+ * change screen based on the product the customer picked
+ * @param {int} id 
+ */
 function changeScreenProduct(id) {
 	if (id === 7) { 
 		changeScreen('order-screen')
@@ -330,6 +363,11 @@ function changeScreenProduct(id) {
 	}
 }
 
+/**
+ * used to find the correct product when a customer clicks on a product
+ * @param {int} id 
+ * @returns the productDef list
+ */
 const getProductDef = (id) => {
 	let productDef;
 	for(let def of productDefs){

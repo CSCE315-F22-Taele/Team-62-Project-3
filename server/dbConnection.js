@@ -79,7 +79,7 @@ class dbConnection{
             let full = "INSERT INTO products VALUES (" + cmd + ")";
             console.log(full);
             await this.sendQuery(full);
-       }
+        }
 
        // Apply discounts and then tax.
        let total = subtotal * (100 - order.discount)/100 * 1.0825;
