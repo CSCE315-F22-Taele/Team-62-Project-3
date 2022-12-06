@@ -73,22 +73,22 @@
 						Start Order
 					</button></a>
 
-					<% if(user.email == "") { %>
-					<div id="g_id_onload"
-						data-client_id="1001480195333-8c7osehemrrpbkpl72ptme7n69s8h3up.apps.googleusercontent.com"
-						data-context="signin"
-						data-callback="verify"
-						data-auto_prompt="false">
-					</div>
-		
-					<div class="g_id_signin"
-						data-type="standard"
-						data-shape="rectangular"
-						data-theme="outline"
-						data-text="signin_with"
-						data-size="large"
-						data-logo_alignment="right">
-					</div>
+					<% if(user.email == undefined) { %>
+						<div id="g_id_onload"
+							data-client_id="1001480195333-8c7osehemrrpbkpl72ptme7n69s8h3up.apps.googleusercontent.com"
+							data-context="signin"
+							data-callback="verify"
+							data-auto_prompt="false">
+						</div>
+			
+						<div class="g_id_signin"
+							data-type="standard"
+							data-shape="rectangular"
+							data-theme="outline"
+							data-text="signin_with"
+							data-size="large"
+							data-logo_alignment="right">
+						</div>
 					<% } else { %>
 						<a href="/home"><button>View Profile</button></a>
 					<% } %>
