@@ -16,7 +16,7 @@ class server {
 			if (xhr.readyState == XMLHttpRequest.DONE) {
 				this.#handleServerResponse(xhr, success, error);
 			}
-		};
+		}.bind(this);
 	}
 	
 	/**
@@ -35,7 +35,7 @@ class server {
 			if (xhr.readyState == XMLHttpRequest.DONE) {
 				this.#handleServerResponse(xhr, success, error);
 			}
-		};
+		}.bind(this);
 	}
 	
 	static #handleServerResponse(xhr, success, error) {
