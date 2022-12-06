@@ -36,18 +36,7 @@ module.exports = function(app, home, db) {
     });
 
     app.get("/manager/summary", async function(req, res){
-        if (req.session.email != "") {
-            //console.log("is signed in");
-            let isManager = await db.sendQuery("SELECT ismanager FROM email WHERE email='" + req.session.email + "'");
-            if (isManager.rowCount == 0) { // if you're not in the database
-                res.redirect("/nopermission");
-                return;
-            }
-            if (!isManager.rows[0].ismanager) { // if you're in the database but not a manager
-                res.redirect("/nopermission");
-                return;
-            }
-        } else { // if you're not signed in at all
+        if (!req.session.manager) {
             res.redirect("/nopermission");
             return;
         }
@@ -70,6 +59,10 @@ module.exports = function(app, home, db) {
 
     app.get("/manager/orders", async function(req, res){
         // Find the 100 most recent orders
+        if (!req.session.manager) {
+            res.redirect("/nopermission");
+            return;
+        }
         let quantifier = "";
         if(req.query.s && req.query.e){
             quantifier = " WHERE date BETWEEN '" + req.query.s + "' AND '" + req.query.e + "'";
@@ -89,6 +82,10 @@ module.exports = function(app, home, db) {
 
 
     app.get("/manager/items", async function(req, res){
+        if (!req.session.manager) {
+            res.redirect("/nopermission");
+            return;
+        }
         let results = await db.sendQuery("SELECT id, name, quantity, units FROM item ORDER BY id ASC");
         let results2 = await db.sendQuery("SELECT id, name, price FROM productdef");
         res.render("manager/items.ejs", {items:results.rows,productdef:results2.rows});
@@ -96,18 +93,7 @@ module.exports = function(app, home, db) {
 
     app.get("/server", async (req, res) => {
         //console.log("in server sign in");
-        if (req.session.email != "") {
-            //console.log("is signed in");
-            let isServer = await db.sendQuery("SELECT isserver, ismanager FROM email WHERE email='" + req.session.email + "'");
-            if (isServer.rowCount == 0) { // if you're not in the database
-                res.redirect("/nopermission");
-                return;
-            }
-            if (!isServer.rows[0].isserver) { // if you're in the database but not a manager
-                res.redirect("/nopermission");
-                return;
-            }
-        } else { // if you're not signed in at all
+        if (!req.session.server) {
             res.redirect("/nopermission");
             return;
         }
