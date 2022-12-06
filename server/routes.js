@@ -20,7 +20,7 @@ module.exports = function(app, home, db) {
 	});
 
     app.get("/", function(req, res){
-        if (sess.email != "") {
+        if (req.session.email != "") {
             res.redirect("/home");
             return;
         }
@@ -34,9 +34,9 @@ module.exports = function(app, home, db) {
     });
 
     app.get("/manager/summary", async function(req, res){
-        if (sess.email != "") {
+        if (req.session.email != "") {
             //console.log("is signed in");
-            let isManager = await db.sendQuery("SELECT ismanager FROM email WHERE email='" + sess.email + "'");
+            let isManager = await db.sendQuery("SELECT ismanager FROM email WHERE email='" + req.session.email + "'");
             if (isManager.rowCount == 0) { // if you're not in the database
                 res.redirect("/nopermission");
                 return;
@@ -94,9 +94,9 @@ module.exports = function(app, home, db) {
 
     app.get("/server", async (req, res) => {
         //console.log("in server sign in");
-        if (sess.email != "") {
+        if (req.session.email != "") {
             //console.log("is signed in");
-            let isServer = await db.sendQuery("SELECT isserver, ismanager FROM email WHERE email='" + sess.email + "'");
+            let isServer = await db.sendQuery("SELECT isserver, ismanager FROM email WHERE email='" + req.session.email + "'");
             if (isServer.rowCount == 0) { // if you're not in the database
                 res.redirect("/nopermission");
                 return;
@@ -121,7 +121,7 @@ module.exports = function(app, home, db) {
 		let productDefs = await db.sendQuery("SELECT id, name, optionalItemList, optionalPortionList, price FROM productdef");
         let categories = await db.sendQuery("SELECT id, name, description, color FROM category");
 
-        res.render("customer.ejs", {items:items.rows, productDefs:productDefs.rows, categories:categories.rows, user:sess})
+        res.render("customer.ejs", {items:items.rows, productDefs:productDefs.rows, categories:categories.rows, user:req.session})
     })
 
     app.get("/nopermission", (req, res) => {
@@ -129,7 +129,7 @@ module.exports = function(app, home, db) {
     });
 
     app.get("/home", (req, res) => {
-        res.render("home.ejs", {user:sess});
+        res.render("home.ejs", {user:req.session});
     });
 
     app.post("/item", async function(req, res){
@@ -156,25 +156,23 @@ module.exports = function(app, home, db) {
         res.send(200);
     });
     app.get("/logout", function(req, res) {
-        sess = {};
-        sess.email = "";
-        sess.name = "";
-        sess.server = false;
-        sess.manager = false;
-        console.log(sess);
+        req.session = {};
+        req.session.email = "";
+        req.session.name = "";
+        req.session.server = false;
+        req.session.manager = false;
         res.redirect("/");
     });
 
-    var sess = {};
-    sess.email = "";
-    sess.name = "";
-    sess.server = false;
-    sess.manager = false;
 
     app.post("/login", async function(req, res) {
         res.status(400);
         //console.log("in login");
-        sess = req.session;
+
+        req.session.email = "";
+        req.session.name = "";
+        req.session.server = false;
+        req.session.manager = false;
         //console.log(req.body);
         var token = req.body.token;
         const {OAuth2Client} = require('google-auth-library');
@@ -190,26 +188,22 @@ module.exports = function(app, home, db) {
             const userid = payload['sub'];
             // If request specified a G Suite domain:
             // const domain = payload['hd']
-            //console.log(payload);
-            //console.log(payload.email);
-            sess.email = payload.email;
-            sess.name = payload.name;
-            //console.log(sess.email);
-            //console.log(sess.name);
+            req.session.email = payload.email;
+            req.session.name = payload.name;
         }
         await verify().catch(console.error);
-        sess.server = false;
-        sess.manager = false;
-        let permissions = await db.sendQuery("SELECT isserver, ismanager FROM email WHERE email='" + sess.email + "'");
+        req.session.server = false;
+        req.session.manager = false;
+        let permissions = await db.sendQuery("SELECT isserver, ismanager FROM email WHERE email='" + req.session.email + "'");
         if (permissions.rowCount != 0) { // if you're in the database
             if (permissions.rows[0].isserver) { // if you're in the database but not a manager
-                sess.server = true;
+                req.session.server = true;
             }
             if (permissions.rows[0].ismanager) { // if you're in the database but not a manager
-                sess.manager = true;
+                req.session.manager = true;
             }
         }
-        console.log(sess);
+        console.log(req.session);
         res.send(200);
     });
 };
