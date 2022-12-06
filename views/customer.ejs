@@ -462,6 +462,7 @@
 										onclick="loadNewProduct(<%=productDef.id%>);changeScreenProduct(<%=productDef.id%>)"
 									>
 										<img 
+											alt="image"
 											id="productDef_button_<%=productDef.id%>"
 											src='assets/assetproductdef/photo<%=productDef.id%>.jpeg' 
 											width="100" 
@@ -494,6 +495,7 @@
 											<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
 												
 												<img 
+													alt="image"
 													id="item_button_<%=item.id%>"
 													src='assets/assetitem/photo<%=item.id%>.jpeg'
 													width="100" 
@@ -531,6 +533,7 @@
 											<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
 												
 												<img 
+													alt="image"
 													id="item_button_<%=item.id%>"
 													src='assets/assetitem/photo<%=item.id%>.jpeg'
 													width="100" 
@@ -566,10 +569,11 @@
 										<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>">
 										
 											<img 
-													id="item_button_<%=item.id%>"
-													src='assets/assetitem/photo<%=item.id%>.jpeg'
-													width="100" 
-													height="100" 
+												alt="image"
+												id="item_button_<%=item.id%>"
+												src='assets/assetitem/photo<%=item.id%>.jpeg'
+												width="100" 
+												height="100" 
 												>
 											<%= item.name %>
 										</button>
@@ -606,10 +610,11 @@
 									<% if (item.categoryid === 3) { %>
 										<button selectable=true id="item_button_<%=item.id%>" itemId=<%=item.id%>>
 											<img 
-													id="item_button_<%=item.id%>"
-													src='assets/assetitem/photo<%=item.id%>.jpeg'
-													width="100" 
-													height="100" 
+												alt="image"
+												id="item_button_<%=item.id%>"
+												src='assets/assetitem/photo<%=item.id%>.jpeg'
+												width="100" 
+												height="100" 
 												>
 											<%= item.name %>
 										</button>
