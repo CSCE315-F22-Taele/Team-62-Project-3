@@ -120,7 +120,7 @@ module.exports = function(app, home, db) {
 		let productDefs = await db.sendQuery("SELECT id, name, optionalItemList, optionalPortionList, price FROM productdef");
         let categories = await db.sendQuery("SELECT id, name, description, color FROM category");
 
-        res.render("customer.ejs", {items:items.rows, productDefs:productDefs.rows, categories:categories.rows})
+        res.render("customer.ejs", {items:items.rows, productDefs:productDefs.rows, categories:categories.rows, user:sess})
         
     })
 
@@ -198,7 +198,7 @@ module.exports = function(app, home, db) {
         }
         await verify().catch(console.error);
         let permissions = await db.sendQuery("SELECT isserver, ismanager FROM email WHERE email='" + sess.email + "'");
-        if (permissions.rowCount != 0) { // if you're not in the database
+        if (permissions.rowCount != 0) { // if you're in the database
             if (permissions.rows[0].isserver) { // if you're in the database but not a manager
                 sess.server = true;
             }

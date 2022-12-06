@@ -69,10 +69,11 @@
 				<h2>Welcome to Pom and Honey!</h2>
 
 				<div class="customer-start">
-					<button onclick="changeScreen('start-screen');changeScreen('order-screen')">
+					<a><button onclick="changeScreen('start-screen');changeScreen('order-screen')">
 						Start Order
-					</button>
+					</button></a>
 
+					<% if(user.email == "") { %>
 					<div id="g_id_onload"
 						data-client_id="1001480195333-8c7osehemrrpbkpl72ptme7n69s8h3up.apps.googleusercontent.com"
 						data-context="signin"
@@ -86,8 +87,11 @@
 						data-theme="outline"
 						data-text="signin_with"
 						data-size="large"
-						data-logo_alignment="left">
+						data-logo_alignment="right">
 					</div>
+					<% } else { %>
+						<a href="/home"><button>View Profile</button></a>
+					<% } %>
 
 					<script src="https://accounts.google.com/gsi/client" async defer></script>
 					<script src="/js/server.js"></script>
