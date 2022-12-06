@@ -20,7 +20,8 @@ module.exports = function(app, home, db) {
 	});
 
     app.get("/", function(req, res){
-        if (req.session.email != "") {
+        if (req.session.email) {
+            // User is logged in.
             res.redirect("/home");
             return;
         }
@@ -129,7 +130,12 @@ module.exports = function(app, home, db) {
     });
 
     app.get("/home", (req, res) => {
-        res.render("home.ejs", {user:req.session});
+        if(req.session.email){
+            res.render("home.ejs", {user:req.session});
+        }
+        else{
+            res.redirect("/");
+        }
     });
 
     app.post("/item", async function(req, res){
@@ -156,19 +162,16 @@ module.exports = function(app, home, db) {
         res.send(200);
     });
     app.get("/logout", function(req, res) {
-        req.session = {};
-        req.session.email = "";
-        req.session.name = "";
-        req.session.server = false;
-        req.session.manager = false;
-        res.redirect("/");
+        req.session.destroy(function(err) {
+            res.redirect("/");            
+        })
     });
 
 
     app.post("/login", async function(req, res) {
         res.status(400);
         //console.log("in login");
-
+        await req.session.regenerate();
         req.session.email = "";
         req.session.name = "";
         req.session.server = false;
