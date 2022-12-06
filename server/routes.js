@@ -20,6 +20,7 @@ module.exports = function(app, home, db) {
 	});
 
     app.get("/", function(req, res){
+        console.log(req.session);
         if (req.session.email) {
             // User is logged in.
             res.redirect("/home");
@@ -162,16 +163,17 @@ module.exports = function(app, home, db) {
         res.send(200);
     });
     app.get("/logout", function(req, res) {
-        req.session.destroy(function(err) {
-            res.redirect("/");            
-        })
+        req.session.email = undefined;
+        req.session.name = "";
+        req.session.server = false;
+        req.session.manager = false;
+        res.redirect("/");
     });
 
 
     app.post("/login", async function(req, res) {
         res.status(400);
         //console.log("in login");
-        await req.session.regenerate();
         req.session.email = "";
         req.session.name = "";
         req.session.server = false;
