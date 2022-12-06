@@ -27,6 +27,11 @@ var products = {}; // Used to store product data.
 var currentProductId = 0; // Used to track new products.
 var selectedProductId = -1; // Used to track the selected product.
 
+/**
+ * Update the price in the shopping cart
+ * This function is called when the user changes the quantity of an item
+ * in the shopping cart.
+ */
 function updatePrice(){
     let price = 0;
     for(let i in products){
@@ -37,14 +42,12 @@ function updatePrice(){
     document.querySelector("#total").innerText = (price * 1.0825 * (100-discount)/100).toFixed(2);
 }
 
-const totalPrice = () => {
-	let price = 0;
-	for(let i in products){
-		price += products[i].price;
-	}
-    return (price * 1.0825).toFixed(2);
-}
 
+/**
+ * used to find the correct product when a server button clicks on a product
+ * @param {int} id 
+ * @returns the productDef list
+ */
 function getProductDef(id){
     let productDef;
     for(let def of productDefs){
@@ -56,6 +59,10 @@ function getProductDef(id){
     return productDef;
 }
 
+/**
+ * resets all button
+ * basically set the style.display  to none
+ */
 function resetAllButtons(){
     let buttons = document.querySelectorAll("#all-items button");
     for(let button of buttons){
@@ -65,6 +72,13 @@ function resetAllButtons(){
     selectedProductId = -1;
 }
 
+/**
+ * displays all items that that specific product would have 
+ * i.e a Gryo would contain rice as one of its item
+ * but the extra protein wouldn't have rice as its item
+ * @param {string} productDefId 
+ * @param {array} selectedItems 
+ */
 function loadItemsForProductDef(productDefId, selectedItems) {
     let productDef = getProductDef(productDefId);
     let buttons = document.querySelectorAll("#all-items button");
@@ -88,6 +102,9 @@ function loadItemsForProductDef(productDefId, selectedItems) {
     document.querySelector("#remove_product_button").style.display = "block";
 }
 
+/**
+ * this thing adds the receipt area div, text, buttons, edits, and deletes
+ */
 function loadNewProduct(productDefId){
     let productDef = getProductDef(productDefId);
     // Add a new button with a reference to the product.
@@ -118,12 +135,20 @@ function loadNewProduct(productDefId){
     currentProductId += 1;
 }
 
+/**
+ * when a product is clicked the function will find the correct
+ * product items for that specific product, i.e what a bowl would contain
+ * @param {int} id 
+ */
 function loadExistingProduct(id){
     selectedProductId = id;
     let product = products[id];  // local "newProduct"
     loadItemsForProductDef(product.productDef, product.selectedItems);
 }
 
+/**
+ * Remove the selected product from the shopping cart, and update the total cost
+ */
 function removeSelectedProduct(){
     console.log("Removing product " + selectedProductId);
     let button = document.querySelector("#product_button_" + selectedProductId);
@@ -133,6 +158,12 @@ function removeSelectedProduct(){
     resetAllButtons();
     updatePrice();
 }
+
+
+/**
+ * discount for the final order on the server view
+ * the server will manually add the discount
+ */
 function addDiscount() {
     discount = document.getElementById("discount").value;
     if(discount > 100){
@@ -151,6 +182,11 @@ function addDiscount() {
         document.querySelector("#total").innerText = (price * 1.0825 * (100-discount)/100).toFixed(2);
 }
 
+/**
+ * used to place order by the server view
+ * communicate with the 
+ * post to "/order"
+ */
 function finalizeOrder() {
     // Hints:
     // start with the products object
@@ -190,6 +226,10 @@ function finalizeOrder() {
 
 }
 
+/**
+ * The Google Translate API
+ * Used for translating to any language available on Google Translate
+ */
 function googleTranslateElementInit() {
     new google.translate.TranslateElement(
         {pageLanguage: 'en'}, 'google_translate_id'
