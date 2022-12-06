@@ -2,6 +2,9 @@
 const {Client} = require('pg');
 const async = require('async');
 
+/**
+ * Manages the connection between the server and the SQL database.
+ */
 class dbConnection{
     #client;
     constructor(){
