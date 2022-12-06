@@ -170,6 +170,7 @@ module.exports = function(app, home, db) {
     sess.name = "";
     sess.server = false;
     sess.manager = false;
+    
     app.post("/login", async function(req, res) {
         res.status(400);
         //console.log("in login");
@@ -197,6 +198,8 @@ module.exports = function(app, home, db) {
             //console.log(sess.name);
         }
         await verify().catch(console.error);
+        sess.server = false;
+        sess.manager = false;
         let permissions = await db.sendQuery("SELECT isserver, ismanager FROM email WHERE email='" + sess.email + "'");
         if (permissions.rowCount != 0) { // if you're in the database
             if (permissions.rows[0].isserver) { // if you're in the database but not a manager
