@@ -42,8 +42,9 @@ button{
 }
 
 button.selected {
-    background:white;
-    color:#2c3473;
+    background:white !important;
+    color:black !important;
+    border:2px solid black !important;
 }
 
 button:focus {

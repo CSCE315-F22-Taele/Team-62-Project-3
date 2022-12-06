@@ -41,11 +41,17 @@
                         <% } %>
                     </div>
                 </td>
-                
+
                 <td align="center" style="width:500px;">
                     <div class="main-grid-items" id="all-items">
                         <% for(let item of items){ %>
-                            <button selectable=true itemId=<%=item.id%> style="display:none;" id="item_button_<%=item.id%>"><%=item.name%></button>
+                            <% var color = "#444444" %>
+                            <% for (let category of categories) { %>
+                                <% if (category.id == item.categoryid) { %>
+                                    <% color = category.color %>
+                                <% } %>
+                            <% } %>
+                            <button style="background:<%=color%>;display:none;border:none;" selectable=true itemId=<%=item.id%> style="display:none;" id="item_button_<%=item.id%>"><%=item.name%></button>
                         <% } %>
                         <button id="remove_product_button" class="neutral" style="display:none" onclick="removeSelectedProduct()">Remove Product</button>
                     </div>
@@ -59,7 +65,7 @@
                     <button onclick="addDiscount()">Discount</button>
                 </div>
             </td>
-                
+
                 <td align="left" style="vertical-align:bottom;">
                     <div class="btn-vertical">
                         <div id="receipt"></div>
@@ -71,7 +77,7 @@
                     <button onclick="finalizeOrder()">Finalize Order</button>
                     </div>
                 </td>
-            
+
             </tr>
         </table>
 
@@ -175,14 +181,14 @@
                 // Add a new button with a reference to the product.
                 let receiptButton = document.createElement("button");
                 let thisProductId = currentProductId; // Copy the variable in a local context.
-                
+
                 receiptButton.innerText = productDef.name + ": $" + productDef.price;
                 receiptButton.id = "product_button_" + thisProductId;
-                
+
                 receiptButton.addEventListener("click", function(){
                     loadExistingProduct(thisProductId);
                 });
-                
+
                 document.querySelector("#receipt").appendChild(receiptButton);
                 newProduct = {
                     productDef: productDefId,
@@ -190,11 +196,11 @@
                     selectedItems: new Set()
                 };
                 products[thisProductId] = newProduct;
-                
+
                 console.log("newProduct productDef :: " + newProduct.productDef)
                 console.log("newProduct price :: " + newProduct.price)
                 console.log("newProduct selectItems :: " + newProduct.selectedItems)
-                
+
                 loadExistingProduct(thisProductId);
                 updatePrice();
                 currentProductId += 1;
@@ -219,7 +225,7 @@
                 console.log("Discount:" +discount);
                 discount= document.getElementById("discount").value;
                 if(discount > 100){
-                    discount = 100;        
+                    discount = 100;
                 }
                 else if(discount < 0){
                     discount = 0;

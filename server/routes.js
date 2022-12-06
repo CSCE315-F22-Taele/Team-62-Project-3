@@ -105,10 +105,11 @@ module.exports = function(app, home, db) {
             res.redirect("/nopermission");
             return;
         }
-        let items = await db.sendQuery("SELECT id, name FROM item");
+        let items = await db.sendQuery("SELECT id, name, categoryid FROM item ORDER BY categoryid");
+        let categories = await db.sendQuery("SELECT id, name, description, color FROM category");
 		let productDefs = await db.sendQuery("SELECT id, name, optionalItemList, optionalPortionList, price FROM productdef");
 
-        res.render("server.ejs", {items:items.rows, productDefs:productDefs.rows});
+        res.render("server.ejs", {items:items.rows, productDefs:productDefs.rows, categories:categories.rows});
     })
 
     app.get("/customer", async (req, res) => {
@@ -117,7 +118,7 @@ module.exports = function(app, home, db) {
         let categories = await db.sendQuery("SELECT id, name, description, color FROM category");
 
         res.render("customer.ejs", {items:items.rows, productDefs:productDefs.rows, categories:categories.rows})
-        
+
     })
 
     app.get("/nopermission", (req, res) => {
