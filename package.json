@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "doc": "jsdoc public/js --recurse --destination public/docs"
+    "doc": "jsdoc README.md public/js/*.js server/*.js --destination public/docs"
   },
   "dependencies": {
     "async": "^2.6.1",
