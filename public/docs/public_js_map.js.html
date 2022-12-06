@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: public/js/map.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,50 +17,36 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: public/js/map.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>Web-Based Pom and Honey POS System</h1>
-<h2>Project 3 by Team 62</h2>
-<p>We are developing a world-changing web 3.0 application created with the latest technologies including HTML, CSS, JavaScript, and NodeJS.
-Essentially, we are revolutionizing the restaurant industry with a state-of-the-art automated POS system for the wildly popular and critically acclaimed restaurant Pom and Honey, located at the Memorial Student Center, the heart of Texas A&amp;M University in College Station.
-Our system will serve customers, servers, and managers.</p>
-<h2>How to Run</h2>
-<p>First, obtain top-level security clearance from the NSA, FBI, and CSI. Clearly you have already done this
-since you are reading this text.</p>
-<p>Next, clone this repository onto your computer, and run <code>npm install</code></p>
-<p>Then, set up a .env file in the root directory with the database credentials.
-Specifically, you will need to set <code>PGHOST</code>, <code>PGDATABASE</code>, <code>PGUSER</code>, and <code>PGPASSWORD</code>.
-These credentials should have been provided to you by the NSA. If you still need them,
-please contact NSA Director General Paul M. Nakasone at nsahomie@nsa.gov</p>
-<p>You will also need to set <code>PORT</code> to the desired port and <code>DEVMODE</code> to <code>true</code>.</p>
-<p>Finally, run <code>node index.js</code></p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Create a Google Map directing the user to Pom and Honey.
+ */
+function myMap() {
+    var location = new google.maps.LatLng(30.612448686913215, -96.34127527360305);
+    var mapProp= {
+        center:location,
+        zoom:15,
+    };
+
+    var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+    new google.maps.Marker({
+        position: location,
+        map,
+        title: "Pom and Honey",
+    });
+}
+</code></pre>
+        </article>
     </section>
-
-
 
 
 

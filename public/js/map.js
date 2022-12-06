@@ -1,3 +1,6 @@
+/**
+ * Create a Google Map directing the user to Pom and Honey.
+ */
 function myMap() {
     var location = new google.maps.LatLng(30.612448686913215, -96.34127527360305);
     var mapProp= {
