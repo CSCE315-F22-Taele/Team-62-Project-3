@@ -141,7 +141,7 @@ function loadExistingProduct(id){
 /**
  * displays all items that that specific product would have 
  * i.e a Gryo would contain rice as one of its item
- * but the extra protein wouldn't have rice as its item
+ * but the extra protein wouldn't have rice as its'
  * @param {string} productDefId 
  * @param {array} selectedItems 
  */
